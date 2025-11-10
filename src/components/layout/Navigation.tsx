@@ -193,6 +193,8 @@ const mockdata = [
       { label: 'Lead Pipeline', link: '/leads' },
       { label: 'Onboarding', link: '/leads/onboarding' },
       { label: 'Discovery Calls', link: '/leads/discovery' },
+      { label: 'Analytics', link: '/leads/analytics' },
+      { label: '✨ AI Insights', link: '/leads/ai-insights' },
     ],
   },
   {
