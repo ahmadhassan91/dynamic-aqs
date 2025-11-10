@@ -1,65 +1,234 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import Link from 'next/link';
+import {
+  Container,
+  Title,
+  Text,
+  Grid,
+  Card,
+  Group,
+  Stack,
+  Button,
+  ThemeIcon,
+  SimpleGrid,
+  Paper,
+  Center,
+  Anchor,
+} from '@mantine/core';
+import {
+  IconFiles,
+  IconBuildingStore,
+  IconUsers,
+  IconUserPlus,
+  IconSchool,
+  IconMail,
+  IconChartBar,
+  IconShield,
+  IconDeviceMobile,
+  IconArrowRight,
+} from '@tabler/icons-react';
+
+export default function HomePage() {
+  const features = [
+    {
+      title: 'Digital Asset Management',
+      description: 'Complete asset library with workflow management, version control, and analytics',
+      icon: IconFiles,
+      color: 'blue',
+      links: [
+        { label: 'Asset Library', href: '/assets' },
+        { label: 'Asset Analytics', href: '/assets/analytics' },
+        { label: 'Asset Workflow', href: '/assets/workflow' },
+        { label: 'Asset Migration', href: '/assets/migration' }
+      ]
+    },
+    {
+      title: 'Commercial Management',
+      description: 'Engineer contact management, opportunity tracking, and market analysis',
+      icon: IconBuildingStore,
+      color: 'green',
+      links: [
+        { label: 'Commercial Dashboard', href: '/commercial' },
+        { label: 'Engineer Contacts', href: '/commercial/engineers' },
+        { label: 'Opportunities', href: '/commercial/opportunities' },
+        { label: 'Market Analysis', href: '/commercial/market' }
+      ]
+    },
+    {
+      title: 'Customer & Lead Management',
+      description: 'Customer relationship management, lead pipeline, and territory assignment',
+      icon: IconUsers,
+      color: 'violet',
+      links: [
+        { label: 'Customer List', href: '/customers' },
+        { label: 'Customer Activities', href: '/customers/activities' },
+        { label: 'Lead Pipeline', href: '/leads' },
+        { label: 'Territory Management', href: '/customers/territories' }
+      ]
+    },
+    {
+      title: 'Training Management',
+      description: 'Training scheduling, progress tracking, and certification management',
+      icon: IconSchool,
+      color: 'orange',
+      links: [
+        { label: 'Training Dashboard', href: '/training' },
+        { label: 'Schedule Training', href: '/training/schedule' },
+        { label: 'Training Reports', href: '/training/reports' }
+      ]
+    },
+    {
+      title: 'Communication Hub',
+      description: 'Email campaigns, communication templates, and messaging workflows',
+      icon: IconMail,
+      color: 'indigo',
+      links: [
+        { label: 'Email Campaigns', href: '/email' },
+        { label: 'Communication Hub', href: '/communication' },
+        { label: 'Templates', href: '/communication/templates' }
+      ]
+    },
+    {
+      title: 'Dealer Portal',
+      description: 'Product catalog, order management, and dealer resources',
+      icon: IconUserPlus,
+      color: 'teal',
+      links: [
+        { label: 'Product Catalog', href: '/dealer/catalog' },
+        { label: 'Order Management', href: '/dealer/orders' },
+        { label: 'Dealer Dashboard', href: '/dealer/dashboard' }
+      ]
+    },
+    {
+      title: 'Reports & Analytics',
+      description: 'Executive dashboards, sales reports, and custom analytics',
+      icon: IconChartBar,
+      color: 'red',
+      links: [
+        { label: 'Executive Dashboard', href: '/reports/executive' },
+        { label: 'Sales Reports', href: '/reports' },
+        { label: 'Custom Reports', href: '/reports/custom' }
+      ]
+    },
+    {
+      title: 'Administration',
+      description: 'User management, system health monitoring, and integrations',
+      icon: IconShield,
+      color: 'gray',
+      links: [
+        { label: 'Admin Dashboard', href: '/admin' },
+        { label: 'User Management', href: '/admin/users' },
+        { label: 'System Health', href: '/admin/health' },
+        { label: 'Integrations', href: '/admin/integrations' }
+      ]
+    }
+  ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div style={{ 
+      minHeight: '100vh', 
+      overflowY: 'auto',
+      paddingTop: '2rem',
+      paddingBottom: '2rem'
+    }}>
+      <Container size="xl">
+        {/* Header */}
+        <Paper shadow="sm" p="xl" mb="xl">
+          <Center>
+            <Stack align="center" gap="md">
+              <Title order={1} size="h1">Dynamic AQS CRM</Title>
+              <Text size="lg" c="dimmed">
+                Comprehensive Customer Relationship Management System
+              </Text>
+            </Stack>
+          </Center>
+        </Paper>
+
+      {/* Features Grid */}
+      <Grid gutter="lg" mb="xl">
+        {features.map((feature, index) => (
+          <Grid.Col key={index} span={{ base: 12, md: 6, lg: 4 }}>
+            <Card shadow="sm" padding="lg" radius="md" withBorder h="100%">
+              <Group mb="md">
+                <ThemeIcon size="lg" variant="light" color={feature.color}>
+                  <feature.icon size={24} />
+                </ThemeIcon>
+                <Title order={3} size="h4">
+                  {feature.title}
+                </Title>
+              </Group>
+              
+              <Text size="sm" c="dimmed" mb="md">
+                {feature.description}
+              </Text>
+              
+              <Stack gap="xs">
+                {feature.links.map((link, linkIndex) => (
+                  <Anchor
+                    key={linkIndex}
+                    component={Link}
+                    href={link.href}
+                    size="sm"
+                    c={feature.color}
+                  >
+                    <Group gap="xs">
+                      <IconArrowRight size={14} />
+                      <Text>{link.label}</Text>
+                    </Group>
+                  </Anchor>
+                ))}
+              </Stack>
+            </Card>
+          </Grid.Col>
+        ))}
+      </Grid>
+
+      {/* Quick Stats */}
+      <Paper shadow="sm" p="xl" mb="xl">
+        <Title order={2} ta="center" mb="xl">
+          System Overview
+        </Title>
+        <SimpleGrid cols={{ base: 2, md: 4 }} spacing="lg">
+          <Center>
+            <Stack align="center" gap="xs">
+              <Text size="xl" fw={700} c="blue">15+</Text>
+              <Text size="sm" c="dimmed">Core Modules</Text>
+            </Stack>
+          </Center>
+          <Center>
+            <Stack align="center" gap="xs">
+              <Text size="xl" fw={700} c="green">50+</Text>
+              <Text size="sm" c="dimmed">Components</Text>
+            </Stack>
+          </Center>
+          <Center>
+            <Stack align="center" gap="xs">
+              <Text size="xl" fw={700} c="violet">100%</Text>
+              <Text size="sm" c="dimmed">TypeScript</Text>
+            </Stack>
+          </Center>
+          <Center>
+            <Stack align="center" gap="xs">
+              <Text size="xl" fw={700} c="orange">Mobile</Text>
+              <Text size="sm" c="dimmed">Ready</Text>
+            </Stack>
+          </Center>
+        </SimpleGrid>
+      </Paper>
+
+      {/* Mobile App Link */}
+      <Center mb="xl">
+        <Button
+          component={Link}
+          href="/mobile"
+          size="lg"
+          leftSection={<IconDeviceMobile size={20} />}
+        >
+          Access Mobile App
+        </Button>
+      </Center>
+      </Container>
     </div>
   );
 }

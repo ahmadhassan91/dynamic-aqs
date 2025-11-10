@@ -1,26 +1,1036 @@
-@import "tailwindcss";
+/* Reset and base styles */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  font-family: var(--mantine-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+}
 
+/* Prevent hydration mismatches from browser extensions */
+html[data-kantu],
+html[data-mantine-color-scheme] {
+  /* Allow these attributes without causing hydration errors */
+  visibility: visible;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Ensure full height for the app */
+html,
+body,
+#__next,
+#root {
+  height: 100%;
+}
+
+/* Remove any conflicting Tailwind styles */
+.min-h-screen {
+  min-height: auto !important;
+}
+
+/* Prevent flash of unstyled content */
+body {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Ensure proper Mantine styling */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --mantine-color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+::-webkit-scrollbar-track {
+  background: var(--mantine-color-gray-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--mantine-color-gray-4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mantine-color-gray-5);
+}
+
+/* Ensure sidebar navigation has proper scrolling */
+.mantine-AppShell-navbar {
+  overflow-y: auto !important;
+  max-height: calc(100vh - 60px) !important;
+}
+
+/* Fix main content area - proper scrolling hierarchy */
+.mantine-AppShell-main {
+  background-color: var(--mantine-color-gray-0, #f8f9fa) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: 100% !important;
+  /* AppShell will add padding for header and navbar automatically */
+  /* We only need to ensure no extra padding interferes */
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Ensure proper content area overflow handling */
+.mantine-Container-root {
+  overflow: visible !important;
+  min-height: auto !important;
+}
+
+/* Fix for content areas that should scroll */
+.content-scrollable {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: 100% !important;
+}
+
+/* Responsive container styles for residential pages */
+@media (max-width: 768px) {
+  .mantine-Container-root {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (min-width: 769px) and (max-width: 1024px) {
+  .mantine-Container-root {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Focus styles for accessibility */
+.mantine-focus-auto:focus {
+  outline: 2px solid var(--mantine-color-blue-5);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+/* 
+Force Mantine styles to load */
+.mantine-AppShell-main {
+  background-color: var(--mantine-color-gray-0, #f8f9fa);
+}
+
+/* Ensure Mantine components get proper styling */
+.mantine-Paper-root {
+  background-color: var(--mantine-color-white, #ffffff);
+  border: 1px solid var(--mantine-color-gray-3, #dee2e6);
+  border-radius: var(--mantine-radius-md, 8px);
+}
+
+.mantine-Button-root {
+  border-radius: var(--mantine-radius-md, 8px);
+  font-weight: 500;
+}
+
+.mantine-Title-root {
+  font-weight: 600;
+  color: var(--mantine-color-dark-9, #212529);
+}
+
+.mantine-Text-root {
+  color: var(--mantine-color-dark-7, #495057);
+}
+
+/* Force card styling */
+.mantine-Card-root {
+  background-color: var(--mantine-color-white, #ffffff);
+  border: 1px solid var(--mantine-color-gray-3, #dee2e6);
+  border-radius: var(--mantine-radius-md, 8px);
+  box-shadow: var(--mantine-shadow-sm, 0 1px 3px 0 rgb(0 0 0 / 0.1));
+}
+
+/* Force stack and group spacing */
+.mantine-Stack-root {
+  gap: var(--mantine-spacing-md, 16px);
+}
+
+.mantine-Group-root {
+  gap: var(--mantine-spacing-sm, 12px);
+}
+
+/* Mantine CSS Variables Fallback */
+:root {
+  --mantine-color-white: #ffffff;
+  --mantine-color-gray-0: #f8f9fa;
+  --mantine-color-gray-1: #f1f3f4;
+  --mantine-color-gray-2: #e9ecef;
+  --mantine-color-gray-3: #dee2e6;
+  --mantine-color-gray-4: #ced4da;
+  --mantine-color-gray-5: #adb5bd;
+  --mantine-color-gray-6: #6c757d;
+  --mantine-color-gray-7: #495057;
+  --mantine-color-gray-8: #343a40;
+  --mantine-color-gray-9: #212529;
+  --mantine-color-dark-7: #495057;
+  --mantine-color-dark-9: #212529;
+  --mantine-color-blue-1: #e7f5ff;
+  --mantine-color-blue-5: #339af0;
+  --mantine-color-blue-6: #228be6;
+  --mantine-color-green-6: #51cf66;
+  --mantine-color-yellow-6: #fab005;
+  --mantine-color-violet-6: #9775fa;
+  --mantine-color-orange-6: #fd7e14;
+  --mantine-color-red-6: #fa5252;
+  --mantine-color-yellow-1: #fff3bf;
+  --mantine-color-red-1: #ffe0e1;
+  --mantine-color-green-1: #d3f9d8;
+  --mantine-font-size-sm: 14px;
+  --mantine-spacing-xs: 8px;
+  --mantine-spacing-sm: 12px;
+  --mantine-spacing-md: 16px;
+  --mantine-spacing-lg: 24px;
+  --mantine-spacing-xl: 32px;
+  --mantine-radius-sm: 6px;
+  --mantine-radius-md: 8px;
+  --mantine-radius-lg: 12px;
+  --mantine-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --mantine-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Additional fixes for layout and scrolling */
+.mantine-AppShell-root {
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+.mantine-AppShell-navbar .mantine-Stack-root {
+  height: 100% !important;
+  overflow-y: auto !important;
+}
+
+/* Allow body to scroll properly */
+html, body {
+  overflow: visible !important;
+}
+
+/* Fix for pages that need full scrolling capability */
+.page-content {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: 100% !important;
+}
+
+/* Residential content container utility class */
+.residential-content-container {
+  min-height: calc(100vh - 60px); /* Account for header height */
+  padding: var(--mantine-spacing-xl, 1.5rem) var(--mantine-spacing-md, 1rem);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+/* Consistent padding and margin standards */
+.residential-content-container .mantine-Stack-root {
+  gap: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+.residential-content-container .mantine-Group-root {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-content-container .mantine-Paper-root {
+  margin-bottom: var(--mantine-spacing-md, 1rem) !important;
+}
+
+/* Standardized Stack spacing across residential pages */
+.residential-stack-large {
+  gap: var(--mantine-spacing-xl, 2rem) !important;
+}
+
+.residential-stack-medium {
+  gap: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+.residential-stack-small {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-stack-compact {
+  gap: var(--mantine-spacing-sm, 0.75rem) !important;
+}
+
+/* Standardized Group spacing across residential pages */
+.residential-group-large {
+  gap: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+.residential-group-medium {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-group-small {
+  gap: var(--mantine-spacing-sm, 0.75rem) !important;
+}
+
+.residential-group-compact {
+  gap: var(--mantine-spacing-xs, 0.5rem) !important;
+}
+
+/* Content alignment fixes for different container sizes */
+.residential-content-container .mantine-Grid-root {
+  margin: 0 !important;
+  align-items: stretch !important;
+}
+
+.residential-content-container .mantine-Grid-col {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.residential-content-container .mantine-Card-root,
+.residential-content-container .mantine-Paper-root {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Consistent margin and padding application */
+.residential-section {
+  margin-bottom: var(--mantine-spacing-xl, 2rem) !important;
+}
+
+.residential-subsection {
+  margin-bottom: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+.residential-item {
+  margin-bottom: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-compact-item {
+  margin-bottom: var(--mantine-spacing-sm, 0.75rem) !important;
+}
+
+/* Page header spacing */
+.residential-page-header {
+  margin-bottom: var(--mantine-spacing-xl, 2rem) !important;
+  padding-bottom: var(--mantine-spacing-md, 1rem) !important;
+  border-bottom: 1px solid var(--mantine-color-gray-3) !important;
+}
+
+/* Card content spacing */
+.residential-card-content {
+  padding: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+.residential-card-content .mantine-Stack-root {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-card-content .mantine-Group-root {
+  gap: var(--mantine-spacing-sm, 0.75rem) !important;
+}
+
+/* Form spacing */
+.residential-form {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-form .mantine-Grid-root {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-form .mantine-Group-root {
+  gap: var(--mantine-spacing-sm, 0.75rem) !important;
+  margin-top: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+/* Button group spacing */
+.residential-button-group {
+  gap: var(--mantine-spacing-sm, 0.75rem) !important;
+  margin-top: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-button-group.primary {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+/* Table spacing within residential pages */
+.residential-content-container .mantine-Table-root {
+  margin-top: var(--mantine-spacing-md, 1rem) !important;
+  margin-bottom: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-content-container .mantine-Table-th,
+.residential-content-container .mantine-Table-td {
+  padding: var(--mantine-spacing-sm, 0.75rem) !important;
+}
+
+/* Tab content spacing */
+.residential-content-container .mantine-Tabs-panel {
+  padding-top: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+/* Timeline spacing */
+.residential-content-container .mantine-Timeline-root {
+  padding-left: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.residential-content-container .mantine-Timeline-item {
+  margin-bottom: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+/* Responsive breakpoints for mobile and tablet */
+@media (max-width: 480px) {
+  .residential-content-container {
+    padding: var(--mantine-spacing-sm, 0.75rem);
+    max-width: 100%;
+    min-height: calc(100vh - 60px - 1.5rem);
+  }
+  
+  .residential-content-container .mantine-Stack-root {
+    gap: var(--mantine-spacing-md, 1rem);
+  }
+  
+  .residential-content-container .mantine-Group-root {
+    gap: var(--mantine-spacing-sm, 0.75rem);
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .residential-content-container {
+    padding: var(--mantine-spacing-md, 1rem);
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .residential-content-container {
+    padding: var(--mantine-spacing-lg, 1.5rem);
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .residential-content-container {
+    padding: var(--mantine-spacing-xl, 2rem);
+    max-width: 1200px;
+  }
+}
+
+/* Modal and overlay scrolling fixes */
+.mantine-Modal-content {
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  margin: 2rem !important;
+  position: relative !important;
+}
+
+.mantine-Modal-body {
+  overflow-y: auto !important;
+  max-height: calc(90vh - 120px) !important; /* Account for header and footer */
+}
+
+.mantine-Modal-header {
+  position: sticky !important;
+  top: 0 !important;
+  background-color: var(--mantine-color-white) !important;
+  z-index: 1 !important;
+  border-bottom: 1px solid var(--mantine-color-gray-3) !important;
+}
+
+/* Table and list scrolling within containers */
+.mantine-Table-root {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  min-width: 100% !important;
+  width: 100% !important;
+}
+
+.mantine-Table-table {
+  min-width: 100% !important;
+  width: 100% !important;
+  table-layout: auto !important;
+}
+
+/* Horizontal scrolling for wide tables */
+.table-horizontal-scroll {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  max-width: 100% !important;
+  border: 1px solid var(--mantine-color-gray-3) !important;
+  border-radius: var(--mantine-radius-md) !important;
+  background-color: var(--mantine-color-white) !important;
+}
+
+.table-horizontal-scroll .mantine-Table-table {
+  min-width: 600px !important; /* Minimum width to trigger horizontal scroll */
+  margin: 0 !important;
+}
+
+/* Vertical scrolling for long lists and data grids */
+.list-vertical-scroll {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: 400px !important;
+  border: 1px solid var(--mantine-color-gray-3) !important;
+  border-radius: var(--mantine-radius-md) !important;
+  background-color: var(--mantine-color-white) !important;
+}
+
+.list-vertical-scroll.large {
+  max-height: 600px !important;
+}
+
+.list-vertical-scroll.small {
+  max-height: 250px !important;
+}
+
+/* Scrolling behavior within cards and papers */
+.mantine-Paper-root .mantine-Table-root {
+  overflow: visible !important;
+}
+
+.mantine-Card-root .mantine-Table-root {
+  overflow: visible !important;
+}
+
+/* Ensure proper scrolling for nested content */
+.scrollable-content {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  max-width: 100% !important;
+}
+
+.scrollable-content .mantine-Table-root {
+  margin: 0 !important;
+}
+
+/* Fix for tables in tabs */
+.mantine-Tabs-panel .mantine-Table-root {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+}
+
+/* Responsive table behavior */
+@media (max-width: 768px) {
+  .mantine-Table-root {
+    font-size: 0.875rem !important;
+  }
+  
+  .table-horizontal-scroll .mantine-Table-table {
+    min-width: 500px !important;
+  }
+  
+  .mantine-Table-th,
+  .mantine-Table-td {
+    padding: 0.5rem !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Data grid specific styles */
+.data-grid-container {
+  overflow: auto !important;
+  max-height: 70vh !important;
+  border: 1px solid var(--mantine-color-gray-3) !important;
+  border-radius: var(--mantine-radius-md) !important;
+  background-color: var(--mantine-color-white) !important;
+}
+
+.data-grid-container .mantine-Table-root {
+  margin: 0 !important;
+  border: none !important;
+}
+
+.data-grid-container .mantine-Table-thead {
+  position: sticky !important;
+  top: 0 !important;
+  background-color: var(--mantine-color-gray-0) !important;
+  z-index: 1 !important;
+}
+
+/* List container improvements */
+.scrollable-list-container {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: 400px !important;
+  border: 1px solid var(--mantine-color-gray-3) !important;
+  border-radius: var(--mantine-radius-md) !important;
+  background-color: var(--mantine-color-white) !important;
+  padding: 0.5rem !important;
+}
+
+.scrollable-list-container .mantine-Stack-root {
+  gap: 0.5rem !important;
+}
+
+/* Timeline scrolling */
+.mantine-Timeline-root {
+  overflow-y: auto !important;
+  max-height: 500px !important;
+}
+
+/* Activity timeline specific scrolling */
+.activity-timeline-container {
+  overflow-y: auto !important;
+  max-height: 600px !important;
+  padding-right: 0.5rem !important;
+}
+
+/* Ensure proper table cell content handling */
+.mantine-Table-td {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 200px !important;
+}
+
+.mantine-Table-td.no-truncate {
+  overflow: visible !important;
+  text-overflow: unset !important;
+  max-width: none !important;
+  white-space: normal !important;
+}
+
+/* Proper z-index and positioning for overlays */
+.mantine-Modal-root {
+  z-index: 200 !important;
+}
+
+.mantine-Overlay-root {
+  z-index: 199 !important;
+  background-color: rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: none !important;
+}
+
+/* Ensure header and navbar stay above modal overlay */
+.mantine-AppShell-header {
+  z-index: 300 !important;
+  position: fixed !important;
+}
+
+.mantine-AppShell-navbar {
+  z-index: 300 !important;
+  position: fixed !important;
+}
+
+.mantine-Popover-dropdown {
+  z-index: 201 !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
+.mantine-Select-dropdown {
+  z-index: 201 !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+}
+
+.mantine-Menu-dropdown {
+  z-index: 201 !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
+/* Fix for nested scrollable content */
+.nested-scrollable {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: inherit !important;
+}
+
+/* Mobile modal adjustments */
+@media (max-width: 768px) {
+  .mantine-Modal-content {
+    margin: 1rem !important;
+    max-height: calc(100vh - 2rem) !important;
+  }
+  
+  .mantine-Modal-body {
+    max-height: calc(100vh - 140px) !important;
+  }
+}
+
+/* Ensure proper table styling */
+.mantine-Table-table {
+  background-color: var(--mantine-color-white) !important;
+}
+
+.mantine-Table-thead {
+  background-color: var(--mantine-color-gray-0) !important;
+}
+
+/* Fix any remaining Tailwind conflicts */
+.space-y-6 > * + * {
+  margin-top: 1.5rem !important;
+}
+
+.bg-white {
+  background-color: var(--mantine-color-white) !important;
+}
+
+.rounded-lg {
+  border-radius: var(--mantine-radius-md) !important;
+}
+
+.shadow {
+  box-shadow: var(--mantine-shadow-sm) !important;
+}
+
+.p-6 {
+  padding: 1.5rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1rem !important;
+}
+
+.text-lg {
+  font-size: 1.125rem !important;
+}
+
+.font-semibold {
+  font-weight: 600 !important;
+}
+
+.text-gray-900 {
+  color: var(--mantine-color-dark-9) !important;
+}
+
+/* ============================================ */
+/* COMMERCIAL PAGES STYLING */
+/* ============================================ */
+
+/* Commercial content container - full width for AppShell layout */
+.commercial-content-container {
+  min-height: calc(100vh - 60px); /* Account for header height */
+  padding: var(--mantine-spacing-xl, 1.5rem) var(--mantine-spacing-md, 1rem);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+/* Consistent padding and margin standards for commercial pages */
+.commercial-content-container .mantine-Stack-root {
+  gap: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+.commercial-content-container .mantine-Group-root {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.commercial-content-container .mantine-Paper-root {
+  margin-bottom: var(--mantine-spacing-md, 1rem) !important;
+}
+
+/* Standardized Stack spacing across commercial pages */
+.commercial-stack-large {
+  gap: var(--mantine-spacing-xl, 2rem) !important;
+}
+
+.commercial-stack-medium {
+  gap: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+.commercial-stack-small {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.commercial-stack-compact {
+  gap: var(--mantine-spacing-sm, 0.75rem) !important;
+}
+
+/* Standardized Group spacing across commercial pages */
+.commercial-group-large {
+  gap: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+.commercial-group-medium {
+  gap: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.commercial-group-small {
+  gap: var(--mantine-spacing-sm, 0.75rem) !important;
+}
+
+.commercial-group-compact {
+  gap: var(--mantine-spacing-xs, 0.5rem) !important;
+}
+
+/* Content alignment fixes for different container sizes */
+.commercial-content-container .mantine-Grid-root {
+  margin: 0 !important;
+  align-items: stretch !important;
+}
+
+.commercial-content-container .mantine-Grid-col {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.commercial-content-container .mantine-Card-root,
+.commercial-content-container .mantine-Paper-root {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Commercial card styling with hover effects */
+.commercial-card {
+  background: white;
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: var(--mantine-radius-md, 8px);
+  padding: var(--mantine-spacing-md, 1rem);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.commercial-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-color: var(--mantine-color-blue-3);
+}
+
+.commercial-card-static {
+  background: white;
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: var(--mantine-radius-md, 8px);
+  padding: var(--mantine-spacing-md, 1rem);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Commercial status badges */
+.badge-opportunity-prospect {
+  background-color: var(--mantine-color-blue-1) !important;
+  color: var(--mantine-color-blue-9) !important;
+}
+
+.badge-opportunity-qualification {
+  background-color: var(--mantine-color-cyan-1) !important;
+  color: var(--mantine-color-cyan-9) !important;
+}
+
+.badge-opportunity-proposal {
+  background-color: var(--mantine-color-violet-1) !important;
+  color: var(--mantine-color-violet-9) !important;
+}
+
+.badge-opportunity-negotiation {
+  background-color: var(--mantine-color-orange-1) !important;
+  color: var(--mantine-color-orange-9) !important;
+}
+
+.badge-opportunity-final-quote {
+  background-color: var(--mantine-color-yellow-1) !important;
+  color: var(--mantine-color-yellow-9) !important;
+}
+
+.badge-opportunity-won {
+  background-color: var(--mantine-color-green-6) !important;
+  color: white !important;
+}
+
+.badge-opportunity-lost {
+  background-color: var(--mantine-color-red-6) !important;
+  color: white !important;
+}
+
+/* Engineer rating badges */
+.badge-engineer-rating-5 {
+  background-color: var(--mantine-color-yellow-4) !important;
+  color: var(--mantine-color-dark-9) !important;
+  font-weight: 600 !important;
+}
+
+.badge-engineer-rating-4 {
+  background-color: var(--mantine-color-blue-5) !important;
+  color: white !important;
+}
+
+.badge-engineer-rating-3 {
+  background-color: var(--mantine-color-cyan-4) !important;
+  color: var(--mantine-color-dark-9) !important;
+}
+
+.badge-engineer-rating-2 {
+  background-color: var(--mantine-color-gray-4) !important;
+  color: var(--mantine-color-dark-9) !important;
+}
+
+.badge-engineer-rating-1 {
+  background-color: var(--mantine-color-red-2) !important;
+  color: var(--mantine-color-red-9) !important;
+}
+
+/* Market segment badges */
+.badge-segment-healthcare {
+  background-color: var(--mantine-color-red-1) !important;
+  color: var(--mantine-color-red-9) !important;
+}
+
+.badge-segment-education {
+  background-color: var(--mantine-color-blue-1) !important;
+  color: var(--mantine-color-blue-9) !important;
+}
+
+.badge-segment-commercial {
+  background-color: var(--mantine-color-green-1) !important;
+  color: var(--mantine-color-green-9) !important;
+}
+
+.badge-segment-industrial {
+  background-color: var(--mantine-color-orange-1) !important;
+  color: var(--mantine-color-orange-9) !important;
+}
+
+.badge-segment-retail {
+  background-color: var(--mantine-color-violet-1) !important;
+  color: var(--mantine-color-violet-9) !important;
+}
+
+.badge-segment-hospitality {
+  background-color: var(--mantine-color-pink-1) !important;
+  color: var(--mantine-color-pink-9) !important;
+}
+
+/* Commercial table styling */
+.commercial-content-container .mantine-Table-root {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.commercial-content-container .mantine-Table-th,
+.commercial-content-container .mantine-Table-td {
+  padding: var(--mantine-spacing-md, 1rem) !important;
+}
+
+.commercial-content-container .mantine-Table-tr:hover {
+  background-color: var(--mantine-color-gray-0) !important;
+  cursor: pointer;
+}
+
+/* Commercial tabs styling */
+.commercial-content-container .mantine-Tabs-panel {
+  padding-top: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+/* Commercial stat cards */
+.commercial-stat-card {
+  background: white;
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: var(--mantine-radius-md, 8px);
+  padding: var(--mantine-spacing-lg, 1.5rem);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.commercial-stat-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.commercial-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0.5rem 0;
+}
+
+.commercial-stat-label {
+  font-size: 0.875rem;
+  color: var(--mantine-color-gray-6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* Commercial section styling */
+.commercial-section {
+  margin-bottom: var(--mantine-spacing-xl, 2rem) !important;
+}
+
+.commercial-section-header {
+  margin-bottom: var(--mantine-spacing-lg, 1.5rem) !important;
+}
+
+/* Responsive adjustments for commercial pages */
+@media (max-width: 768px) {
+  .commercial-content-container {
+    padding: var(--mantine-spacing-md, 1rem);
+  }
+
+  .commercial-content-container .mantine-Stack-root {
+    gap: var(--mantine-spacing-md, 1rem) !important;
+  }
+
+  .commercial-content-container .mantine-Group-root {
+    gap: var(--mantine-spacing-sm, 0.75rem) !important;
+  }
+
+  .commercial-stat-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .commercial-content-container {
+    padding: var(--mantine-spacing-lg, 1.5rem);
+  }
+}
+
+@media (min-width: 1025px) {
+  .commercial-content-container {
+    padding: var(--mantine-spacing-xl, 2rem);
+  }
+}
+
+/* Commercial loading states */
+.commercial-skeleton {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Commercial empty states */
+.commercial-empty-state {
+  text-align: center;
+  padding: var(--mantine-spacing-xl, 3rem);
+  color: var(--mantine-color-gray-6);
+}
+
+.commercial-empty-state-icon {
+  font-size: 4rem;
+  color: var(--mantine-color-gray-4);
+  margin-bottom: var(--mantine-spacing-md, 1rem);
+}
+
+.commercial-empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--mantine-spacing-sm, 0.5rem);
+  color: var(--mantine-color-gray-7);
+}
+
+.commercial-empty-state-description {
+  font-size: 0.875rem;
+  color: var(--mantine-color-gray-6);
+  margin-bottom: var(--mantine-spacing-lg, 1.5rem);
 }

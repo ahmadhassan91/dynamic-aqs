@@ -1,0 +1,123 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Title, Text, Grid, Card, Group, Stack, Button, ThemeIcon, SimpleGrid } from '@mantine/core';
+import { 
+  IconBriefcase, 
+  IconUsers, 
+  IconBuilding, 
+  IconChartBar,
+  IconTrendingUp,
+  IconTarget,
+  IconCurrencyDollar,
+  IconCalendar
+} from '@tabler/icons-react';
+import { CommercialLayout } from '@/components/layout/CommercialLayout';
+
+export default function CommercialDashboardPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check authentication
+    const auth = localStorage.getItem('commercialAuth');
+    if (!auth) {
+      router.push('/commercial/login');
+    }
+  }, [router]);
+
+  const stats = [
+    { title: 'Active Opportunities', value: '47', icon: IconBriefcase, color: 'blue' },
+    { title: 'Engineer Contacts', value: '234', icon: IconUsers, color: 'green' },
+    { title: 'Pipeline Value', value: '$2.4M', icon: IconCurrencyDollar, color: 'yellow' },
+    { title: 'This Month Closed', value: '$340K', icon: IconTarget, color: 'red' },
+  ];
+
+  const quickActions = [
+    { title: 'New Opportunity', description: 'Create a new commercial opportunity', icon: IconBriefcase, link: '/commercial/opportunities/new' },
+    { title: 'Add Engineer Contact', description: 'Add new engineer to database', icon: IconUsers, link: '/commercial/engineers/new' },
+    { title: 'Generate Quote', description: 'Use pricing tool for quotes', icon: IconCurrencyDollar, link: '/commercial/pricing' },
+    { title: 'View Reports', description: 'Access commercial reports', icon: IconChartBar, link: '/commercial/reports' },
+  ];
+
+  return (
+    <CommercialLayout>
+      <div className="residential-content-container">
+        <Stack gap="xl" className="commercial-stack-large">
+          {/* Header */}
+          <div className="commercial-section-header">
+            <Title order={1}>Commercial Dashboard</Title>
+            <Text size="lg" c="dimmed">
+              Welcome to your commercial CRM dashboard
+            </Text>
+          </div>
+
+          {/* Stats Grid */}
+          <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="lg">
+            {stats.map((stat) => (
+              <div key={stat.title} className="commercial-stat-card">
+                <Group justify="space-between" align="flex-start">
+                  <Stack gap="xs" style={{ flex: 1 }}>
+                    <Text className="commercial-stat-label">
+                      {stat.title}
+                    </Text>
+                    <Text className="commercial-stat-value">
+                      {stat.value}
+                    </Text>
+                  </Stack>
+                  <ThemeIcon size="xl" radius="md" color={stat.color} variant="light">
+                    <stat.icon size={24} />
+                  </ThemeIcon>
+                </Group>
+              </div>
+            ))}
+          </SimpleGrid>
+
+          {/* Quick Actions */}
+          <div className="commercial-section">
+            <Title order={2} mb="lg">Quick Actions</Title>
+            <Grid>
+              {quickActions.map((action) => (
+                <Grid.Col key={action.title} span={{ base: 12, sm: 6, lg: 3 }}>
+                  <Card withBorder padding="xl" radius="md" h="100%" className="commercial-card">
+                    <Stack gap="md" align="center" ta="center">
+                      <ThemeIcon size={60} radius="md" variant="light" color="blue">
+                        <action.icon size={28} />
+                      </ThemeIcon>
+                      <div>
+                        <Text fw={600} size="lg" mb="xs" c="dark">{action.title}</Text>
+                        <Text size="sm" c="dimmed">{action.description}</Text>
+                      </div>
+                      <Button variant="light" size="sm" fullWidth color="blue">
+                        Get Started
+                      </Button>
+                    </Stack>
+                  </Card>
+                </Grid.Col>
+              ))}
+            </Grid>
+          </div>
+
+          {/* Recent Activity */}
+          <Card withBorder padding="xl" radius="md" className="commercial-card-static">
+            <Title order={3} mb="lg">Recent Activity</Title>
+            <Stack gap="md">
+              <Group justify="space-between" wrap="nowrap">
+                <Text size="sm">New opportunity created: "Hospital HVAC Upgrade"</Text>
+                <Text size="xs" c="dimmed" style={{ whiteSpace: 'nowrap' }}>2 hours ago</Text>
+              </Group>
+              <Group justify="space-between" wrap="nowrap">
+                <Text size="sm">Engineer contact updated: John Smith rating changed to 4</Text>
+                <Text size="xs" c="dimmed" style={{ whiteSpace: 'nowrap' }}>4 hours ago</Text>
+              </Group>
+              <Group justify="space-between" wrap="nowrap">
+                <Text size="sm">Quote generated for University Project - $125,000</Text>
+                <Text size="xs" c="dimmed" style={{ whiteSpace: 'nowrap' }}>1 day ago</Text>
+              </Group>
+            </Stack>
+          </Card>
+        </Stack>
+      </div>
+    </CommercialLayout>
+  );
+}
