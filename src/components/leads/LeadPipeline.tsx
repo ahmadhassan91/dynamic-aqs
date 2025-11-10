@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Box,
   Card,
@@ -44,11 +44,13 @@ import {
   IconTrendingUp,
   IconUser,
   IconBuilding,
+  IconSparkles,
 } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { MockLead, generateMockLeads } from '@/lib/mockData/generators';
 import { LeadDetailModal } from './LeadDetailModal';
 import { LeadFormModal } from './LeadFormModal';
+import { aiService } from '@/lib/services/aiService';
 
 type LeadStatus = 'new' | 'qualified' | 'discovery' | 'proposal' | 'won' | 'lost';
 
@@ -74,6 +76,9 @@ function LeadCard({ lead, onEdit, onView }: LeadCardProps) {
     transition,
     isDragging,
   } = useSortable({ id: lead.id });
+
+  // Calculate AI score for this lead
+  const aiScore = useMemo(() => aiService.calculateLeadScore(lead), [lead]);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -105,15 +110,16 @@ function LeadCard({ lead, onEdit, onView }: LeadCardProps) {
       {...attributes}
       {...listeners}
       shadow="sm"
-      padding="sm"
+      padding="md"
       radius="md"
       withBorder
       className="cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow"
     >
-      <Stack gap="xs">
-        <Group justify="space-between" align="flex-start">
-          <Box flex={1}>
-            <Text fw={600} size="sm" lineClamp={1}>
+      <Stack gap="sm">
+        {/* Header with company name and menu */}
+        <Group justify="space-between" align="flex-start" wrap="nowrap">
+          <Box style={{ flex: 1, minWidth: 0 }}>
+            <Text fw={600} size="sm" lineClamp={2} mb={2}>
               {lead.companyName}
             </Text>
             <Text size="xs" c="dimmed" lineClamp={1}>
@@ -146,34 +152,64 @@ function LeadCard({ lead, onEdit, onView }: LeadCardProps) {
           </Menu>
         </Group>
 
-        <Group justify="space-between" align="center">
-          <Badge size="xs" color={getSourceColor(lead.source)} variant="light">
+        {/* Source and AI Score badges */}
+        <Group justify="space-between" align="center" gap="xs">
+          <Badge 
+            size="sm" 
+            color={getSourceColor(lead.source)} 
+            variant="light"
+            style={{ textTransform: 'capitalize' }}
+          >
             {lead.source.replace('_', ' ')}
           </Badge>
-          <Group gap={4}>
-            <IconTrendingUp size={12} />
-            <Text size="xs" fw={600} c={getScoreColor(lead.score)}>
-              {lead.score}
-            </Text>
-          </Group>
+          <Tooltip 
+            label={
+              <Stack gap={4}>
+                <Text size="xs">AI Score: {aiScore.overallScore}/100</Text>
+                <Text size="xs">Conversion: {aiScore.conversionProbability}%</Text>
+                <Text size="xs">Confidence: {aiScore.confidence}</Text>
+              </Stack>
+            }
+            withinPortal
+          >
+            <Badge 
+              size="sm" 
+              color={getScoreColor(aiScore.overallScore)} 
+              variant="gradient"
+              gradient={{ from: 'violet', to: 'blue' }}
+              leftSection={<IconSparkles size={12} />}
+            >
+              {aiScore.overallScore}
+            </Badge>
+          </Tooltip>
         </Group>
 
-        <Progress
-          value={lead.score}
-          size="xs"
-          color={getScoreColor(lead.score)}
-          radius="xl"
-        />
+        {/* Conversion probability progress bar */}
+        <Box>
+          <Group justify="space-between" mb={4}>
+            <Text size="xs" c="dimmed">Conversion Probability</Text>
+            <Text size="xs" fw={600} c={getScoreColor(aiScore.overallScore)}>
+              {aiScore.conversionProbability}%
+            </Text>
+          </Group>
+          <Progress
+            value={aiScore.conversionProbability}
+            size="sm"
+            color={getScoreColor(aiScore.overallScore)}
+            radius="xl"
+          />
+        </Box>
 
-        <Group justify="space-between" align="center">
+        {/* Footer with assigned user and date */}
+        <Group justify="space-between" align="center" gap="xs">
           <Group gap={4}>
-            <IconUser size={12} />
-            <Text size="xs" c="dimmed">
-              {lead.assignedTo}
+            <IconUser size={14} />
+            <Text size="xs" c="dimmed" lineClamp={1}>
+              {lead.assignedTo.split(' ')[0]}
             </Text>
           </Group>
           <Text size="xs" c="dimmed">
-            {new Date(lead.createdAt).toLocaleDateString()}
+            {new Date(lead.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </Text>
         </Group>
       </Stack>
@@ -189,24 +225,28 @@ interface PipelineColumnProps {
 
 function PipelineColumn({ column, onEdit, onView }: PipelineColumnProps) {
   return (
-    <Box>
-      <Card withBorder radius="md" p="md" bg="gray.0">
-        <Group justify="space-between" mb="md">
+    <Stack gap={0} style={{ height: '100%' }}>
+      {/* Column Header */}
+      <Card withBorder radius="md" p="md" mb="sm" bg="gray.0">
+        <Group justify="space-between" wrap="nowrap">
           <Group gap="xs">
-            <Text fw={600} size="sm">
+            <Text fw={700} size="md">
               {column.title}
             </Text>
-            <Badge size="sm" color={column.color} variant="light">
+            <Badge size="lg" color={column.color} variant="filled">
               {column.leads.length}
             </Badge>
           </Group>
-          <ActionIcon variant="subtle" size="sm">
-            <IconPlus size={16} />
+          <ActionIcon variant="subtle" size="md" color={column.color}>
+            <IconPlus size={18} />
           </ActionIcon>
         </Group>
+      </Card>
 
+      {/* Column Content */}
+      <Box style={{ flex: 1, minHeight: 400 }}>
         <SortableContext items={column.leads.map(lead => lead.id)} strategy={verticalListSortingStrategy}>
-          <Stack gap="sm">
+          <Stack gap="md">
             {column.leads.map((lead) => (
               <LeadCard
                 key={lead.id}
@@ -217,8 +257,8 @@ function PipelineColumn({ column, onEdit, onView }: PipelineColumnProps) {
             ))}
           </Stack>
         </SortableContext>
-      </Card>
-    </Box>
+      </Box>
+    </Stack>
   );
 }
 
@@ -357,16 +397,34 @@ export function LeadPipeline() {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 6 }} spacing="md">
-          {columns.map((column) => (
-            <PipelineColumn
-              key={column.id}
-              column={column}
-              onEdit={handleEditLead}
-              onView={handleViewLead}
-            />
-          ))}
-        </SimpleGrid>
+        <Box 
+          style={{ 
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            paddingBottom: '1rem',
+            scrollbarWidth: 'thin',
+          }}
+        >
+          <Group 
+            align="flex-start" 
+            gap="lg" 
+            wrap="nowrap" 
+            style={{ 
+              minWidth: 'fit-content',
+              paddingBottom: '0.5rem'
+            }}
+          >
+            {columns.map((column) => (
+              <Box key={column.id} style={{ minWidth: 300, width: 300, flexShrink: 0 }}>
+                <PipelineColumn
+                  column={column}
+                  onEdit={handleEditLead}
+                  onView={handleViewLead}
+                />
+              </Box>
+            ))}
+          </Group>
+        </Box>
 
         <DragOverlay>
           {activeLead ? (

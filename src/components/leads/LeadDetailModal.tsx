@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import {
   Stack,
   Group,
@@ -15,6 +16,8 @@ import {
   SimpleGrid,
   Box,
   ThemeIcon,
+  Alert,
+  List,
 } from '@mantine/core';
 import {
   IconUser,
@@ -28,8 +31,14 @@ import {
   IconClock,
   IconCheck,
   IconX,
+  IconSparkles,
+  IconBulb,
+  IconInfoCircle,
 } from '@tabler/icons-react';
 import { MockLead } from '@/lib/mockData/generators';
+import { AILeadScore } from '@/types/ai';
+import { aiService } from '@/lib/services/aiService';
+import { AILeadScoreBadge } from '@/components/ai/AILeadScoreBadge';
 
 interface LeadDetailModalProps {
   lead: MockLead;
@@ -38,6 +47,14 @@ interface LeadDetailModalProps {
 }
 
 export function LeadDetailModal({ lead, onClose, onEdit }: LeadDetailModalProps) {
+  const [aiScore, setAiScore] = useState<AILeadScore | null>(null);
+
+  useEffect(() => {
+    // Calculate AI score for the lead
+    const score = aiService.calculateLeadScore(lead);
+    setAiScore(score);
+  }, [lead]);
+
   const getSourceColor = (source: string) => {
     switch (source) {
       case 'hubspot': return 'orange';
@@ -133,14 +150,78 @@ export function LeadDetailModal({ lead, onClose, onEdit }: LeadDetailModalProps)
 
       <Divider />
 
-      {/* Lead Score */}
+      {/* AI Lead Score */}
+      {aiScore && (
+        <Card withBorder style={{ background: 'linear-gradient(135deg, #667eea15 0%, #764ba215 100%)' }}>
+          <Stack gap="md">
+            <Group justify="space-between" align="flex-start">
+              <Group gap="xs">
+                <ThemeIcon size="lg" variant="gradient" gradient={{ from: 'violet', to: 'blue' }}>
+                  <IconSparkles size={20} />
+                </ThemeIcon>
+                <div>
+                  <Text fw={700} size="lg">AI Lead Score</Text>
+                  <Text size="xs" c="dimmed">Powered by machine learning</Text>
+                </div>
+              </Group>
+              <Badge size="lg" variant="gradient" gradient={{ from: 'violet', to: 'blue' }}>
+                {aiScore.overallScore}/100
+              </Badge>
+            </Group>
+
+            <SimpleGrid cols={3} spacing="sm">
+              <Box>
+                <Text size="xs" c="dimmed" mb={4}>Conversion Probability</Text>
+                <Text fw={700} size="lg" c="green">{aiScore.conversionProbability}%</Text>
+              </Box>
+              <Box>
+                <Text size="xs" c="dimmed" mb={4}>Predicted Revenue</Text>
+                <Text fw={700} size="lg">${aiScore.predictedRevenue.toLocaleString()}</Text>
+              </Box>
+              <Box>
+                <Text size="xs" c="dimmed" mb={4}>Expected Close</Text>
+                <Text fw={700} size="sm">
+                  {aiScore.expectedCloseDate ? aiScore.expectedCloseDate.toLocaleDateString() : 'TBD'}
+                </Text>
+              </Box>
+            </SimpleGrid>
+
+            <Progress.Root size="xl">
+              <Progress.Section value={aiScore.engagementScore / 3} color="blue">
+                <Progress.Label>Engagement</Progress.Label>
+              </Progress.Section>
+              <Progress.Section value={aiScore.behaviorScore / 3} color="violet">
+                <Progress.Label>Behavior</Progress.Label>
+              </Progress.Section>
+              <Progress.Section value={aiScore.demographicScore / 3} color="teal">
+                <Progress.Label>Demographics</Progress.Label>
+              </Progress.Section>
+            </Progress.Root>
+
+            <Alert 
+              icon={<IconBulb size={16} />} 
+              title="AI Recommendations" 
+              color="violet"
+              variant="light"
+            >
+              <List size="sm" spacing="xs">
+                {aiScore.recommendations.slice(0, 3).map((rec, idx) => (
+                  <List.Item key={idx}>{rec}</List.Item>
+                ))}
+              </List>
+            </Alert>
+          </Stack>
+        </Card>
+      )}
+
+      {/* Traditional Lead Score */}
       <Card withBorder>
         <Group justify="space-between" mb="xs">
           <Group gap="xs">
             <ThemeIcon color={getScoreColor(lead.score)} variant="light">
               <IconTrendingUp size={16} />
             </ThemeIcon>
-            <Text fw={600}>Lead Score</Text>
+            <Text fw={600}>Traditional Lead Score</Text>
           </Group>
           <Text fw={700} size="lg" c={getScoreColor(lead.score)}>
             {lead.score}/100
