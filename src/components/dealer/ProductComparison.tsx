@@ -65,7 +65,7 @@ export function ProductComparison({
     availability: true,
     warranty: true,
   });
-  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+  const [viewMode, setViewMode] = useState<'table' | 'cards'>('cards');
 
   // Get all unique specification keys
   const allSpecKeys = Array.from(
@@ -139,51 +139,54 @@ export function ProductComparison({
   };
 
   const TableView = () => (
-    <ScrollArea>
-      <Table striped highlightOnHover>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Product</Table.Th>
-            {products.map(product => (
-              <Table.Th key={product.id} style={{ minWidth: 200 }}>
-                <Stack gap="xs">
-                  <Group justify="space-between">
-                    <ActionIcon
-                      variant="light"
-                      color={favoriteProducts.includes(product.id) ? 'red' : 'gray'}
-                      onClick={() => onToggleFavorite(product)}
-                    >
-                      {favoriteProducts.includes(product.id) ? (
-                        <IconHeartFilled size={16} />
-                      ) : (
-                        <IconHeart size={16} />
-                      )}
-                    </ActionIcon>
-                    <ActionIcon
-                      variant="light"
-                      color="red"
-                      onClick={() => onRemoveFromComparison(product.id)}
-                    >
-                      <IconX size={16} />
-                    </ActionIcon>
-                  </Group>
-                  <Image
-                    src={product.imageUrl}
-                    alt={product.name}
-                    height={80}
-                    fallbackSrc="/images/placeholder-product.jpg"
-                  />
-                  <Text fw={500} size="sm" ta="center">
-                    {product.name}
-                  </Text>
-                  <Badge size="xs" variant="light">
-                    {product.category}
-                  </Badge>
-                </Stack>
-              </Table.Th>
-            ))}
-          </Table.Tr>
-        </Table.Thead>
+    <Table striped highlightOnHover withTableBorder withColumnBorders>
+      <Table.Thead style={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 1 }}>
+        <Table.Tr>
+          <Table.Th style={{ minWidth: 150, maxWidth: 200 }}>
+            <Text fw={600} size="sm">Product</Text>
+          </Table.Th>
+          {products.map(product => (
+            <Table.Th key={product.id} style={{ minWidth: 220, maxWidth: 250 }}>
+              <Stack gap="xs">
+                <Group justify="space-between" wrap="nowrap">
+                  <ActionIcon
+                    variant="light"
+                    size="sm"
+                    color={favoriteProducts.includes(product.id) ? 'red' : 'gray'}
+                    onClick={() => onToggleFavorite(product)}
+                  >
+                    {favoriteProducts.includes(product.id) ? (
+                      <IconHeartFilled size={14} />
+                    ) : (
+                      <IconHeart size={14} />
+                    )}
+                  </ActionIcon>
+                  <ActionIcon
+                    variant="light"
+                    size="sm"
+                    color="red"
+                    onClick={() => onRemoveFromComparison(product.id)}
+                  >
+                    <IconX size={14} />
+                  </ActionIcon>
+                </Group>
+                <Image
+                  src={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23f8f9fa'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='12' fill='%23868e96'%3EProduct%3C/text%3E%3C/svg%3E`}
+                  alt={product.name}
+                  height={70}
+                  fit="contain"
+                />
+                <Text fw={500} size="xs" ta="center" lineClamp={2}>
+                  {product.name}
+                </Text>
+                <Badge size="xs" variant="light" style={{ alignSelf: 'center' }}>
+                  {product.category}
+                </Badge>
+              </Stack>
+            </Table.Th>
+          ))}
+        </Table.Tr>
+      </Table.Thead>
         <Table.Tbody>
           {/* Pricing Section */}
           {selectedCriteria.pricing && (
@@ -284,7 +287,6 @@ export function ProductComparison({
           </Table.Tr>
         </Table.Tbody>
       </Table>
-    </ScrollArea>
   );
 
   const CardsView = () => (
@@ -314,10 +316,10 @@ export function ProductComparison({
                 </ActionIcon>
               </Group>
               <Image
-                src={product.imageUrl}
+                src={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23f8f9fa'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='14' fill='%23868e96'%3EProduct%3C/text%3E%3C/svg%3E`}
                 alt={product.name}
                 height={150}
-                fallbackSrc="/images/placeholder-product.jpg"
+                fit="contain"
               />
             </Card.Section>
 
@@ -404,17 +406,44 @@ export function ProductComparison({
     <Modal
       opened={opened}
       onClose={onClose}
-      title="Product Comparison"
-      size="xl"
-      fullScreen
+      title={
+        <Group>
+          <Text fw={600} size="lg">Product Comparison</Text>
+          {products.length > 0 && (
+            <Badge size="lg" variant="light">
+              {products.length} {products.length === 1 ? 'product' : 'products'}
+            </Badge>
+          )}
+        </Group>
+      }
+      size="95%"
+      centered
+      padding="md"
+      withinPortal
+      zIndex={10000}
+      styles={{
+        body: {
+          maxHeight: 'calc(100vh - 120px)',
+          overflow: 'hidden',
+        },
+        inner: {
+          zIndex: 10000,
+        },
+        overlay: {
+          zIndex: 9999,
+        },
+        content: {
+          zIndex: 10000,
+        },
+      }}
     >
-      <Stack>
+      <Stack gap="lg" h="100%">
         {/* Controls */}
-        <Paper withBorder p="md">
+        <Paper withBorder p="md" radius="md">
           <Stack gap="md">
-            <Group justify="space-between">
-              <Title order={4}>Comparison Criteria</Title>
-              <Group>
+            <Group justify="space-between" wrap="wrap">
+              <Title order={5}>Comparison Criteria</Title>
+              <Group gap="xs">
                 <Select
                   value={viewMode}
                   onChange={(value) => setViewMode(value as 'table' | 'cards')}
@@ -422,17 +451,21 @@ export function ProductComparison({
                     { value: 'table', label: 'Table View' },
                     { value: 'cards', label: 'Cards View' },
                   ]}
+                  size="xs"
+                  w={130}
                 />
                 <Button
+                  size="xs"
                   variant="light"
-                  leftSection={<IconDownload size={16} />}
+                  leftSection={<IconDownload size={14} />}
                   onClick={handleExportComparison}
                 >
                   Export
                 </Button>
                 <Button
+                  size="xs"
                   variant="light"
-                  leftSection={<IconShare size={16} />}
+                  leftSection={<IconShare size={14} />}
                   onClick={handleShareComparison}
                 >
                   Share
@@ -440,31 +473,36 @@ export function ProductComparison({
               </Group>
             </Group>
 
-            <Group>
+            <Group gap="md" wrap="wrap">
               <Checkbox
                 label="Specifications"
                 checked={selectedCriteria.specifications}
                 onChange={(event) => handleCriteriaChange('specifications', event.currentTarget.checked)}
+                size="sm"
               />
               <Checkbox
                 label="Pricing"
                 checked={selectedCriteria.pricing}
                 onChange={(event) => handleCriteriaChange('pricing', event.currentTarget.checked)}
+                size="sm"
               />
               <Checkbox
                 label="Features"
                 checked={selectedCriteria.features}
                 onChange={(event) => handleCriteriaChange('features', event.currentTarget.checked)}
+                size="sm"
               />
               <Checkbox
                 label="Availability"
                 checked={selectedCriteria.availability}
                 onChange={(event) => handleCriteriaChange('availability', event.currentTarget.checked)}
+                size="sm"
               />
               <Checkbox
                 label="Warranty"
                 checked={selectedCriteria.warranty}
                 onChange={(event) => handleCriteriaChange('warranty', event.currentTarget.checked)}
+                size="sm"
               />
             </Group>
           </Stack>
@@ -472,16 +510,16 @@ export function ProductComparison({
 
         {/* Comparison Content */}
         {products.length === 0 ? (
-          <Text ta="center" c="dimmed" py="xl">
-            No products selected for comparison
-          </Text>
+          <Paper withBorder p="xl" radius="md">
+            <Stack align="center" gap="md">
+              <Text size="xl" c="dimmed">No products selected for comparison</Text>
+              <Text size="sm" c="dimmed">Add products to compare them side by side</Text>
+            </Stack>
+          </Paper>
         ) : (
-          <>
-            <Text size="sm" c="dimmed">
-              Comparing {products.length} products
-            </Text>
+          <ScrollArea style={{ flex: 1 }} type="auto">
             {viewMode === 'table' ? <TableView /> : <CardsView />}
-          </>
+          </ScrollArea>
         )}
       </Stack>
     </Modal>

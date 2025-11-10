@@ -209,15 +209,19 @@ export function ProductCatalog({
   const ProductCard = ({ product }: { product: MockProduct }) => {
     const [quantity, setQuantity] = useState(1);
     const cartQuantity = getCartQuantity(product.id);
+    
+    // SVG placeholder image
+    const placeholderImage = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f8f9fa'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='18' fill='%23868e96'%3E${encodeURIComponent(product.name)}%3C/text%3E%3C/svg%3E`;
 
     return (
       <Card withBorder h="100%">
         <Card.Section>
           <Image
-            src={product.imageUrl}
+            src={placeholderImage}
             alt={product.name}
             height={200}
-            fallbackSrc="/images/placeholder-product.jpg"
+            fit="contain"
+            fallbackSrc={placeholderImage}
           />
         </Card.Section>
 

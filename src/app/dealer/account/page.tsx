@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay, Title, Text, Card, Group, Stack, Grid, Badge, Button, Table, Progress } from '@mantine/core';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter } from 'next/navigation';
 import { IconCreditCard, IconReceipt, IconTrendingUp, IconCalendar, IconDownload } from '@tabler/icons-react';
 
@@ -133,7 +133,7 @@ export default function DealerAccountPage() {
   const creditUtilization = ((account.creditLimit - account.availableCredit) / account.creditLimit) * 100;
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="xl">
         <Stack gap="lg">
           <div>
@@ -294,6 +294,6 @@ export default function DealerAccountPage() {
           </Card>
         </Stack>
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

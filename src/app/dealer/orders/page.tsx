@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay } from '@mantine/core';
 import { OrderHistory } from '@/components/dealer/OrderHistory';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter } from 'next/navigation';
 
 interface OrderItem {
@@ -215,7 +215,7 @@ export default function DealerOrdersPage() {
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="xl">
         <OrderHistory
           orders={orders}
@@ -225,6 +225,6 @@ export default function DealerOrdersPage() {
           onDownloadInvoice={handleDownloadInvoice}
         />
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

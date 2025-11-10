@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay, Title, Text, Card, Group, Badge, Stack, Button, Table, ActionIcon, Tooltip, SimpleGrid, Paper, ThemeIcon } from '@mantine/core';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter } from 'next/navigation';
 import { IconTruck, IconEye, IconMapPin, IconCalendar, IconPackage, IconClock, IconHistory, IconRefresh } from '@tabler/icons-react';
 
@@ -123,7 +123,7 @@ export default function DealerShipmentsPage() {
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="xl">
         <Stack gap="lg">
           <div>
@@ -236,6 +236,6 @@ export default function DealerShipmentsPage() {
           </Card>
         </Stack>
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

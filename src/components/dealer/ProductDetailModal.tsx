@@ -60,14 +60,27 @@ export function ProductDetailModal({
       title={product.name}
       size="xl"
       centered
+      withinPortal
+      zIndex={10000}
+      styles={{
+        inner: {
+          zIndex: 10000,
+        },
+        overlay: {
+          zIndex: 9999,
+        },
+        content: {
+          zIndex: 10000,
+        },
+      }}
     >
       <Grid>
         <Grid.Col span={{ base: 12, md: 6 }}>
           <Image
-            src={product.imageUrl}
+            src={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f8f9fa'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='18' fill='%23868e96'%3E${encodeURIComponent(product.name)}%3C/text%3E%3C/svg%3E`}
             alt={product.name}
             height={300}
-            fallbackSrc="/images/placeholder-product.jpg"
+            fit="contain"
           />
         </Grid.Col>
 

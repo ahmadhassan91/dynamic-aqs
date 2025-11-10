@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay } from '@mantine/core';
 import { DealerProfileManagement } from '@/components/dealer/DealerProfileManagement';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter } from 'next/navigation';
 
 // Mock data generator for dealer profile
@@ -123,7 +123,7 @@ export default function DealerProfilePage() {
   }
 
   return (
-    <DealerNavigation user={profileData.user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="lg">
         <DealerProfileManagement
           dealerData={profileData}
@@ -133,6 +133,6 @@ export default function DealerProfilePage() {
           onChangePassword={handleChangePassword}
         />
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

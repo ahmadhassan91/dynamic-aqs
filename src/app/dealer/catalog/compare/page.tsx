@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay, Stack, Title, Text, Button, Group } from '@mantine/core';
 import { ProductComparison } from '@/components/dealer/ProductComparison';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter } from 'next/navigation';
 import { generateMockProducts, MockProduct } from '@/lib/mockData/generators';
 import { IconArrowLeft } from '@tabler/icons-react';
@@ -173,7 +173,7 @@ export default function DealerComparisonPage() {
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="xl">
         <Stack>
           <Group>
@@ -212,6 +212,6 @@ export default function DealerComparisonPage() {
           )}
         </Stack>
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

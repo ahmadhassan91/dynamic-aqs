@@ -5,7 +5,7 @@ import { Container, LoadingOverlay } from '@mantine/core';
 import { ProductCatalog } from '@/components/dealer/ProductCatalog';
 import { ProductDetailModal } from '@/components/dealer/ProductDetailModal';
 import { ProductComparison } from '@/components/dealer/ProductComparison';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter } from 'next/navigation';
 import { generateMockProducts, MockProduct } from '@/lib/mockData/generators';
 
@@ -22,7 +22,6 @@ export default function DealerCatalogPage() {
   const [comparisonProducts, setComparisonProducts] = useState<MockProduct[]>([]);
   const [comparisonOpened, setComparisonOpened] = useState(false);
   const [favoriteProducts, setFavoriteProducts] = useState<string[]>([]);
-  const [user, setUser] = useState<any>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -64,13 +63,6 @@ export default function DealerCatalogPage() {
         }
       }
 
-      setUser({
-        name: 'Mike Johnson',
-        email: 'mike@abchvac.com',
-        companyName: 'ABC HVAC Solutions',
-        role: 'Owner',
-      });
-
       setLoading(false);
     };
 
@@ -96,12 +88,6 @@ export default function DealerCatalogPage() {
       localStorage.removeItem('dealerComparison');
     }
   }, [comparisonProducts]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('dealerAuth');
-    localStorage.removeItem('dealerCart');
-    router.push('/dealer/login');
-  };
 
   const handleAddToCart = (product: MockProduct, quantity: number) => {
     setCartItems(prev => {
@@ -206,13 +192,19 @@ export default function DealerCatalogPage() {
     }
   };
 
-  if (loading || !user) {
-    return <LoadingOverlay visible />;
+  if (loading) {
+    return (
+      <DealerLayout>
+        <Container size="xl">
+          <LoadingOverlay visible />
+        </Container>
+      </DealerLayout>
+    );
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
-      <Container size="xl">
+    <DealerLayout>
+      <Container size="xl" py="md">
         <ProductCatalog
           products={products}
           cartItems={cartItems}
@@ -244,6 +236,6 @@ export default function DealerCatalogPage() {
           onToggleFavorite={handleToggleFavorite}
         />
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

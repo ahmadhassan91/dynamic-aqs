@@ -3,7 +3,7 @@
 import { useState, useEffect, use } from 'react';
 import { Container, LoadingOverlay } from '@mantine/core';
 import { OrderConfirmation } from '@/components/dealer/OrderConfirmation';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface OrderItem {
@@ -180,7 +180,7 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
 
   if (!order) {
     return (
-      <DealerNavigation user={user} onLogout={handleLogout}>
+      <DealerLayout>
         <Container size="lg">
           <div style={{ textAlign: 'center', padding: '2rem' }}>
             <h2>Order Not Found</h2>
@@ -190,12 +190,12 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
             </button>
           </div>
         </Container>
-      </DealerNavigation>
+      </DealerLayout>
     );
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="lg">
         <OrderConfirmation
           order={order}
@@ -206,6 +206,6 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
           onViewAllOrders={handleViewAllOrders}
         />
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

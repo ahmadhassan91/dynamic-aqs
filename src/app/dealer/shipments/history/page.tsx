@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay } from '@mantine/core';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { ShipmentHistoryTracker } from '@/components/dealer/ShipmentHistoryTracker';
 import { useRouter } from 'next/navigation';
 
@@ -42,10 +42,10 @@ export default function DealerShipmentHistoryPage() {
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="xl">
         <ShipmentHistoryTracker />
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

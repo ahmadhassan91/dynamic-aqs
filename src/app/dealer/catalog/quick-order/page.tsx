@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay } from '@mantine/core';
 import { QuickOrderManager, QuickOrderItem } from '@/components/dealer/QuickOrderManager';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter } from 'next/navigation';
 import { generateMockProducts, MockProduct } from '@/lib/mockData/generators';
 
@@ -102,13 +102,13 @@ export default function DealerQuickOrderPage() {
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="xl">
         <QuickOrderManager
           products={products}
           onAddToCart={handleAddToCart}
         />
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

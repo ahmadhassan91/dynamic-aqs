@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay } from '@mantine/core';
 import { ShoppingCart } from '@/components/dealer/ShoppingCart';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter } from 'next/navigation';
 import { MockProduct } from '@/lib/mockData/generators';
 
@@ -128,7 +128,7 @@ export default function DealerCartPage() {
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="lg">
         <ShoppingCart
           cartItems={cartItems}
@@ -138,6 +138,6 @@ export default function DealerCartPage() {
           onCheckout={handleCheckout}
         />
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

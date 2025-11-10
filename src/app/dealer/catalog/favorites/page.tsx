@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay } from '@mantine/core';
 import { ProductFavoritesManager } from '@/components/dealer/ProductFavoritesManager';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { useRouter } from 'next/navigation';
 import { generateMockProducts, MockProduct } from '@/lib/mockData/generators';
 
@@ -108,7 +108,7 @@ export default function DealerFavoritesPage() {
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="xl">
         <ProductFavoritesManager
           products={products}
@@ -118,6 +118,6 @@ export default function DealerFavoritesPage() {
           onUpdateProductLists={handleUpdateProductLists}
         />
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

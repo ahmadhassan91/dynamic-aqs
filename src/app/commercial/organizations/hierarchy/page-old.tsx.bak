@@ -20,7 +20,7 @@ import {
   Divider,
   ThemeIcon,
   ScrollArea,
-  Tooltip
+  rem
 } from '@mantine/core';
 import {
   IconBuilding,
@@ -64,7 +64,7 @@ export default function OrganizationHierarchyPage() {
   const [selectedOrganization, setSelectedOrganization] = useState<Organization | null>(null);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
-
+  const [isEditMode, setIsEditMode] = useState(false);
   useEffect(() => {
     loadOrganizations();
   }, []);
@@ -166,7 +166,7 @@ export default function OrganizationHierarchyPage() {
       
       while (currentOrg.parentId && depth < 10) {
         if (pathIds.has(currentOrg.id)) {
-          break;
+          break; // Circular reference already detected
         }
         pathIds.add(currentOrg.id);
         currentOrg = orgs.find(o => o.id === currentOrg.parentId) || currentOrg;
@@ -185,6 +185,8 @@ export default function OrganizationHierarchyPage() {
     setValidationErrors(errors);
   };
 
+
+
   const toggleExpansion = (nodeId: string) => {
     const newExpanded = new Set(expandedNodes);
     if (newExpanded.has(nodeId)) {
@@ -198,18 +200,6 @@ export default function OrganizationHierarchyPage() {
 
   const handleOrganizationClick = (organization: Organization) => {
     setSelectedOrganization(organization);
-  };
-
-  const getOrganizationIcon = (type: OrganizationType) => {
-    const iconMap = {
-      [OrganizationType.ENGINEERING_FIRM]: IconBuildingFactory2,
-      [OrganizationType.MANUFACTURER_REP]: IconBuilding,
-      [OrganizationType.BUILDING_OWNER]: IconHome,
-      [OrganizationType.ARCHITECT]: IconRuler,
-      [OrganizationType.MECHANICAL_CONTRACTOR]: IconTool,
-      [OrganizationType.FACILITIES_MANAGER]: IconSettings
-    };
-    return iconMap[type] || IconBuilding;
   };
 
   const getOrganizationColor = (type: OrganizationType) => {
@@ -229,16 +219,14 @@ export default function OrganizationHierarchyPage() {
     const isExpanded = expandedNodes.has(node.id);
     const isSelected = selectedOrganization?.id === node.id;
     const hasError = validationErrors.some(error => error.organizationId === node.id);
-    const IconComponent = getOrganizationIcon(node.type);
 
     return (
       <Box key={node.id}>
         <Paper
-          p="sm"
-          radius="md"
+          p="xs"
           withBorder={isSelected}
           style={{
-            marginLeft: node.level * 32,
+            marginLeft: node.level * 24,
             cursor: 'pointer',
             backgroundColor: isSelected 
               ? 'var(--mantine-color-blue-0)' 
@@ -246,64 +234,55 @@ export default function OrganizationHierarchyPage() {
               ? 'var(--mantine-color-red-0)'
               : undefined,
             borderColor: isSelected 
-              ? 'var(--mantine-color-blue-5)' 
+              ? 'var(--mantine-color-blue-3)' 
               : hasError
-              ? 'var(--mantine-color-red-5)'
-              : 'var(--mantine-color-gray-3)',
-            borderWidth: isSelected ? 2 : 1,
-            transition: 'all 0.15s ease',
-            boxShadow: isSelected ? 'var(--mantine-shadow-sm)' : undefined
+              ? 'var(--mantine-color-red-3)'
+              : undefined,
+            transition: 'all 0.2s ease'
           }}
           onClick={() => handleOrganizationClick(node)}
         >
-          <Group wrap="nowrap" gap="sm">
-            {/* Expand/Collapse Button */}
+          <Group wrap="nowrap" gap="xs">
+            {isEditMode && (
+              <ActionIcon size="sm" variant="subtle" color="gray">
+                <IconGripVertical size={14} />
+              </ActionIcon>
+            )}
+            
             {hasChildren ? (
               <ActionIcon
-                size="lg"
+                size="sm"
                 variant="subtle"
-                color="gray"
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleExpansion(node.id);
                 }}
               >
-                {isExpanded ? <IconChevronDown size={18} /> : <IconChevronRight size={18} />}
+                {isExpanded ? <IconChevronDown size={16} /> : <IconChevronRight size={16} />}
               </ActionIcon>
             ) : (
-              <Box w={36} />
+              <Box w={24} />
             )}
             
-            {/* Icon */}
-            <ThemeIcon 
-              size="lg" 
-              radius="md" 
-              variant="light" 
-              color={getOrganizationColor(node.type)}
-            >
-              <IconComponent size={20} />
+            <ThemeIcon size="sm" radius="sm" variant="light" color={getOrganizationColor(node.type)}>
+              <IconBuilding size={14} />
             </ThemeIcon>
             
-            {/* Content */}
             <Box style={{ flex: 1, minWidth: 0 }}>
-              <Group justify="space-between" wrap="nowrap" gap="xs">
+              <Group justify="space-between" wrap="nowrap">
                 <Box style={{ minWidth: 0, flex: 1 }}>
-                  <Text size="sm" fw={600} truncate c={isSelected ? 'blue.7' : 'dark'}>
+                  <Text size="sm" fw={500} truncate>
                     {node.name}
                   </Text>
-                  <Text size="xs" c="dimmed" truncate>
+                  <Text size="xs" c="dimmed">
                     {node.type}
                   </Text>
                 </Box>
-                
-                {/* Badges */}
-                <Group gap={6} wrap="nowrap">
+                <Group gap={4} wrap="nowrap">
                   {hasError && (
-                    <Tooltip label="Validation Error">
-                      <Badge size="sm" color="red" variant="filled">
-                        <IconAlertCircle size={12} />
-                      </Badge>
-                    </Tooltip>
+                    <Badge size="sm" color="red" variant="light">
+                      Error
+                    </Badge>
                   )}
                   {!node.isActive && (
                     <Badge size="sm" color="red" variant="light">
@@ -312,7 +291,7 @@ export default function OrganizationHierarchyPage() {
                   )}
                   {hasChildren && (
                     <Badge size="sm" color="gray" variant="light">
-                      {node.children.length} {node.children.length === 1 ? 'child' : 'children'}
+                      {node.children.length}
                     </Badge>
                   )}
                 </Group>
@@ -321,12 +300,13 @@ export default function OrganizationHierarchyPage() {
           </Group>
         </Paper>
         
-        {/* Children */}
-        <Collapse in={hasChildren && isExpanded}>
-          <Stack gap="xs" mt="xs">
-            {node.children.map((child) => renderHierarchyNode(child))}
-          </Stack>
-        </Collapse>
+        {hasChildren && isExpanded && (
+          <Collapse in={isExpanded}>
+            <Stack gap="xs" mt="xs">
+              {node.children.map((child) => renderHierarchyNode(child))}
+            </Stack>
+          </Collapse>
+        )}
       </Box>
     );
   };
@@ -336,11 +316,10 @@ export default function OrganizationHierarchyPage() {
 
     return (
       <Alert 
-        icon={<IconAlertCircle size={18} />} 
+        icon={<IconAlertCircle size={16} />} 
         title="Hierarchy Validation Errors" 
         color="red"
         variant="light"
-        radius="md"
       >
         <Stack gap="xs">
           {validationErrors.map((error, index) => (
@@ -356,54 +335,35 @@ export default function OrganizationHierarchyPage() {
   const renderOrganizationDetails = () => {
     if (!selectedOrganization) {
       return (
-        <Stack align="center" justify="center" py={80}>
-          <ThemeIcon size={80} radius="xl" color="gray" variant="light">
-            <IconBuilding size={40} />
+        <Stack align="center" justify="center" py={60}>
+          <ThemeIcon size={60} radius="xl" color="gray" variant="light">
+            <IconBuilding size={32} />
           </ThemeIcon>
-          <Text c="dimmed" size="sm" ta="center">
-            Select an organization from the left to view details
+          <Text c="dimmed" size="sm">
+            Select an organization to view details
           </Text>
         </Stack>
       );
     }
 
     const orgErrors = validationErrors.filter(error => error.organizationId === selectedOrganization.id);
-    const IconComponent = getOrganizationIcon(selectedOrganization.type);
 
     return (
-      <Stack gap="xl">
+      <Stack gap="lg">
         {/* Header */}
         <Group>
-          <ThemeIcon 
-            size={60} 
-            radius="md" 
-            variant="light" 
-            color={getOrganizationColor(selectedOrganization.type)}
-          >
-            <IconComponent size={32} />
+          <ThemeIcon size="xl" radius="md" variant="light" color={getOrganizationColor(selectedOrganization.type)}>
+            <IconBuilding size={24} />
           </ThemeIcon>
-          <Box style={{ flex: 1 }}>
-            <Title order={3}>{selectedOrganization.name}</Title>
-            <Badge 
-              size="lg" 
-              variant="light" 
-              color={getOrganizationColor(selectedOrganization.type)}
-              mt={4}
-            >
-              {selectedOrganization.type}
-            </Badge>
-          </Box>
+          <div>
+            <Title order={4}>{selectedOrganization.name}</Title>
+            <Text size="sm" c="dimmed">{selectedOrganization.type}</Text>
+          </div>
         </Group>
 
         {/* Validation Errors */}
         {orgErrors.length > 0 && (
-          <Alert 
-            icon={<IconAlertCircle size={16} />} 
-            title="Validation Issues" 
-            color="red" 
-            variant="light"
-            radius="md"
-          >
+          <Alert icon={<IconAlertCircle size={16} />} title="Validation Issues" color="red" variant="light">
             <Stack gap="xs">
               {orgErrors.map((error, index) => (
                 <Text key={index} size="sm">• {error.message}</Text>
@@ -415,129 +375,97 @@ export default function OrganizationHierarchyPage() {
         <Divider />
 
         {/* Contact Information */}
-        <Box>
-          <Title order={5} mb="md" c="dimmed">Contact Information</Title>
-          <Stack gap="md">
-            <Group gap="sm">
-              <ThemeIcon size="md" radius="md" variant="light" color="blue">
+        <div>
+          <Title order={5} mb="sm">Contact Information</Title>
+          <Stack gap="xs">
+            <Group gap="xs">
+              <IconUser size={16} />
+              <Text size="sm">
+                {selectedOrganization.contactInfo.firstName} {selectedOrganization.contactInfo.lastName}
+              </Text>
+            </Group>
+            <Group gap="xs">
+              <IconMail size={16} />
+              <Text size="sm">{selectedOrganization.contactInfo.email}</Text>
+            </Group>
+            <Group gap="xs">
+              <IconPhone size={16} />
+              <Text size="sm">{selectedOrganization.contactInfo.phone}</Text>
+            </Group>
+            {selectedOrganization.contactInfo.title && (
+              <Group gap="xs">
                 <IconUser size={16} />
-              </ThemeIcon>
-              <Box>
-                <Text size="xs" c="dimmed">Contact Person</Text>
-                <Text size="sm" fw={500}>
-                  {selectedOrganization.contactInfo.firstName} {selectedOrganization.contactInfo.lastName}
-                </Text>
-                {selectedOrganization.contactInfo.title && (
-                  <Text size="xs" c="dimmed">{selectedOrganization.contactInfo.title}</Text>
-                )}
-              </Box>
-            </Group>
-            
-            <Group gap="sm">
-              <ThemeIcon size="md" radius="md" variant="light" color="teal">
-                <IconMail size={16} />
-              </ThemeIcon>
-              <Box>
-                <Text size="xs" c="dimmed">Email</Text>
-                <Text size="sm" fw={500}>{selectedOrganization.contactInfo.email}</Text>
-              </Box>
-            </Group>
-            
-            <Group gap="sm">
-              <ThemeIcon size="md" radius="md" variant="light" color="green">
-                <IconPhone size={16} />
-              </ThemeIcon>
-              <Box>
-                <Text size="xs" c="dimmed">Phone</Text>
-                <Text size="sm" fw={500}>{selectedOrganization.contactInfo.phone}</Text>
-              </Box>
-            </Group>
+                <Text size="sm">{selectedOrganization.contactInfo.title}</Text>
+              </Group>
+            )}
           </Stack>
-        </Box>
+        </div>
 
         {/* Address */}
         {selectedOrganization.contactInfo.address && (
           <>
             <Divider />
-            <Box>
-              <Title order={5} mb="md" c="dimmed">Address</Title>
-              <Group gap="sm" align="flex-start">
-                <ThemeIcon size="md" radius="md" variant="light" color="orange">
-                  <IconMapPin size={16} />
-                </ThemeIcon>
-                <Stack gap={2}>
-                  <Text size="sm" fw={500}>{selectedOrganization.contactInfo.address.street}</Text>
+            <div>
+              <Title order={5} mb="sm">Address</Title>
+              <Group gap="xs" align="flex-start">
+                <IconMapPin size={16} style={{ marginTop: 2 }} />
+                <Stack gap={0}>
+                  <Text size="sm">{selectedOrganization.contactInfo.address.street}</Text>
                   <Text size="sm">
                     {selectedOrganization.contactInfo.address.city}, {selectedOrganization.contactInfo.address.state} {selectedOrganization.contactInfo.address.zipCode}
                   </Text>
-                  <Text size="sm" c="dimmed">{selectedOrganization.contactInfo.address.country}</Text>
+                  <Text size="sm">{selectedOrganization.contactInfo.address.country}</Text>
                 </Stack>
               </Group>
-            </Box>
+            </div>
           </>
         )}
 
         <Divider />
 
         {/* Organization Details */}
-        <Box>
-          <Title order={5} mb="md" c="dimmed">Organization Details</Title>
-          <Grid gutter="md">
+        <div>
+          <Title order={5} mb="sm">Organization Details</Title>
+          <Grid gutter="xs">
             <Grid.Col span={6}>
-              <Stack gap={4}>
-                <Text size="xs" c="dimmed" tt="uppercase" fw={600}>Status</Text>
-                <Badge 
-                  size="lg"
-                  color={selectedOrganization.isActive ? 'green' : 'red'} 
-                  variant="light"
-                  leftSection={selectedOrganization.isActive ? <IconCheck size={14} /> : <IconX size={14} />}
-                >
-                  {selectedOrganization.isActive ? 'Active' : 'Inactive'}
-                </Badge>
-              </Stack>
+              <Text size="xs" c="dimmed">Status</Text>
+              <Badge 
+                color={selectedOrganization.isActive ? 'green' : 'red'} 
+                variant="light"
+                leftSection={selectedOrganization.isActive ? <IconCheck size={12} /> : <IconX size={12} />}
+              >
+                {selectedOrganization.isActive ? 'Active' : 'Inactive'}
+              </Badge>
             </Grid.Col>
-            
             <Grid.Col span={6}>
-              <Stack gap={4}>
-                <Text size="xs" c="dimmed" tt="uppercase" fw={600}>Created</Text>
-                <Group gap={6}>
-                  <IconCalendar size={16} color="gray" />
-                  <Text size="sm">{selectedOrganization.createdAt.toLocaleDateString()}</Text>
-                </Group>
-              </Stack>
+              <Text size="xs" c="dimmed">Created</Text>
+              <Group gap={4}>
+                <IconCalendar size={14} />
+                <Text size="sm">{selectedOrganization.createdAt.toLocaleDateString()}</Text>
+              </Group>
             </Grid.Col>
-            
             {selectedOrganization.territoryId && (
               <Grid.Col span={6}>
-                <Stack gap={4}>
-                  <Text size="xs" c="dimmed" tt="uppercase" fw={600}>Territory</Text>
-                  <Text size="sm" fw={500}>{selectedOrganization.territoryId}</Text>
-                </Stack>
+                <Text size="xs" c="dimmed">Territory</Text>
+                <Text size="sm">{selectedOrganization.territoryId}</Text>
               </Grid.Col>
             )}
-            
             <Grid.Col span={6}>
-              <Stack gap={4}>
-                <Text size="xs" c="dimmed" tt="uppercase" fw={600}>Last Updated</Text>
-                <Text size="sm">{selectedOrganization.updatedAt.toLocaleDateString()}</Text>
-              </Stack>
+              <Text size="xs" c="dimmed">Last Updated</Text>
+              <Text size="sm">{selectedOrganization.updatedAt.toLocaleDateString()}</Text>
             </Grid.Col>
           </Grid>
-        </Box>
+        </div>
 
         {/* Hierarchy */}
         {selectedOrganization.parentId && (
           <>
             <Divider />
-            <Box>
-              <Title order={5} mb="md" c="dimmed">Hierarchy</Title>
-              <Paper p="md" radius="md" withBorder>
-                <Stack gap={4}>
-                  <Text size="xs" c="dimmed">Parent Organization</Text>
-                  <Text size="sm" fw={500}>{selectedOrganization.parentId}</Text>
-                </Stack>
-              </Paper>
-            </Box>
+            <div>
+              <Title order={5} mb="sm">Hierarchy</Title>
+              <Text size="sm" c="dimmed">Parent Organization ID:</Text>
+              <Text size="sm" fw={500}>{selectedOrganization.parentId}</Text>
+            </div>
           </>
         )}
       </Stack>
@@ -547,10 +475,10 @@ export default function OrganizationHierarchyPage() {
   if (loading) {
     return (
       <CommercialLayout>
-        <Container size="xl" py="xl">
-          <Stack align="center" justify="center" style={{ minHeight: 500 }}>
-            <Loader size="xl" />
-            <Text c="dimmed" size="lg">Loading organization hierarchy...</Text>
+        <Container size="xl" py="md">
+          <Stack align="center" justify="center" style={{ minHeight: 400 }}>
+            <Loader size="lg" />
+            <Text c="dimmed">Loading organization hierarchy...</Text>
           </Stack>
         </Container>
       </CommercialLayout>
@@ -559,64 +487,71 @@ export default function OrganizationHierarchyPage() {
 
   return (
     <CommercialLayout>
-      <Container size="xl" py="xl">
-        <Stack gap="xl">
+      <Container size="xl" py="md">
+        <Stack gap="lg">
           {/* Header */}
-          <Box>
-            <Title order={1} mb="xs">Organization Hierarchy</Title>
-            <Text size="md" c="dimmed">
-              View and manage parent-child relationships between organizations
-            </Text>
-          </Box>
+          <Group justify="space-between" align="flex-start">
+            <div>
+              <Title order={1}>Organization Hierarchy</Title>
+              <Text size="sm" c="dimmed" mt={4}>
+                Manage organization relationships and structure
+              </Text>
+            </div>
+            <Button
+              leftSection={isEditMode ? <IconX size={16} /> : <IconEdit size={16} />}
+              onClick={() => setIsEditMode(!isEditMode)}
+              color={isEditMode ? 'red' : 'blue'}
+              variant={isEditMode ? 'light' : 'filled'}
+            >
+              {isEditMode ? 'Exit Edit Mode' : 'Edit Hierarchy'}
+            </Button>
+          </Group>
 
           {/* Validation Errors */}
           {renderValidationErrors()}
 
           {/* Main Grid */}
-          <Grid gutter="xl">
-            {/* Left Panel - Tree */}
-            <Grid.Col span={{ base: 12, lg: 5 }}>
-              <Card withBorder shadow="sm" radius="md" h="100%">
-                <Card.Section withBorder p="lg" bg="gray.0">
-                  <Group justify="space-between">
-                    <Box>
-                      <Title order={4}>Organization Structure</Title>
-                      <Text size="sm" c="dimmed" mt={4}>
-                        Click to expand/collapse and view details
-                      </Text>
-                    </Box>
-                  </Group>
+          <Grid gutter="md">
+            <Grid.Col span={{ base: 12, lg: 6 }}>
+              <Card withBorder shadow="sm" padding="lg" radius="md">
+                <Card.Section withBorder p="md">
+                  <Title order={3}>Organization Structure</Title>
+                  <Text size="sm" c="dimmed" mt={4}>
+                    {isEditMode 
+                      ? 'Drag and drop to reorganize hierarchy' 
+                      : 'Click to expand/collapse, select to view details'
+                    }
+                  </Text>
                 </Card.Section>
 
-                <ScrollArea h={600} p="md">
+                <Card.Section p="md" style={{ maxHeight: 600, overflowY: 'auto' }}>
                   {hierarchyTree.length > 0 ? (
-                    <Stack gap="sm">
-                      {hierarchyTree.map((node) => renderHierarchyNode(node))}
+                    <Stack gap="xs">
+                      {hierarchyTree.map((node) => 
+                        renderHierarchyNode(node)
+                      )}
                     </Stack>
                   ) : (
-                    <Stack align="center" justify="center" h={400}>
-                      <ThemeIcon size={80} radius="xl" color="gray" variant="light">
-                        <IconBuilding size={40} />
+                    <Stack align="center" py={60}>
+                      <ThemeIcon size="xl" radius="xl" color="gray" variant="light">
+                        <IconBuilding size={24} />
                       </ThemeIcon>
-                      <Text c="dimmed" size="sm" ta="center">
-                        No organizations found
-                      </Text>
+                      <Text c="dimmed" size="sm">No organizations found</Text>
                     </Stack>
                   )}
-                </ScrollArea>
+                </Card.Section>
               </Card>
             </Grid.Col>
 
-            {/* Right Panel - Details */}
-            <Grid.Col span={{ base: 12, lg: 7 }}>
-              <Card withBorder shadow="sm" radius="md" h="100%">
-                <Card.Section withBorder p="lg" bg="gray.0">
-                  <Title order={4}>Organization Details</Title>
+            <Grid.Col span={{ base: 12, lg: 6 }}>
+              <Card withBorder shadow="sm" padding="lg" radius="md" style={{ position: 'sticky', top: 20 }}>
+                <Card.Section withBorder p="md">
+                  <Title order={3}>Organization Details</Title>
                 </Card.Section>
 
-                <ScrollArea h={600} p="lg">
+                <Card.Section p="md" style={{ maxHeight: 600, overflowY: 'auto' }}>
                   {renderOrganizationDetails()}
-                </ScrollArea>
+                </Card.Section>
               </Card>
             </Grid.Col>
           </Grid>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Container, LoadingOverlay, Tabs } from '@mantine/core';
-import { DealerNavigation } from '@/components/dealer/DealerNavigation';
+import { DealerLayout } from '@/components/layout/DealerLayout';
 import { ShipmentScheduleManager } from '@/components/dealer/ShipmentScheduleManager';
 import { ShipmentReschedulingManager } from '@/components/dealer/ShipmentReschedulingManager';
 import { useRouter } from 'next/navigation';
@@ -44,7 +44,7 @@ export default function DealerShipmentSchedulePage() {
   }
 
   return (
-    <DealerNavigation user={user} onLogout={handleLogout}>
+    <DealerLayout>
       <Container size="xl">
         <Tabs defaultValue="schedule">
           <Tabs.List>
@@ -65,6 +65,6 @@ export default function DealerShipmentSchedulePage() {
           </Tabs.Panel>
         </Tabs>
       </Container>
-    </DealerNavigation>
+    </DealerLayout>
   );
 }

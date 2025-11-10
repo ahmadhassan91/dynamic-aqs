@@ -400,10 +400,10 @@ export function ProductFavoritesManager({
             </ActionIcon>
           </Group>
           <Image
-            src={product.imageUrl}
+            src={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f8f9fa'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='%23868e96'%3E${encodeURIComponent(product.name.substring(0, 20))}%3C/text%3E%3C/svg%3E`}
             alt={product.name}
             height={180}
-            fallbackSrc="/images/placeholder-product.jpg"
+            fit="contain"
           />
         </Card.Section>
 
@@ -568,10 +568,10 @@ export function ProductFavoritesManager({
               <Grid.Col key={product.id} span={3}>
                 <Card withBorder p="xs">
                   <Image
-                    src={product.imageUrl}
+                    src={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23f8f9fa'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='10' fill='%23868e96'%3EProduct%3C/text%3E%3C/svg%3E`}
                     alt={product.name}
                     height={60}
-                    fallbackSrc="/images/placeholder-product.jpg"
+                    fit="contain"
                   />
                   <Text size="xs" mt="xs" lineClamp={2}>
                     {product.name}
