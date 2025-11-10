@@ -63,12 +63,14 @@ export default function AIInsightsPage() {
                 <Tabs.Tab 
                   value="predictions" 
                   leftSection={<IconBrain size={16} />}
+                  onClick={() => window.location.href = '/leads/ai-insights/predictions'}
                 >
                   Predictions
                 </Tabs.Tab>
                 <Tabs.Tab 
                   value="automation" 
                   leftSection={<IconRobot size={16} />}
+                  onClick={() => window.location.href = '/leads/ai-insights/automation'}
                 >
                   Automation
                 </Tabs.Tab>
@@ -76,14 +78,6 @@ export default function AIInsightsPage() {
 
               <Tabs.Panel value="dashboard" pt="xl">
                 <AIPredictiveInsightsDashboard />
-              </Tabs.Panel>
-
-              <Tabs.Panel value="predictions" pt="xl">
-                <Text c="dimmed">Detailed predictions coming soon...</Text>
-              </Tabs.Panel>
-
-              <Tabs.Panel value="automation" pt="xl">
-                <Text c="dimmed">Automation rules coming soon...</Text>
               </Tabs.Panel>
             </Tabs>
           </Stack>
