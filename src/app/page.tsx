@@ -32,32 +32,20 @@ import {
 export default function HomePage() {
   const features = [
     {
-      title: 'Digital Asset Management',
-      description: 'Complete asset library with workflow management, version control, and analytics',
-      icon: IconFiles,
-      color: 'blue',
-      links: [
-        { label: 'Asset Library', href: '/assets' },
-        { label: 'Asset Analytics', href: '/assets/analytics' },
-        { label: 'Asset Workflow', href: '/assets/workflow' },
-        { label: 'Asset Migration', href: '/assets/migration' }
-      ]
-    },
-    {
       title: 'Commercial Management',
-      description: 'Engineer contact management, opportunity tracking, and market analysis',
+      description: 'Commercial contact management (Reps, Engineers, Contractors, Architects, Owners), opportunity tracking, and market analysis',
       icon: IconBuildingStore,
       color: 'green',
       links: [
         { label: 'Commercial Dashboard', href: '/commercial' },
-        { label: 'Engineer Contacts', href: '/commercial/engineers' },
+        { label: 'Commercial Contacts', href: '/commercial/engineers' },
         { label: 'Opportunities', href: '/commercial/opportunities' },
-        { label: 'Market Analysis', href: '/commercial/market' }
+        { label: 'Organizations', href: '/commercial/organizations' }
       ]
     },
     {
-      title: 'Customer & Lead Management',
-      description: 'Customer relationship management, lead pipeline, and territory assignment',
+      title: 'Residential Management',
+      description: 'Customer relationship management, lead pipeline, territory assignment, and training coordination',
       icon: IconUsers,
       color: 'violet',
       links: [
@@ -65,6 +53,18 @@ export default function HomePage() {
         { label: 'Customer Activities', href: '/customers/activities' },
         { label: 'Lead Pipeline', href: '/leads' },
         { label: 'Territory Management', href: '/customers/territories' }
+      ]
+    },
+    {
+      title: 'Reports & Analytics',
+      description: 'Executive dashboards, sales reports, and custom analytics for both divisions',
+      icon: IconChartBar,
+      color: 'red',
+      links: [
+        { label: 'Executive Dashboard', href: '/reports/executive' },
+        { label: 'Sales Reports', href: '/reports' },
+        { label: 'Custom Report Builder', href: '/reports/custom' },
+        { label: 'Commercial Reports', href: '/commercial/reports' }
       ]
     },
     {
@@ -101,17 +101,6 @@ export default function HomePage() {
       ]
     },
     {
-      title: 'Reports & Analytics',
-      description: 'Executive dashboards, sales reports, and custom analytics',
-      icon: IconChartBar,
-      color: 'red',
-      links: [
-        { label: 'Executive Dashboard', href: '/reports/executive' },
-        { label: 'Sales Reports', href: '/reports' },
-        { label: 'Custom Reports', href: '/reports/custom' }
-      ]
-    },
-    {
       title: 'Administration',
       description: 'User management, system health monitoring, and integrations',
       icon: IconShield,
@@ -121,6 +110,18 @@ export default function HomePage() {
         { label: 'User Management', href: '/admin/users' },
         { label: 'System Health', href: '/admin/health' },
         { label: 'Integrations', href: '/admin/integrations' }
+      ]
+    },
+    {
+      title: 'Digital Asset Management',
+      description: 'Complete asset library with workflow management, version control, and analytics',
+      icon: IconFiles,
+      color: 'blue',
+      links: [
+        { label: 'Asset Library', href: '/assets' },
+        { label: 'Asset Analytics', href: '/assets/analytics' },
+        { label: 'Asset Workflow', href: '/assets/workflow' },
+        { label: 'Asset Migration', href: '/assets/migration' }
       ]
     }
   ];

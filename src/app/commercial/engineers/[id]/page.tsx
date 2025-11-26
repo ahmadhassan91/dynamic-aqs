@@ -34,6 +34,19 @@ const mockEngineerDetail = {
   nextFollowUp: '2024-02-01',
   marketSegments: ['Healthcare', 'Education'],
   createdAt: '2023-06-15',
+  // Organizational Assignments
+  territoryManager: 'Sarah Wilson',
+  territoryManagerId: 'tm-1',
+  repFirm: 'Acme Representatives - San Francisco Office',
+  repFirmId: 'rep-sf-001',
+  repFirmParent: 'Acme Representatives (National)',
+  architectFirm: 'Smith & Associates Architecture',
+  architectFirmId: 'arch-001',
+  engineeringFirm: 'MEP Engineering Solutions - West Coast Division',
+  engineeringFirmId: 'eng-wc-001',
+  engineeringFirmParent: 'MEP Engineering Solutions (Global)',
+  contractor: 'BuildRight Construction Company',
+  contractorId: 'con-001',
   ratingHistory: [
     { date: '2023-06-15', rating: 3, reason: 'Initial contact - neutral stance', changedBy: 'Sarah Wilson' },
     { date: '2023-09-20', rating: 4, reason: 'Positive meeting at lunch & learn', changedBy: 'Mike Johnson' },
@@ -352,6 +365,88 @@ export default function EngineerDetailPage() {
                         Log Interaction
                       </Button>
                     </Stack>
+                  </Card>
+                </Grid.Col>
+
+                {/* Organizational Assignments */}
+                <Grid.Col span={{ base: 12 }}>
+                  <Card withBorder padding="lg" className="commercial-card-static">
+                    <Group justify="space-between" mb="md">
+                      <Title order={3}>Organizational Assignments</Title>
+                      <Button variant="light" size="sm" leftSection={<IconEdit size={16} />}>
+                        Edit Assignments
+                      </Button>
+                    </Group>
+                    <Grid>
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="md">
+                          <div>
+                            <Text size="sm" c="dimmed" mb={4}>Territory Manager</Text>
+                            <Group gap="xs">
+                              <IconUser size={16} />
+                              <Text fw={500}>{engineer.territoryManager}</Text>
+                            </Group>
+                          </div>
+                          <Divider />
+                          <div>
+                            <Text size="sm" c="dimmed" mb={4}>Manufacturer Rep Firm</Text>
+                            <Stack gap="xs">
+                              <Group gap="xs">
+                                <IconBuilding size={16} />
+                                <Text fw={500}>{engineer.repFirm}</Text>
+                              </Group>
+                              <Group gap="xs" pl="xl">
+                                <Text size="sm" c="dimmed">↳ Parent Organization:</Text>
+                                <Badge variant="light" color="blue">{engineer.repFirmParent}</Badge>
+                              </Group>
+                            </Stack>
+                          </div>
+                          <Divider />
+                          <div>
+                            <Text size="sm" c="dimmed" mb={4}>Engineering Firm (MEP)</Text>
+                            <Stack gap="xs">
+                              <Group gap="xs">
+                                <IconBuilding size={16} />
+                                <Text fw={500}>{engineer.engineeringFirm}</Text>
+                              </Group>
+                              <Group gap="xs" pl="xl">
+                                <Text size="sm" c="dimmed">↳ Parent Organization:</Text>
+                                <Badge variant="light" color="green">{engineer.engineeringFirmParent}</Badge>
+                              </Group>
+                            </Stack>
+                          </div>
+                        </Stack>
+                      </Grid.Col>
+                      <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack gap="md">
+                          <div>
+                            <Text size="sm" c="dimmed" mb={4}>Architect Firm</Text>
+                            <Group gap="xs">
+                              <IconBuilding size={16} />
+                              <Text fw={500}>{engineer.architectFirm}</Text>
+                            </Group>
+                          </div>
+                          <Divider />
+                          <div>
+                            <Text size="sm" c="dimmed" mb={4}>Contractor</Text>
+                            <Group gap="xs">
+                              <IconBuilding size={16} />
+                              <Text fw={500}>{engineer.contractor}</Text>
+                            </Group>
+                          </div>
+                          <Divider />
+                          <div>
+                            <Paper p="md" withBorder style={{ backgroundColor: '#f8f9fa' }}>
+                              <Text size="sm" fw={500} mb="xs">Parent-Child Relationships</Text>
+                              <Text size="xs" c="dimmed">
+                                This contact can be reported on at both the division and parent organization level. 
+                                For example, all sales to {engineer.repFirm} roll up to {engineer.repFirmParent} for national reporting.
+                              </Text>
+                            </Paper>
+                          </div>
+                        </Stack>
+                      </Grid.Col>
+                    </Grid>
                   </Card>
                 </Grid.Col>
               </Grid>
