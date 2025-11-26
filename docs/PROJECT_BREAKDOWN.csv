@@ -1,0 +1,304 @@
+Module,Epic,Story,Task,Dependencies,Story_Points,Sprint,Priority,Notes
+Core Infrastructure,System Foundation,Project Setup,Initialize Next.js 14 with TypeScript,None,3,Sprint 1,P0,App Router + Mantine UI
+Core Infrastructure,System Foundation,Project Setup,Configure PostgreSQL and Prisma ORM,Initialize project,5,Sprint 1,P0,Database schema design
+Core Infrastructure,System Foundation,Project Setup,Setup NextAuth authentication,Configure database,5,Sprint 1,P0,User roles and permissions
+Core Infrastructure,System Foundation,Project Setup,Configure AWS/Azure hosting,None,3,Sprint 1,P0,Deployment infrastructure
+Core Infrastructure,System Foundation,Environment Setup,Setup development environment,Initialize project,2,Sprint 1,P0,Docker if needed
+Core Infrastructure,System Foundation,Environment Setup,Configure CI/CD pipeline,Setup hosting,3,Sprint 1,P0,GitHub Actions
+Core Infrastructure,System Foundation,Environment Setup,Setup monitoring and logging,Configure CI/CD,3,Sprint 2,P1,Application insights
+
+Residential - Customer,Customer Entity,Customer CRUD,Create customer data model,Configure database,5,Sprint 2,P0,Territory RM affinity group fields
+Residential - Customer,Customer Entity,Customer CRUD,Build customer list view,Create model,5,Sprint 2,P0,Search pagination filters
+Residential - Customer,Customer Entity,Customer CRUD,Build customer detail page,Build list,8,Sprint 2,P0,All related data tabs
+Residential - Customer,Customer Entity,Customer CRUD,Create add/edit forms,Create model,5,Sprint 2,P0,Form validation
+Residential - Customer,Customer Entity,Customer Search,Implement search functionality,Build list,3,Sprint 2,P1,Quick and advanced filters
+
+Residential - Territory,Territory Management,Territory Assignment,Create territory data model,Configure database,3,Sprint 2,P0,State/county based
+Residential - Territory,Territory Management,Territory Assignment,Build assignment interface,Create model,5,Sprint 3,P0,Drag-drop assignment
+Residential - Territory,Territory Management,Territory Visualization,Implement territory map,Build interface,8,Sprint 3,P1,Interactive map boundaries
+Residential - Territory,Territory Management,Territory Restructuring,Build restructuring tools,Implement map,5,Sprint 3,P1,Split merge territories
+Residential - Territory,Territory Management,Territory Reporting,Territory performance dashboard,Build interface,8,Sprint 3,P1,Revenue by territory
+
+Residential - Groups,Affinity Groups,Group Structure,Create affinity group model,Configure database,5,Sprint 2,P0,Parent-child relationships
+Residential - Groups,Ownership Groups,Group Structure,Create ownership group model,Configure database,5,Sprint 2,P0,Parent-child relationships
+Residential - Groups,Group Management,Group Interface,Build group management UI,Create models,8,Sprint 3,P0,Add edit delete groups
+Residential - Groups,Group Management,Group Visualization,Implement hierarchy visualization,Build UI,8,Sprint 3,P1,Tree or org chart view
+Residential - Groups,Roll-up Reporting,Calculations,Implement roll-up calculations,Create models,8,Sprint 4,P0,Aggregate child to parent
+Residential - Groups,Roll-up Reporting,Reports,Build group performance reports,Implement calculations,5,Sprint 4,P1,Sales activities by group
+
+Residential - Contacts,Contact Management,Contact CRUD,Create contact data model,Configure database,3,Sprint 2,P0,Link to customers
+Residential - Contacts,Contact Management,Contact Views,Build list and detail views,Create model,5,Sprint 3,P1,Contact cards
+Residential - Contacts,Contact Management,Interaction Logging,Implement interaction logging,Build views,5,Sprint 3,P1,Calls emails meetings
+
+Residential - Activities,Activity Timeline,Activity Model,Create activity data model,Configure database,5,Sprint 3,P0,Multiple activity types
+Residential - Activities,Activity Timeline,Timeline View,Build activity timeline,Create model,8,Sprint 3,P0,Chronological with filters
+Residential - Activities,Activity Timeline,Quick Add,Implement activity quick-add,Build timeline,3,Sprint 3,P1,Modal or sidebar
+
+Residential - Leads,Lead Pipeline,Lead Management,Create lead data model,Configure database,5,Sprint 4,P0,Sources and stages
+Residential - Leads,Lead Pipeline,Pipeline Board,Build Kanban board,Create model,8,Sprint 4,P0,Drag-drop between stages
+Residential - Leads,Lead Pipeline,Lead Forms,Build detail and edit forms,Create model,5,Sprint 4,P0,All lead fields
+Residential - Leads,Lead Scoring,AI Scoring,Implement AI lead scoring,Create model,13,Sprint 5,P1,ML model integration
+Residential - Leads,Lead Analytics,Dashboard,Build analytics dashboard,Build board,8,Sprint 5,P1,Conversion rates trends
+
+Residential - Leads,Lead Conversion,Workflow,Build conversion workflow,Build forms,8,Sprint 4,P0,Convert to customer
+Residential - Leads,Lead Conversion,Auto Creation,Auto customer creation,Build workflow,5,Sprint 4,P0,Populate from lead data
+
+Residential - CIS,CIS Automation,Email Parser,Design CIS email parser,Configure database,13,Sprint 5,P0,Extract CIS data
+Residential - CIS,CIS Automation,Auto Population,Build auto-population service,Design parser,13,Sprint 5,P0,Create customer from CIS
+Residential - CIS,CIS Automation,Review UI,CIS review and approval UI,Build service,5,Sprint 5,P0,Confirm before save
+Residential - CIS,CIS Automation,Template Mgmt,Build template management,Design parser,5,Sprint 5,P1,Manage CIS forms
+
+Residential - Onboarding,Onboarding Workflow,Workflow Engine,Create workflow engine,Configure database,13,Sprint 6,P0,Multi-step system
+Residential - Onboarding,Onboarding Workflow,Task Checklist,Build task checklist,Create engine,8,Sprint 6,P0,Progressive checklist UI
+Residential - Onboarding,Onboarding Workflow,Notifications,Onboarding notifications,Create engine,5,Sprint 6,P0,Email alerts for steps
+Residential - Onboarding,Onboarding Workflow,Dashboard,Build onboarding dashboard,Build checklist,5,Sprint 6,P1,View all onboarding
+
+Residential - Training,Training Scheduling,Calendar,Create training data model,Configure database,5,Sprint 7,P0,Types dates locations
+Residential - Training,Training Scheduling,Calendar View,Build calendar view,Create model,8,Sprint 7,P0,Month week day views
+Residential - Training,Training Scheduling,Scheduling Form,Training scheduling form,Create model,8,Sprint 7,P0,Select customer trainer date
+Residential - Training,Training Scheduling,Availability,Trainer availability mgmt,Create model,5,Sprint 7,P0,Check conflicts
+Residential - Training,Training Scheduling,Outlook Sync,Integrate Outlook calendar,Build calendar,8,Sprint 7,P1,Two-way sync
+
+Residential - Training,Training Tracking,Completion,Training completion tracking,Create model,5,Sprint 7,P0,Mark complete with notes
+Residential - Training,Training Tracking,Completion Form,Build completion form,Implement tracking,5,Sprint 7,P0,Quick complete mobile
+Residential - Training,Training Tracking,Reports,Build training reports,Implement tracking,8,Sprint 8,P0,By TM RM customer period
+Residential - Training,Training Tracking,Analytics,Training analytics dashboard,Build reports,8,Sprint 8,P1,Trends and metrics
+
+Residential - Training,Certification,Cert Model,Create certification model,Configure database,5,Sprint 8,P1,Types and expiration
+Residential - Training,Certification,Cert Interface,Build cert tracking interface,Create model,8,Sprint 8,P1,Issue and track certs
+Residential - Training,Certification,Alerts,Cert expiration alerts,Create model,3,Sprint 8,P1,Notify before expiry
+
+Residential - Training,Trainer Management,Trainer Model,Create trainer data model,Configure database,3,Sprint 7,P1,Info and territories
+Residential - Training,Trainer Management,Trainer Views,Build list and profile views,Create model,5,Sprint 8,P1,Trainer details
+Residential - Training,Trainer Management,Performance,Trainer performance dashboard,Build views,8,Sprint 8,P1,Trainings completed ratings
+
+Residential - Reporting,Report Builder,Report Engine,Design report architecture,Configure database,13,Sprint 9,P0,Dynamic query builder
+Residential - Reporting,Report Builder,Parameter UI,Build parameter selection UI,Design architecture,8,Sprint 9,P0,Filters and grouping
+Residential - Reporting,Report Builder,Execution,Report execution engine,Design architecture,13,Sprint 9,P0,Generate from params
+Residential - Reporting,Report Builder,Visualization,Build visualization components,Implement engine,8,Sprint 9,P0,Tables charts graphs
+Residential - Reporting,Report Builder,Export,Report export functionality,Implement engine,5,Sprint 9,P0,PDF Excel CSV
+Residential - Reporting,Report Builder,Scheduling,Report scheduling system,Implement engine,8,Sprint 10,P1,Automated email
+
+Residential - Reporting,Pre-Built Reports,Sales Reports,Build TM sales report,Implement engine,5,Sprint 9,P0,Sales by TM period
+Residential - Reporting,Pre-Built Reports,Sales Reports,Build RM sales report,Implement engine,5,Sprint 9,P0,Sales by RM period
+Residential - Reporting,Pre-Built Reports,Sales Reports,Affinity group sales report,Implement rollup,5,Sprint 9,P0,With roll-up
+Residential - Reporting,Pre-Built Reports,Sales Reports,Ownership group sales report,Implement rollup,5,Sprint 9,P0,With roll-up
+Residential - Reporting,Pre-Built Reports,Sales Reports,YoY comparison report,Build sales reports,5,Sprint 10,P1,Revenue comparison
+
+Residential - Reporting,Pre-Built Reports,Activity Reports,Training completion report,Build training reports,3,Sprint 8,P0,By multiple dimensions
+Residential - Reporting,Pre-Built Reports,Activity Reports,Customer activity report,Build timeline,3,Sprint 9,P1,All activities
+
+Residential - Dashboards,Role Dashboards,TM Dashboard,Build TM dashboard,Build reports,8,Sprint 10,P0,TM-specific KPIs
+Residential - Dashboards,Role Dashboards,RM Dashboard,Build RM dashboard,Build reports,8,Sprint 10,P0,RM-specific KPIs
+Residential - Dashboards,Role Dashboards,VP Dashboard,Build VP dashboard,Build reports,8,Sprint 10,P0,Executive KPIs
+Residential - Dashboards,Role Dashboards,BD Dashboard,Build BD dashboard,Build lead analytics,8,Sprint 10,P1,Lead onboarding metrics
+
+Residential - Dashboards,Dashboard Customization,Widget System,Dashboard widget system,Build dashboards,8,Sprint 11,P1,Drag-drop widgets
+Residential - Dashboards,Dashboard Customization,Personalization,Build personalization,Implement widgets,5,Sprint 11,P1,Save user preferences
+
+Integration - Acumatica,Acumatica Integration,API Setup,Research Acumatica API,None,5,Sprint 4,P0,API documentation
+Integration - Acumatica,Acumatica Integration,API Setup,Setup API authentication,Research API,5,Sprint 4,P0,OAuth or API keys
+Integration - Acumatica,Acumatica Integration,API Setup,Build integration service,Setup auth,8,Sprint 4,P0,Abstract API calls
+
+Integration - Acumatica,Customer Sync,Customer Data,Customer sync Acu to CRM,Build service,13,Sprint 5,P0,One-way sync
+Integration - Acumatica,Customer Sync,Monitoring,Build sync monitoring,Implement sync,5,Sprint 5,P1,Status and errors
+
+Integration - Acumatica,Order Sync,Order Data,Order sync Acu to CRM,Build service,13,Sprint 6,P0,Read-only orders
+Integration - Acumatica,Order Sync,Display,Order display in customer,Implement sync,5,Sprint 6,P0,Order history timeline
+
+Integration - Acumatica,Financial Sync,Financial Data,Financial sync Acu to CRM,Build service,13,Sprint 6,P0,Revenue payment data
+Integration - Acumatica,Financial Sync,Reports,Financial reports with Acu data,Implement sync,8,Sprint 7,P0,Accurate sales reports
+
+Integration - Acumatica,Sync Monitoring,Health Check,Integration health monitoring,Build service,5,Sprint 7,P1,Error tracking alerts
+Integration - Acumatica,Sync Monitoring,Error Resolution,Error resolution UI,Build monitoring,5,Sprint 7,P1,Retry failed syncs
+Integration - Acumatica,Sync Monitoring,Scheduling,Scheduled sync jobs,Build service,5,Sprint 6,P0,Hourly or realtime
+
+Integration - Email,Email Integration,Outlook Setup,Setup Microsoft Graph API,Configure database,5,Sprint 8,P1,Access to Outlook
+Integration - Email,Email Integration,Email Tracking,Build email tracking service,Setup API,8,Sprint 8,P1,Log emails to CRM
+Integration - Email,Email Integration,Outlook Add-in,Outlook add-in for logging,Build tracking,13,Sprint 9,P2,Quick log from Outlook
+
+Integration - Email,Notifications,Templates,Design email templates,Configure database,5,Sprint 6,P0,HTML templates
+Integration - Email,Notifications,Email Service,Build notification service,Design templates,8,Sprint 6,P0,SendGrid or SMTP
+Integration - Email,Notifications,Preferences,Notification preferences,Build service,5,Sprint 6,P1,User opt-in out
+
+Integration - HubSpot,HubSpot Integration,API Setup,Setup HubSpot API,Configure database,5,Sprint 4,P1,API authentication
+Integration - HubSpot,HubSpot Integration,Lead Import,Build lead import service,Setup API,8,Sprint 4,P1,Import leads to CRM
+Integration - HubSpot,HubSpot Integration,Field Mapping,Build mapping config,Build import,5,Sprint 4,P1,Map fields
+Integration - HubSpot,HubSpot Integration,Scheduled Sync,Scheduled lead sync,Build import,5,Sprint 5,P1,Hourly sync
+
+Integration - MapMyCustomers,MMC Integration,API Research,Research MMC API,None,3,Sprint 7,P1,API documentation
+Integration - MapMyCustomers,MMC Integration,API Service,Build MMC integration,Research API,8,Sprint 7,P1,API wrapper
+Integration - MapMyCustomers,MMC Integration,Activity Sync,Sync check-ins to activities,Build service,8,Sprint 7,P1,Import MMC activities
+Integration - MapMyCustomers,MMC Integration,Training Sync,Sync training completions,Build service,8,Sprint 8,P1,Training checkbox sync
+
+Dealer Portal,Dealer Account,Authentication,Dealer user registration,Setup auth,5,Sprint 11,P1,Separate from internal
+Dealer Portal,Dealer Account,Login,Build dealer login interface,Implement registration,3,Sprint 11,P1,Portal entry
+Dealer Portal,Dealer Account,Profile,Build account overview,Build login,5,Sprint 11,P1,Account info stats
+
+Dealer Portal,Product Catalog,Catalog View,Build catalog view,Configure database,8,Sprint 12,P1,Grid or list view
+Dealer Portal,Product Catalog,Search,Product search and filters,Build catalog,5,Sprint 12,P1,Advanced filtering
+Dealer Portal,Product Catalog,Product Details,Build product detail pages,Build catalog,5,Sprint 12,P1,Specs and pricing
+Dealer Portal,Product Catalog,Comparison,Product comparison tool,Build details,5,Sprint 12,P2,Side-by-side
+Dealer Portal,Product Catalog,Saved Searches,Saved search functionality,Build search,3,Sprint 12,P2,Save criteria
+Dealer Portal,Product Catalog,Favorites,Favorite products,Build catalog,3,Sprint 12,P2,Quick access
+
+Dealer Portal,Order Management,Shopping Cart,Build shopping cart,Build catalog,8,Sprint 13,P1,Add to cart checkout
+Dealer Portal,Order Management,Repeat Orders,Repeat order feature,Build cart,3,Sprint 13,P1,Reorder from history
+Dealer Portal,Order Management,Order History,Build order history view,Implement sync,5,Sprint 13,P1,List all orders
+Dealer Portal,Order Management,Order Tracking,Order detail with tracking,Build history,5,Sprint 13,P1,Real-time tracking
+
+Dealer Portal,Account Management,Billing,Build billing statement view,Build profile,5,Sprint 14,P2,Account statements
+Dealer Portal,Account Management,Payments,Build payment history view,Build profile,3,Sprint 14,P2,Payment records
+Dealer Portal,Account Management,Credit,Display credit utilization,Build profile,3,Sprint 14,P2,Credit widget
+
+Commercial CRM,Opportunity Mgmt,Opportunity Pipeline,Create opportunity model,Configure database,8,Sprint 15,P0,Job site stakeholders
+Commercial CRM,Opportunity Mgmt,Pipeline Board,Build Kanban pipeline,Create model,13,Sprint 15,P0,Drag phases
+Commercial CRM,Opportunity Mgmt,Detail Page,Build opportunity detail,Create model,8,Sprint 15,P0,All opp data
+Commercial CRM,Opportunity Mgmt,Workflow,Opportunity workflow automation,Create model,8,Sprint 16,P0,Auto-advance phases
+
+Commercial CRM,Opportunity Mgmt,Stakeholders,Stakeholder linking system,Create model,8,Sprint 15,P0,Multiple types
+Commercial CRM,Opportunity Mgmt,Stakeholder UI,Stakeholder selection UI,Create linking,5,Sprint 15,P0,Search assign
+
+Commercial CRM,Opportunity Mgmt,Quote Integration,Integrate pricing tool,Research tool,13,Sprint 16,P0,Read from pricing DB
+Commercial CRM,Opportunity Mgmt,Quote Import,Quote import from pricing,Integrate tool,8,Sprint 16,P0,Auto-create quotes
+Commercial CRM,Opportunity Mgmt,Quote Display,Quote display in opp,Build import,5,Sprint 16,P0,Quote history
+
+Commercial CRM,Opportunity Mgmt,Analytics,Pipeline analytics dashboard,Build board,8,Sprint 17,P1,Conversion velocity
+Commercial CRM,Opportunity Mgmt,Forecasting,Pipeline forecasting,Build analytics,8,Sprint 17,P2,Predictive analytics
+
+Commercial CRM,Engineer Mgmt,Engineer Database,Create engineer model,Configure database,5,Sprint 15,P0,Rating system
+Commercial CRM,Engineer Mgmt,Engineer List,Build engineer list view,Create model,8,Sprint 15,P0,Filterable grid
+Commercial CRM,Engineer Mgmt,Engineer Detail,Build engineer detail page,Create model,8,Sprint 15,P0,Full profile history
+
+Commercial CRM,Engineer Mgmt,Rating System,Implement 1-5 rating,Create model,5,Sprint 15,P0,Track changes
+Commercial CRM,Engineer Mgmt,Rating Interface,Rating change interface,Implement rating,5,Sprint 15,P0,Update with reason
+Commercial CRM,Engineer Mgmt,Rating History,Rating history timeline,Implement rating,5,Sprint 16,P1,Visualize changes
+Commercial CRM,Engineer Mgmt,Rating Analytics,Rating analytics dashboard,Implement rating,8,Sprint 17,P1,Distribution trends
+Commercial CRM,Engineer Mgmt,Bulk Rating,Bulk rating update tool,Implement rating,5,Sprint 16,P1,Update multiple
+
+Commercial CRM,Engineer Mgmt,Interaction Logging,Engineer interaction logging,Create model,5,Sprint 16,P0,Log calls meetings
+Commercial CRM,Engineer Mgmt,Voice Notes,Voice-to-text notes,Build logging,8,Sprint 16,P1,Mobile voice capture
+
+Commercial CRM,Organization Mgmt,Org Hierarchy,Create organization model,Configure database,8,Sprint 15,P0,Parent-child
+Commercial CRM,Organization Mgmt,Org List,Build organization list,Create model,5,Sprint 15,P0,Hierarchical view
+Commercial CRM,Organization Mgmt,Org Detail,Build org detail page,Create model,8,Sprint 15,P0,Org info children
+Commercial CRM,Organization Mgmt,Org Chart,Org chart visualization,Create model,13,Sprint 16,P1,Interactive chart
+Commercial CRM,Organization Mgmt,Validation,Organization validation,Create model,5,Sprint 16,P1,Prevent circular refs
+
+Commercial CRM,Organization Mgmt,Org Types,Organization type system,Create model,3,Sprint 15,P0,Rep Engineering Arch
+Commercial CRM,Organization Mgmt,Type Views,Type-specific views,Implement types,5,Sprint 16,P1,Different UI per type
+
+Commercial CRM,Organization Mgmt,Roll-up,Organization roll-up,Create model,8,Sprint 16,P0,Aggregate child data
+Commercial CRM,Organization Mgmt,Org Reports,Org performance reports,Implement rollup,8,Sprint 17,P1,Performance by org
+
+Commercial CRM,Rep Management,Rep Model,Create rep data model,Configure database,5,Sprint 15,P0,Quota territories
+Commercial CRM,Rep Management,Rep List,Build rep list view,Create model,5,Sprint 15,P0,Filterable list
+Commercial CRM,Rep Management,Rep Detail,Build rep detail page,Create model,8,Sprint 15,P0,Full rep profile
+
+Commercial CRM,Rep Management,Territory Assignment,County territory assignment,Create model,8,Sprint 16,P0,Exclusive mapping
+Commercial CRM,Rep Management,Territory UI,Territory assignment UI,Implement assignment,8,Sprint 16,P0,Assign counties
+
+Commercial CRM,Rep Management,Quota Tracking,Quota tracking system,Create model,8,Sprint 16,P0,Annual quarterly
+Commercial CRM,Rep Management,Quota Dashboard,Build quota dashboard,Implement tracking,8,Sprint 16,P0,Quota vs actual
+
+Commercial CRM,Rep Management,Performance Metrics,Rep performance metrics,Create model,8,Sprint 17,P0,Quotes POs conversion
+Commercial CRM,Rep Management,Perf Dashboard,Rep performance dashboard,Calculate metrics,8,Sprint 17,P0,Rep KPIs trends
+Commercial CRM,Rep Management,Status Report,Rep status report,Calculate metrics,8,Sprint 17,P1,Printable email
+
+Commercial CRM,Commercial Reporting,Sales Reports,Opp by phase report,Build board,5,Sprint 17,P0,Opps in phases
+Commercial CRM,Commercial Reporting,Sales Reports,Revenue by segment report,Implement sync,5,Sprint 17,P0,Market segment
+Commercial CRM,Commercial Reporting,Sales Reports,RSM performance report,Calculate metrics,5,Sprint 17,P0,Performance by RSM
+Commercial CRM,Commercial Reporting,Sales Reports,YoY commercial report,Implement sync,5,Sprint 18,P1,YoY comparison
+
+Commercial CRM,Commercial Reporting,Contact Reports,Engineer rating report,Implement rating,3,Sprint 17,P1,Engineers by rating
+Commercial CRM,Commercial Reporting,Contact Reports,Contact interaction report,Build logging,3,Sprint 17,P1,Interaction frequency
+
+Commercial CRM,Commercial Dashboards,Territory RSM,Build Territory RSM dashboard,Build reports,8,Sprint 18,P0,Territory KPIs
+Commercial CRM,Commercial Dashboards,Engineering RSM,Build Engineering RSM dashboard,Build reports,8,Sprint 18,P0,Engineering KPIs
+Commercial CRM,Commercial Dashboards,Commercial VP,Build Commercial VP dashboard,Build reports,8,Sprint 18,P0,Executive commercial
+
+Notifications,Notification System,Notification Engine,Design notification architecture,Configure database,8,Sprint 6,P0,Event-driven
+Notifications,Notification System,Notification Service,Build notification service,Design architecture,13,Sprint 6,P0,Create send notifications
+Notifications,Notification System,Preferences,Notification preferences,Build service,5,Sprint 6,P1,User settings
+
+Notifications,Notification UI,Notification Center,Build notification center UI,Build service,8,Sprint 6,P0,In-app list
+Notifications,Notification UI,Badges,Build notification badges,Build center,3,Sprint 6,P0,Unread counts
+Notifications,Notification UI,Settings,Notification settings page,Implement prefs,5,Sprint 6,P1,Manage prefs
+
+Notifications,Residential Notif,Order Notifications,New order notifications,Build service,3,Sprint 6,P0,Notify TM RM
+Notifications,Residential Notif,Order Notifications,Order shipped notifications,Build service,3,Sprint 6,P0,With tracking
+Notifications,Residential Notif,CIS Notifications,CIS received notifications,Build parser,3,Sprint 5,P0,On submission
+Notifications,Residential Notif,Training Notif,Training scheduled notifications,Build calendar,3,Sprint 7,P0,Customer trainer
+Notifications,Residential Notif,Training Notif,Training reminder notifications,Build calendar,3,Sprint 7,P1,Day before
+Notifications,Residential Notif,Onboarding Notif,Onboarding step notifications,Create engine,3,Sprint 6,P0,On each step
+
+Notifications,Commercial Notif,Opp Notifications,New opp notifications,Create model,3,Sprint 15,P0,Notify RSMs
+Notifications,Commercial Notif,Quote Notif,Quote submitted notifications,Build import,3,Sprint 16,P0,Notify RSMs
+Notifications,Commercial Notif,PO Notifications,PO received notifications,Implement sync,3,Sprint 16,P0,With job PO#
+Notifications,Commercial Notif,Ship Notif,ESD notifications,Implement sync,3,Sprint 16,P0,Notify ship date
+Notifications,Commercial Notif,Ship Notif,Shipment completed notifications,Implement sync,3,Sprint 16,P0,With tracking
+Notifications,Commercial Notif,Follow-up,Opp follow-up reminders,Create model,5,Sprint 17,P1,6mo 1yr 3yr
+
+Mobile App,Mobile Foundation,React Native Setup,Initialize React Native project,None,5,Sprint 11,P1,iOS Android
+Mobile App,Mobile Foundation,Navigation,Setup React Navigation,Initialize RN,3,Sprint 11,P1,Stack tab navigation
+Mobile App,Mobile Foundation,Authentication,Mobile authentication,Setup navigation,5,Sprint 11,P1,Secure token storage
+Mobile App,Mobile Foundation,API Client,Build mobile API client,Setup auth,5,Sprint 11,P1,REST client
+
+Mobile App,Residential Mobile,TM Dashboard,Build TM mobile dashboard,Build API client,8,Sprint 12,P1,Key metrics
+Mobile App,Residential Mobile,Customer List,Build customer list mobile,Build dashboard,5,Sprint 12,P1,Search filter
+Mobile App,Residential Mobile,Activity Logging,Mobile activity logging,Build list,8,Sprint 12,P1,Quick entry
+Mobile App,Residential Mobile,Training,Mobile training completion,Build activity,5,Sprint 13,P1,Mark complete
+Mobile App,Residential Mobile,Voice Notes,Voice-to-text notes,Build activity,8,Sprint 13,P1,Speech to text
+
+Mobile App,Commercial Mobile,RSM Dashboard,Build RSM mobile dashboard,Build API client,8,Sprint 14,P2,Key metrics
+Mobile App,Commercial Mobile,Engineer List,Build engineer list mobile,Build dashboard,5,Sprint 14,P2,Quick access
+Mobile App,Commercial Mobile,Interaction Log,Mobile interaction logging,Build list,8,Sprint 14,P2,Voice notes
+Mobile App,Commercial Mobile,Rating Update,Mobile rating update,Build interaction,5,Sprint 14,P2,Quick rating change
+
+Mobile App,Map Integration,Map View,Build map view of customers,Build customer list,13,Sprint 15,P2,MapMyCustomers alternative
+Mobile App,Map Integration,Route Planning,Route planning feature,Build map,8,Sprint 15,P2,Optimize routes
+Mobile App,Map Integration,Check-in,Customer check-in feature,Build map,5,Sprint 15,P2,GPS verification
+
+Admin,User Management,User CRUD,Create user data model,Configure database,5,Sprint 2,P0,Roles permissions
+Admin,User Management,User Interface,Build user management UI,Create model,8,Sprint 2,P0,List add edit delete
+Admin,User Management,Role Assignment,Role assignment system,Create model,5,Sprint 2,P0,Assign roles perms
+Admin,User Management,Bulk Operations,Bulk user operations,Build UI,5,Sprint 3,P1,Import export activate
+
+Admin,System Health,Integration Monitor,Integration health monitoring,Build integrations,8,Sprint 10,P1,Status checks
+Admin,System Health,Dashboard,System health dashboard,Build monitor,8,Sprint 10,P1,All systems view
+Admin,System Health,Alerts,System alerts and warnings,Build monitor,5,Sprint 10,P1,Email alerts
+
+Admin,Data Quality,Duplicate Detection,Duplicate record detection,Configure database,8,Sprint 11,P2,Fuzzy matching
+Admin,Data Quality,Data Cleanup,Data cleanup tools,Build detection,8,Sprint 11,P2,Merge deduplicate
+Admin,Data Quality,Validation Rules,Data validation rules,Configure database,5,Sprint 11,P2,Enforce quality
+
+Admin,Audit Trail,Activity Logging,User activity logging,Configure database,5,Sprint 9,P1,Track all actions
+Admin,Audit Trail,Audit Reports,Build audit reports,Implement logging,5,Sprint 9,P1,Security compliance
+Admin,Audit Trail,Change History,Record change history,Implement logging,5,Sprint 9,P1,Who changed what
+
+Testing,Unit Testing,Backend Tests,Write backend unit tests,Build features,21,Sprint 16-18,P0,80%+ coverage
+Testing,Unit Testing,Frontend Tests,Write frontend unit tests,Build features,21,Sprint 16-18,P0,Component testing
+Testing,Integration Testing,API Tests,API integration tests,Build APIs,13,Sprint 17-18,P0,End-to-end API
+Testing,Integration Testing,Integration Tests,System integration tests,Build integrations,13,Sprint 17-18,P0,Test all integrations
+Testing,E2E Testing,User Flows,E2E user flow tests,Build features,21,Sprint 18,P0,Critical paths
+Testing,Performance Testing,Load Testing,Load and performance testing,Build features,13,Sprint 18,P1,Scale testing
+
+Documentation,User Documentation,User Guides,Write user guides,Build features,13,Sprint 18,P0,Role-based guides
+Documentation,User Documentation,Training Materials,Create training materials,Build features,8,Sprint 18,P0,Videos tutorials
+Documentation,Technical Documentation,API Documentation,Write API documentation,Build APIs,8,Sprint 18,P1,Complete API docs
+Documentation,Technical Documentation,Architecture Docs,System architecture docs,Build features,5,Sprint 18,P1,Technical specs
+
+Deployment,Production Setup,Production Environment,Setup production environment,None,8,Sprint 18,P0,AWS or Azure
+Deployment,Production Setup,Database Migration,Production database migration,Setup environment,8,Sprint 18,P0,Data migration
+Deployment,Production Setup,Security Hardening,Security hardening,Setup environment,5,Sprint 18,P0,SSL WAF etc
+Deployment,Production Setup,Monitoring,Production monitoring setup,Setup environment,5,Sprint 18,P0,APM logging
+
+Training,User Training,TM Training,Territory Manager training,Complete features,8,Sprint 19,P0,2-hour sessions
+Training,User Training,RM Training,Regional Manager training,Complete features,5,Sprint 19,P0,2-hour sessions
+Training,User Training,RSM Training,RSM training commercial,Complete features,8,Sprint 19,P0,2-hour sessions
+Training,User Training,Admin Training,Administrator training,Complete features,5,Sprint 19,P0,2-hour sessions
+Training,User Training,Dealer Training,Dealer portal training,Complete features,3,Sprint 19,P1,1-hour session
+
+Support,Support Setup,Help Desk,Setup help desk system,None,5,Sprint 19,P1,Ticketing system
+Support,Support Setup,Knowledge Base,Build knowledge base,Setup help desk,8,Sprint 19,P1,Self-service
+Support,Support Setup,Support Team,Train support team,Complete features,5,Sprint 19,P1,L1 L2 support
