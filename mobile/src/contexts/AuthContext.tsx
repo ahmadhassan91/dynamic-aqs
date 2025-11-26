@@ -1,5 +1,24 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
+
+// Mock SecureStore for web
+let SecureStore: any = {};
+
+if (Platform.OS !== 'web') {
+  try {
+    SecureStore = require('expo-secure-store');
+  } catch (e) {
+    console.warn('expo-secure-store not available');
+  }
+}
+
+const WebStore = {
+  setItemAsync: async (key: string, value: string) => localStorage.setItem(key, value),
+  getItemAsync: async (key: string) => localStorage.getItem(key),
+  deleteItemAsync: async (key: string) => localStorage.removeItem(key),
+};
+
+const Store = Platform.OS === 'web' ? WebStore : SecureStore;
 
 interface User {
   id: string;
@@ -26,66 +45,59 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    checkAuthStatus();
+    loadUser();
   }, []);
 
-  const checkAuthStatus = async () => {
+  const loadUser = async () => {
     try {
-      const token = await SecureStore.getItemAsync('authToken');
-      const userData = await SecureStore.getItemAsync('userData');
+      const token = await Store.getItemAsync('token');
+      const userData = await Store.getItemAsync('user');
       
       if (token && userData) {
         setUser(JSON.parse(userData));
+        setIsAuthenticated(true);
       }
     } catch (error) {
-      console.error('Error checking auth status:', error);
+      console.error('Error loading user:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password?: string): Promise<boolean> => {
+    // Mock login logic
+    const mockUser: User = {
+      id: '1',
+      email,
+      name: 'Sarah Wilson',
+      role: 'Territory Manager',
+      territoryId: 'T-123'
+    };
+
     try {
-      setIsLoading(true);
-      
-      // Mock authentication - replace with actual API call
-      if (email && password) {
-        const mockUser: User = {
-          id: '1',
-          email,
-          name: 'Territory Manager',
-          role: 'territory_manager',
-          territoryId: 'territory_1'
-        };
-        
-        const mockToken = 'mock_jwt_token_' + Date.now();
-        
-        await SecureStore.setItemAsync('authToken', mockToken);
-        await SecureStore.setItemAsync('userData', JSON.stringify(mockUser));
-        
-        setUser(mockUser);
-        return true;
-      }
-      
-      return false;
+      await Store.setItemAsync('token', 'mock-jwt-token');
+      await Store.setItemAsync('user', JSON.stringify(mockUser));
+      setUser(mockUser);
+      setIsAuthenticated(true);
+      return true;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Error logging in:', error);
       return false;
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const logout = async () => {
     try {
-      await SecureStore.deleteItemAsync('authToken');
-      await SecureStore.deleteItemAsync('userData');
+      await Store.deleteItemAsync('token');
+      await Store.deleteItemAsync('user');
       setUser(null);
+      setIsAuthenticated(false);
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('Error logging out:', error);
     }
   };
 
@@ -93,25 +105,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       // Mock token refresh - replace with actual API call
       const newToken = 'refreshed_mock_jwt_token_' + Date.now();
-      await SecureStore.setItemAsync('authToken', newToken);
+      await Store.setItemAsync('authToken', newToken);
       return true;
     } catch (error) {
-      console.error('Token refresh error:', error);
+      console.error('Failed to refresh token:', error);
       return false;
     }
   };
 
-  const value: AuthContextType = {
-    user,
-    isAuthenticated: !!user,
-    isLoading,
-    login,
-    logout,
-    refreshToken,
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, login, logout, refreshToken }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,13 +1,39 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import * as SQLite from 'expo-sqlite';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import NetInfo from '@react-native-community/netinfo';
+import { Platform } from 'react-native';
+
+let AsyncStorage: any;
+let NetInfo: any;
+let SQLite: any;
+
+if (Platform.OS !== 'web') {
+  try {
+    AsyncStorage = require('@react-native-async-storage/async-storage').default;
+    NetInfo = require('@react-native-community/netinfo');
+    SQLite = require('expo-sqlite');
+  } catch (e) {
+    console.warn('Mobile modules not available');
+  }
+} else {
+  // Web Mocks
+  AsyncStorage = {
+    getItem: async (key: string) => localStorage.getItem(key),
+    setItem: async (key: string, value: string) => localStorage.setItem(key, value),
+  };
+  NetInfo = {
+    addEventListener: (callback: any) => {
+      window.addEventListener('online', () => callback({ isConnected: true }));
+      window.addEventListener('offline', () => callback({ isConnected: false }));
+      return () => {}; // cleanup
+    },
+  };
+}
 
 interface OfflineContextType {
   isOnline: boolean;
-  isSync: boolean;
-  pendingChanges: number;
-  syncData: () => Promise<void>;
+  pendingSyncs: number;
+  queueAction: (action: any) => Promise<void>;
+  syncNow: () => Promise<void>;
+  lastSyncTime: Date | null;
   saveOfflineData: (table: string, data: any) => Promise<void>;
   getOfflineData: (table: string, id?: string) => Promise<any>;
   markForSync: (table: string, id: string, action: 'create' | 'update' | 'delete') => Promise<void>;
@@ -21,22 +47,34 @@ interface OfflineProviderProps {
 
 export function OfflineProvider({ children }: OfflineProviderProps) {
   const [isOnline, setIsOnline] = useState(true);
+  const [db, setDb] = useState<any>(null);
+  const [pendingSyncs, setPendingSyncs] = useState(0);
+  const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null);
   const [isSync, setIsSync] = useState(false);
-  const [pendingChanges, setPendingChanges] = useState(0);
-  const [db, setDb] = useState<SQLite.SQLiteDatabase | null>(null);
+  const [pendingChanges, setPendingChanges] = useState<any[]>([]);
 
   useEffect(() => {
-    initializeDatabase();
+    if (Platform.OS !== 'web') {
+      initDatabase();
+    }
     setupNetworkListener();
-    loadPendingChanges();
   }, []);
 
-  const initializeDatabase = async () => {
+  const initDatabase = () => {
     try {
-      const database = await SQLite.openDatabaseAsync('offline_crm.db');
-      
-      // Create tables for offline storage
-      await database.execAsync(`
+      if (SQLite.openDatabase) {
+        const database = SQLite.openDatabase('crm.db');
+        setDb(database);
+        createTables(database);
+      }
+    } catch (e) {
+      console.warn('Failed to init database:', e);
+    }
+  };
+
+  const createTables = (database: any) => {
+    database.transaction((tx: any) => {
+      tx.executeSql(`
         CREATE TABLE IF NOT EXISTS customers (
           id TEXT PRIMARY KEY,
           data TEXT NOT NULL,
@@ -50,44 +88,61 @@ export function OfflineProvider({ children }: OfflineProviderProps) {
           last_updated INTEGER NOT NULL
         );
         
-        CREATE TABLE IF NOT EXISTS sync_queue (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+        CREATE TABLE IF NOT EXISTS pending_changes (
+          id TEXT PRIMARY KEY,
           table_name TEXT NOT NULL,
           record_id TEXT NOT NULL,
           action TEXT NOT NULL,
           data TEXT,
-          created_at INTEGER NOT NULL
+          timestamp INTEGER NOT NULL
         );
       `);
-      
-      setDb(database);
-    } catch (error) {
-      console.error('Database initialization error:', error);
-    }
+      loadPendingChanges(database);
+    });
   };
 
   const setupNetworkListener = () => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      const wasOffline = !isOnline;
-      setIsOnline(state.isConnected ?? false);
-      
-      // Auto-sync when coming back online
-      if (wasOffline && state.isConnected && pendingChanges > 0) {
-        syncData();
+    NetInfo.addEventListener((state: any) => {
+      setIsOnline(!!state.isConnected);
+      if (state.isConnected) {
+        syncNow();
       }
     });
-
-    return unsubscribe;
   };
 
-  const loadPendingChanges = async () => {
+  const loadPendingChanges = (database: any) => {
+    if (!database) return;
+    
     try {
-      if (db) {
-        const result = await db.getAllAsync('SELECT COUNT(*) as count FROM sync_queue');
-        setPendingChanges((result[0] as any)?.count || 0);
-      }
+      database.transaction((tx: any) => {
+        tx.executeSql(
+          'SELECT * FROM pending_changes ORDER BY timestamp ASC;',
+          [],
+          (_: any, { rows }: any) => {
+            setPendingChanges(rows._array);
+            setPendingSyncs(rows.length);
+          }
+        );
+      });
+    } catch (e) {
+      console.error('Error loading pending changes', e);
+    }
+  };
+
+  const syncNow = async () => {
+    if (!isOnline || !db || isSync) return;
+    
+    setIsSync(true);
+    try {
+      // Mock sync logic
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setPendingSyncs(0);
+      setPendingChanges([]);
+      setLastSyncTime(new Date());
     } catch (error) {
-      console.error('Error loading pending changes:', error);
+      console.error('Sync failed:', error);
+    } finally {
+      setIsSync(false);
     }
   };
 

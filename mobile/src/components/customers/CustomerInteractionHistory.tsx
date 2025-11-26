@@ -9,7 +9,19 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Audio } from 'expo-av';
+import { Platform } from 'react-native';
+
+let Audio: any = {
+  Sound: { createAsync: async () => ({ sound: { playAsync: async () => {} } }) }
+};
+
+if (Platform.OS !== 'web') {
+  try {
+    Audio = require('expo-av').Audio;
+  } catch (e) {
+    console.warn('expo-av not available');
+  }
+}
 
 interface Interaction {
   id: string;

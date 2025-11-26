@@ -11,8 +11,29 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import { Audio } from 'expo-av';
+import { Platform } from 'react-native';
+
+let ImagePicker: any = {
+  launchCameraAsync: async () => ({ canceled: true }),
+  MediaTypeOptions: { Images: 'Images' },
+};
+let Audio: any = {
+  Recording: class {
+    prepareToRecordAsync() {}
+    startAsync() {}
+    stopAndUnloadAsync() {}
+    getURI() { return 'mock-uri'; }
+  },
+};
+
+if (Platform.OS !== 'web') {
+  try {
+    ImagePicker = require('expo-image-picker');
+    Audio = require('expo-av').Audio;
+  } catch (e) {
+    console.warn('Media modules not available');
+  }
+}
 
 interface CustomerVisitModalProps {
   visible: boolean;
@@ -42,9 +63,9 @@ export default function CustomerVisitModal({
   const [visitType, setVisitType] = useState('training');
   const [notes, setNotes] = useState('');
   const [photos, setPhotos] = useState<string[]>([]);
-  const [audioNotes, setAudioNotes] = useState<string[]>([]);
+  const [recording, setRecording] = useState<any>(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const [audioNotes, setAudioNotes] = useState<string[]>([]);
 
   const visitTypes = [
     { value: 'training', label: 'Training Session' },
