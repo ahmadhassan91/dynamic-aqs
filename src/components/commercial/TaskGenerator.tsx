@@ -2,6 +2,42 @@
 
 import React, { useState, useEffect } from 'react';
 import {
+  Card,
+  Title,
+  Text,
+  Group,
+  Stack,
+  Button,
+  Select,
+  Checkbox,
+  Badge,
+  Grid,
+  Paper,
+  SimpleGrid,
+  ThemeIcon,
+  ActionIcon,
+  Menu,
+  LoadingOverlay,
+  Modal,
+  Pagination
+} from '@mantine/core';
+import {
+  IconRefresh,
+  IconSettings,
+  IconCheck,
+  IconX,
+  IconDots,
+  IconPhone,
+  IconMail,
+  IconUsers,
+  IconBuilding,
+  IconCalendar,
+  IconStar,
+  IconBriefcase,
+  IconTool,
+  IconTrendingUp
+} from '@tabler/icons-react';
+import {
   EngineerContact,
   EngineerRating,
   InteractionType,
@@ -37,6 +73,8 @@ export default function TaskGenerator({ engineers, className = '' }: TaskGenerat
   const [showTaskAssignment, setShowTaskAssignment] = useState(false);
   const [selectedTaskForAssignment, setSelectedTaskForAssignment] = useState<RelationshipTask | null>(null);
   const [availableUsers, setAvailableUsers] = useState<Array<{id: string, name: string, role: string}>>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   useEffect(() => {
     loadData();
@@ -608,552 +646,450 @@ export default function TaskGenerator({ engineers, className = '' }: TaskGenerat
 
   const getPriorityColor = (priority: TaskPriority) => {
     const colors = {
-      [TaskPriority.URGENT]: 'bg-red-100 text-red-800 border-red-200',
-      [TaskPriority.HIGH]: 'bg-orange-100 text-orange-800 border-orange-200',
-      [TaskPriority.MEDIUM]: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      [TaskPriority.LOW]: 'bg-green-100 text-green-800 border-green-200'
+      [TaskPriority.URGENT]: 'red',
+      [TaskPriority.HIGH]: 'orange',
+      [TaskPriority.MEDIUM]: 'yellow',
+      [TaskPriority.LOW]: 'green'
     };
-    return colors[priority] || 'bg-gray-100 text-gray-800 border-gray-200';
+    return colors[priority] || 'gray';
   };
 
   const getStatusColor = (status: TaskStatus) => {
     const colors = {
-      [TaskStatus.NOT_STARTED]: 'bg-gray-100 text-gray-800',
-      [TaskStatus.IN_PROGRESS]: 'bg-blue-100 text-blue-800',
-      [TaskStatus.COMPLETED]: 'bg-green-100 text-green-800',
-      [TaskStatus.CANCELLED]: 'bg-red-100 text-red-800',
-      [TaskStatus.OVERDUE]: 'bg-red-100 text-red-800'
+      [TaskStatus.NOT_STARTED]: 'gray',
+      [TaskStatus.IN_PROGRESS]: 'blue',
+      [TaskStatus.COMPLETED]: 'green',
+      [TaskStatus.CANCELLED]: 'red',
+      [TaskStatus.OVERDUE]: 'red'
     };
-    return colors[status] || 'bg-gray-100 text-gray-800';
+    return colors[status] || 'gray';
   };
 
   const getCategoryIcon = (category: TaskCategory) => {
     const icons = {
-      [TaskCategory.RATING_IMPROVEMENT]: '⭐',
-      [TaskCategory.FOLLOW_UP]: '📅',
-      [TaskCategory.OPPORTUNITY_DEVELOPMENT]: '💼',
-      [TaskCategory.RELATIONSHIP_BUILDING]: '🤝',
-      [TaskCategory.MAINTENANCE]: '🔧'
+      [TaskCategory.RATING_IMPROVEMENT]: IconStar,
+      [TaskCategory.FOLLOW_UP]: IconCalendar,
+      [TaskCategory.OPPORTUNITY_DEVELOPMENT]: IconBriefcase,
+      [TaskCategory.RELATIONSHIP_BUILDING]: IconUsers,
+      [TaskCategory.MAINTENANCE]: IconTool
     };
-    return icons[category] || '📋';
+    return icons[category] || IconCheck;
   };
 
   const getActionIcon = (action: InteractionType) => {
     const icons = {
-      [InteractionType.PHONE_CALL]: '📞',
-      [InteractionType.EMAIL]: '📧',
-      [InteractionType.MEETING]: '🤝',
-      [InteractionType.LUNCH_AND_LEARN]: '🍽️',
-      [InteractionType.SITE_VISIT]: '🏗️',
-      [InteractionType.TRADE_SHOW]: '🏢',
-      [InteractionType.WEBINAR]: '💻'
+      [InteractionType.PHONE_CALL]: IconPhone,
+      [InteractionType.EMAIL]: IconMail,
+      [InteractionType.MEETING]: IconUsers,
+      [InteractionType.LUNCH_AND_LEARN]: IconUsers,
+      [InteractionType.SITE_VISIT]: IconBuilding,
+      [InteractionType.TRADE_SHOW]: IconBuilding,
+      [InteractionType.WEBINAR]: IconUsers
     };
-    return icons[action] || '💬';
+    return icons[action] || IconDots;
   };
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredTasks.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedTasks = filteredTasks.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedPriority, selectedCategory, selectedStatus]);
 
   if (loading) {
     return (
-      <div className={`p-6 ${className}`}>
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
-          <div className="space-y-4">
-            {[1, 2, 3, 4, 5].map(i => (
-              <div key={i} className="h-24 bg-gray-200 rounded"></div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <Paper p="md" withBorder style={{ minHeight: 400, position: 'relative' }}>
+        <LoadingOverlay visible={true} />
+      </Paper>
     );
   }
 
   return (
-    <div className={`p-6 ${className}`}>
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Task Generator</h1>
-          <p className="text-sm text-gray-600 mt-1">
-            AI-generated tasks to improve engineer relationships and move contacts up the rating scale
-          </p>
-        </div>
-        <div className="flex items-center space-x-3 mt-4 sm:mt-0">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={autoGenerateEnabled}
-              onChange={(e) => setAutoGenerateEnabled(e.target.checked)}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <span className="ml-2 text-sm text-gray-700">Auto-generate</span>
-          </label>
-          <button
+    <Stack gap="md">
+      {/* Header & Controls */}
+      <Group justify="space-between" align="center">
+        <Group>
+          <Checkbox
+            label="Auto-generate tasks"
+            checked={autoGenerateEnabled}
+            onChange={(e) => setAutoGenerateEnabled(e.currentTarget.checked)}
+          />
+          <Button 
+            variant="light" 
+            leftSection={<IconRefresh size={16} />}
             onClick={() => loadData()}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700"
+            loading={loading}
           >
             Refresh Tasks
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Group>
+        
+        <Group>
+          <Button 
+            variant={showTaskMetrics ? 'filled' : 'light'} 
+            onClick={() => setShowTaskMetrics(!showTaskMetrics)}
+          >
+            Metrics
+          </Button>
+          <Button 
+            variant={showWorkflowTemplates ? 'filled' : 'light'}
+            onClick={() => setShowWorkflowTemplates(!showWorkflowTemplates)}
+            color="violet"
+          >
+            Templates
+          </Button>
+          <Button 
+            variant={showTaskAssignment ? 'filled' : 'light'}
+            onClick={() => setShowTaskAssignment(!showTaskAssignment)}
+            color="teal"
+          >
+            Assignment
+          </Button>
+        </Group>
+      </Group>
 
-      {/* Action Buttons */}
-      <div className="flex flex-wrap gap-3 mb-6">
-        <button
-          onClick={() => setShowTaskMetrics(!showTaskMetrics)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700"
-        >
-          {showTaskMetrics ? 'Hide' : 'Show'} Metrics
-        </button>
-        <button
-          onClick={() => setShowWorkflowTemplates(!showWorkflowTemplates)}
-          className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700"
-        >
-          {showWorkflowTemplates ? 'Hide' : 'Show'} Templates
-        </button>
-        <button
-          onClick={() => setShowTaskAssignment(!showTaskAssignment)}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700"
-        >
-          Task Assignment
-        </button>
-      </div>
-
-      {/* Task Metrics */}
+      {/* Task Metrics Dashboard */}
       {showTaskMetrics && taskMetrics && (
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Task Performance Metrics</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{taskMetrics.totalTasks}</div>
-              <div className="text-sm text-gray-600">Total Tasks</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{taskMetrics.completedTasks}</div>
-              <div className="text-sm text-gray-600">Completed</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">{taskMetrics.overdueTasks}</div>
-              <div className="text-sm text-gray-600">Overdue</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">{taskMetrics.completionRate.toFixed(1)}%</div>
-              <div className="text-sm text-gray-600">Completion Rate</div>
-            </div>
-          </div>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-medium text-gray-700 mb-2">Tasks by Priority</h4>
-              <div className="space-y-1">
+        <Paper p="md" withBorder>
+          <Title order={4} mb="md">Task Performance Metrics</Title>
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }}>
+            <Card withBorder p="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={700}>Total Tasks</Text>
+              <Text size="xl" fw={700} c="blue">{taskMetrics.totalTasks}</Text>
+            </Card>
+            <Card withBorder p="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={700}>Completed</Text>
+              <Text size="xl" fw={700} c="green">{taskMetrics.completedTasks}</Text>
+            </Card>
+            <Card withBorder p="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={700}>Overdue</Text>
+              <Text size="xl" fw={700} c="red">{taskMetrics.overdueTasks}</Text>
+            </Card>
+            <Card withBorder p="sm">
+              <Text size="xs" c="dimmed" tt="uppercase" fw={700}>Completion Rate</Text>
+              <Text size="xl" fw={700} c="violet">{taskMetrics.completionRate.toFixed(1)}%</Text>
+            </Card>
+          </SimpleGrid>
+          
+          <Grid mt="md">
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Text size="sm" fw={500} mb="xs">Tasks by Priority</Text>
+              <Stack gap="xs">
                 {Object.entries(taskMetrics.tasksByPriority).map(([priority, count]) => (
-                  <div key={priority} className="flex justify-between text-sm">
-                    <span className="capitalize">{priority}</span>
-                    <span>{count}</span>
-                  </div>
+                  <Group key={priority} justify="space-between">
+                    <Badge color={getPriorityColor(priority as TaskPriority)} variant="light">
+                      {priority}
+                    </Badge>
+                    <Text size="sm" fw={500}>{count}</Text>
+                  </Group>
                 ))}
-              </div>
-            </div>
-            <div>
-              <h4 className="font-medium text-gray-700 mb-2">Rating Improvements</h4>
-              <div className="text-2xl font-bold text-green-600">{taskMetrics.ratingImprovements}</div>
-              <div className="text-sm text-gray-600">Engineers moved up rating scale</div>
-            </div>
-          </div>
-        </div>
+              </Stack>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Text size="sm" fw={500} mb="xs">Impact</Text>
+              <Card withBorder>
+                <Group>
+                  <ThemeIcon size="lg" color="green" variant="light">
+                    <IconStar size={20} />
+                  </ThemeIcon>
+                  <div>
+                    <Text size="xl" fw={700}>{taskMetrics.ratingImprovements}</Text>
+                    <Text size="xs" c="dimmed">Rating Improvements</Text>
+                  </div>
+                </Group>
+              </Card>
+            </Grid.Col>
+          </Grid>
+        </Paper>
       )}
 
       {/* Workflow Templates */}
       {showWorkflowTemplates && (
-        <div className="bg-white p-6 rounded-lg shadow mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Workflow Templates</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Paper p="md" withBorder>
+          <Title order={4} mb="md">Workflow Templates</Title>
+          <SimpleGrid cols={{ base: 1, md: 3 }}>
             {workflowTemplates.map(template => (
-              <div key={template.id} className="border border-gray-200 rounded-lg p-4">
-                <h4 className="font-medium text-gray-900">{template.name}</h4>
-                <p className="text-sm text-gray-600 mt-1">{template.description}</p>
-                <div className="mt-2">
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    template.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                  }`}>
+              <Card key={template.id} withBorder padding="sm">
+                <Group justify="space-between" mb="xs">
+                  <Text fw={600} size="sm" lineClamp={1}>{template.name}</Text>
+                  <Badge 
+                    size="xs" 
+                    variant={template.isActive ? 'filled' : 'light'}
+                    color={template.isActive ? 'green' : 'gray'}
+                  >
                     {template.isActive ? 'Active' : 'Inactive'}
-                  </span>
-                </div>
-                <div className="mt-2 text-sm text-gray-500">
-                  {template.steps.length} steps
-                </div>
-              </div>
+                  </Badge>
+                </Group>
+                <Text size="xs" c="dimmed" lineClamp={2} mb="md">
+                  {template.description}
+                </Text>
+                <Text size="xs" fw={500}>{template.steps.length} steps</Text>
+              </Card>
             ))}
-          </div>
-        </div>
+          </SimpleGrid>
+        </Paper>
       )}
 
-      {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <div className="bg-white p-6 rounded-lg shadow">
-          <div className="text-2xl font-bold text-red-600">
-            {filteredTasks.filter(t => t.priority === TaskPriority.URGENT).length}
-          </div>
-          <div className="text-sm text-gray-600">Urgent Tasks</div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow">
-          <div className="text-2xl font-bold text-orange-600">
-            {filteredTasks.filter(t => t.priority === TaskPriority.HIGH).length}
-          </div>
-          <div className="text-sm text-gray-600">High Priority</div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow">
-          <div className="text-2xl font-bold text-blue-600">
-            {filteredTasks.filter(t => t.category === TaskCategory.RATING_IMPROVEMENT).length}
-          </div>
-          <div className="text-sm text-gray-600">Rating Improvement</div>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow">
-          <div className="text-2xl font-bold text-green-600">
-            {filteredTasks.filter(t => t.status === TaskStatus.COMPLETED).length}
-          </div>
-          <div className="text-sm text-gray-600">Completed</div>
-        </div>
-      </div>
+      {/* Summary Stats Cards */}
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }}>
+        <Card withBorder padding="sm">
+          <Group justify="space-between">
+            <div>
+              <Text size="xs" c="dimmed" fw={700} tt="uppercase">Urgent Tasks</Text>
+              <Text size="xl" fw={700} c="red">
+                {filteredTasks.filter(t => t.priority === TaskPriority.URGENT).length}
+              </Text>
+            </div>
+            <ThemeIcon color="red" variant="light" size="lg">
+              <IconRefresh size={20} />
+            </ThemeIcon>
+          </Group>
+        </Card>
+        <Card withBorder padding="sm">
+          <Group justify="space-between">
+            <div>
+              <Text size="xs" c="dimmed" fw={700} tt="uppercase">High Priority</Text>
+              <Text size="xl" fw={700} c="orange">
+                {filteredTasks.filter(t => t.priority === TaskPriority.HIGH).length}
+              </Text>
+            </div>
+            <ThemeIcon color="orange" variant="light" size="lg">
+              <IconStar size={20} />
+            </ThemeIcon>
+          </Group>
+        </Card>
+        <Card withBorder padding="sm">
+          <Group justify="space-between">
+            <div>
+              <Text size="xs" c="dimmed" fw={700} tt="uppercase">Rating Improve</Text>
+              <Text size="xl" fw={700} c="blue">
+                {filteredTasks.filter(t => t.category === TaskCategory.RATING_IMPROVEMENT).length}
+              </Text>
+            </div>
+            <ThemeIcon color="blue" variant="light" size="lg">
+              <IconTrendingUp size={20} />
+            </ThemeIcon>
+          </Group>
+        </Card>
+        <Card withBorder padding="sm">
+          <Group justify="space-between">
+            <div>
+              <Text size="xs" c="dimmed" fw={700} tt="uppercase">Completed</Text>
+              <Text size="xl" fw={700} c="green">
+                {filteredTasks.filter(t => t.status === TaskStatus.COMPLETED).length}
+              </Text>
+            </div>
+            <ThemeIcon color="green" variant="light" size="lg">
+              <IconCheck size={20} />
+            </ThemeIcon>
+          </Group>
+        </Card>
+      </SimpleGrid>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div>
-            <label htmlFor="priority-select" className="block text-sm font-medium text-gray-700 mb-1">
-              Priority
-            </label>
-            <select
-              id="priority-select"
+      <Paper p="sm" withBorder>
+        <Grid align="flex-end">
+          <Grid.Col span={{ base: 12, sm: 4 }}>
+            <Select
+              label="Priority"
               value={selectedPriority}
-              onChange={(e) => setSelectedPriority(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-            >
-              <option value="all">All Priorities</option>
-              <option value={TaskPriority.URGENT}>Urgent</option>
-              <option value={TaskPriority.HIGH}>High</option>
-              <option value={TaskPriority.MEDIUM}>Medium</option>
-              <option value={TaskPriority.LOW}>Low</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 mb-1">
-              Category
-            </label>
-            <select
-              id="category-select"
+              onChange={(val) => setSelectedPriority(val || 'all')}
+              data={[
+                { value: 'all', label: 'All Priorities' },
+                { value: TaskPriority.URGENT, label: 'Urgent' },
+                { value: TaskPriority.HIGH, label: 'High' },
+                { value: TaskPriority.MEDIUM, label: 'Medium' },
+                { value: TaskPriority.LOW, label: 'Low' }
+              ]}
+            />
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, sm: 4 }}>
+            <Select
+              label="Category"
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-            >
-              <option value="all">All Categories</option>
-              <option value={TaskCategory.RATING_IMPROVEMENT}>Rating Improvement</option>
-              <option value={TaskCategory.FOLLOW_UP}>Follow-up</option>
-              <option value={TaskCategory.OPPORTUNITY_DEVELOPMENT}>Opportunity Development</option>
-              <option value={TaskCategory.RELATIONSHIP_BUILDING}>Relationship Building</option>
-              <option value={TaskCategory.MAINTENANCE}>Maintenance</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="status-select" className="block text-sm font-medium text-gray-700 mb-1">
-              Status
-            </label>
-            <select
-              id="status-select"
+              onChange={(val) => setSelectedCategory(val || 'all')}
+              data={[
+                { value: 'all', label: 'All Categories' },
+                { value: TaskCategory.RATING_IMPROVEMENT, label: 'Rating Improvement' },
+                { value: TaskCategory.FOLLOW_UP, label: 'Follow Up' },
+                { value: TaskCategory.OPPORTUNITY_DEVELOPMENT, label: 'Opportunity Dev' },
+                { value: TaskCategory.RELATIONSHIP_BUILDING, label: 'Relationship Building' }
+              ]}
+            />
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, sm: 4 }}>
+            <Select
+              label="Status"
               value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
-            >
-              <option value="all">All Statuses</option>
-              <option value={TaskStatus.NOT_STARTED}>Not Started</option>
-              <option value={TaskStatus.IN_PROGRESS}>In Progress</option>
-              <option value={TaskStatus.COMPLETED}>Completed</option>
-              <option value={TaskStatus.OVERDUE}>Overdue</option>
-            </select>
-          </div>
-          <div className="flex items-end">
-            <button
-              onClick={() => {
-                setSelectedPriority('all');
-                setSelectedCategory('all');
-                setSelectedStatus('all');
-              }}
-              className="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200"
-            >
-              Clear Filters
-            </button>
-          </div>
-        </div>
-      </div>
+              onChange={(val) => setSelectedStatus(val || 'all')}
+              data={[
+                { value: 'all', label: 'All Statuses' },
+                { value: TaskStatus.NOT_STARTED, label: 'Not Started' },
+                { value: TaskStatus.IN_PROGRESS, label: 'In Progress' },
+                { value: TaskStatus.COMPLETED, label: 'Completed' },
+                { value: TaskStatus.OVERDUE, label: 'Overdue' }
+              ]}
+            />
+          </Grid.Col>
+        </Grid>
+      </Paper>
 
-      {/* Task Assignment Panel */}
-      {showTaskAssignment && (
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Task Assignment Overview</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Object.entries(getTasksByAssignee()).map(([assigneeId, tasks]) => {
-              const assignee = assigneeId === 'unassigned' 
-                ? { name: 'Unassigned', role: '' }
-                : availableUsers.find(u => u.id === assigneeId) || { name: 'Unknown User', role: '' };
-              
-              return (
-                <div key={assigneeId} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <h4 className="font-medium text-gray-900">{assignee.name}</h4>
-                      {assignee.role && (
-                        <p className="text-sm text-gray-600">{assignee.role}</p>
-                      )}
-                    </div>
-                    <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">
-                      {tasks.length} tasks
-                    </span>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    {tasks.slice(0, 3).map(task => (
-                      <div key={task.id} className="text-sm">
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-900 truncate">{task.title}</span>
-                          <span className={`inline-flex px-1 py-0.5 text-xs font-semibold rounded ${getPriorityColor(task.priority)}`}>
-                            {task.priority.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                    {tasks.length > 3 && (
-                      <div className="text-xs text-gray-500">
-                        +{tasks.length - 3} more tasks
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
-                    <div className="text-center">
-                      <div className="font-semibold text-red-600">
-                        {tasks.filter(t => t.priority === TaskPriority.URGENT).length}
-                      </div>
-                      <div className="text-gray-600">Urgent</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-semibold text-orange-600">
-                        {tasks.filter(t => t.priority === TaskPriority.HIGH).length}
-                      </div>
-                      <div className="text-gray-600">High</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-semibold text-green-600">
-                        {tasks.filter(t => t.status === TaskStatus.COMPLETED).length}
-                      </div>
-                      <div className="text-gray-600">Done</div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Tasks List */}
-      <div className="space-y-4">
-        {filteredTasks.map(task => {
-          const engineer = allEngineers.find(e => e.id === task.engineerId);
-          const isOverdue = task.dueDate < new Date() && task.status !== TaskStatus.COMPLETED;
-          const isCompleted = task.status === TaskStatus.COMPLETED;
-
+      {/* Task List */}
+      <Stack gap="sm">
+        {paginatedTasks.map(task => {
+          const CategoryIcon = getCategoryIcon(task.category);
+          const SuggestedActionIcon = getActionIcon(task.suggestedAction);
+          
           return (
-            <div
-              key={task.id}
-              className={`bg-white rounded-lg shadow border-l-4 ${isCompleted
-                  ? 'border-green-500 opacity-75'
-                  : isOverdue
-                    ? 'border-red-500'
-                    : task.priority === TaskPriority.URGENT
-                      ? 'border-red-400'
-                      : 'border-blue-500'
-                }`}
-            >
-              <div className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <span className="text-lg">{getCategoryIcon(task.category)}</span>
-                      <h3 className={`text-lg font-semibold ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
-                        {task.title}
-                      </h3>
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full border ${getPriorityColor(task.priority)}`}>
-                        {task.priority.toUpperCase()}
-                      </span>
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(task.status)}`}>
-                        {task.status.replace('_', ' ').toUpperCase()}
-                      </span>
-                      {isOverdue && (
-                        <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                          OVERDUE
-                        </span>
-                      )}
+            <Card key={task.id} withBorder padding="sm" radius="md">
+              <Grid align="center">
+                {/* Task Info */}
+                <Grid.Col span={{ base: 12, md: 6 }}>
+                  <Group wrap="nowrap" align="flex-start">
+                    <ThemeIcon 
+                      size="lg" 
+                      color={getPriorityColor(task.priority)} 
+                      variant="light"
+                      radius="md"
+                    >
+                      <CategoryIcon size={20} />
+                    </ThemeIcon>
+                    <div>
+                      <Text fw={600} size="sm">{task.title}</Text>
+                      <Text size="xs" c="dimmed" lineClamp={1}>
+                        {task.description}
+                      </Text>
+                      <Group gap="xs" mt={4}>
+                        <Badge size="xs" variant="dot" color={getPriorityColor(task.priority)}>
+                          {task.priority}
+                        </Badge>
+                        <Group gap={4}>
+                          <SuggestedActionIcon size={14} />
+                          <Text size="xs" c="dimmed">{task.suggestedAction}</Text>
+                        </Group>
+                      </Group>
                     </div>
+                  </Group>
+                </Grid.Col>
 
-                    <p className="text-gray-600 mb-3">{task.description}</p>
+                {/* Details */}
+                <Grid.Col span={{ base: 12, md: 3 }}>
+                  <Stack gap={2}>
+                    <Text size="xs" c="dimmed">Due Date</Text>
+                    <Text size="sm" fw={500} c={task.dueDate < new Date() ? 'red' : undefined}>
+                      {task.dueDate.toLocaleDateString()}
+                    </Text>
+                  </Stack>
+                </Grid.Col>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                      <div>
-                        <span className="font-medium text-gray-500">Suggested Action:</span>
-                        <div className="flex items-center mt-1">
-                          <span className="mr-2">{getActionIcon(task.suggestedAction)}</span>
-                          <span className="text-gray-900">{task.suggestedAction}</span>
-                        </div>
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-500">Due Date:</span>
-                        <div className={`mt-1 ${isOverdue ? 'text-red-600 font-medium' : 'text-gray-900'}`}>
-                          {task.dueDate.toLocaleDateString()}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-500">Duration:</span>
-                        <div className="text-gray-900 mt-1">{task.estimatedDuration} minutes</div>
-                      </div>
-                    </div>
-
-                    <div className="mt-3">
-                      <span className="font-medium text-gray-500">Expected Outcome:</span>
-                      <p className="text-gray-900 mt-1">{task.expectedOutcome}</p>
-                    </div>
-
-                    {engineer && (
-                      <div className="mt-3 text-sm text-gray-600">
-                        <span className="font-medium">Engineer:</span> {engineer.personalInfo.firstName} {engineer.personalInfo.lastName}
-                        <span className="ml-2">({engineer.engineeringFirmId})</span>
-                        <span className="ml-2">Rating: {engineer.rating}★</span>
-                      </div>
+                {/* Actions */}
+                <Grid.Col span={{ base: 12, md: 3 }}>
+                  <Group justify="flex-end" gap="xs">
+                    {task.status !== TaskStatus.COMPLETED && (
+                      <Button 
+                        size="xs" 
+                        variant="light" 
+                        color="green"
+                        onClick={() => handleCompleteTask(task.id, 'Completed via quick action')}
+                        leftSection={<IconCheck size={14} />}
+                      >
+                        Complete
+                      </Button>
                     )}
-
-                    {task.assignedTo && (
-                      <div className="mt-2 text-sm text-gray-600">
-                        <span className="font-medium">Assigned to:</span> {
-                          availableUsers.find(u => u.id === task.assignedTo)?.name || 'Unknown User'
-                        }
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col space-y-2 ml-4">
-                    {task.status === TaskStatus.NOT_STARTED && (
-                      <>
-                        <button
-                          onClick={() => handleStartTask(task.id)}
-                          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700"
+                    <Menu position="bottom-end" withArrow>
+                      <Menu.Target>
+                        <ActionIcon variant="subtle">
+                          <IconDots size={16} />
+                        </ActionIcon>
+                      </Menu.Target>
+                      <Menu.Dropdown>
+                        <Menu.Item leftSection={<IconSettings size={14} />}>
+                          Edit Task
+                        </Menu.Item>
+                        <Menu.Item leftSection={<IconUsers size={14} />}>
+                          Reassign
+                        </Menu.Item>
+                        <Menu.Divider />
+                        <Menu.Item 
+                          color="red" 
+                          leftSection={<IconX size={14} />}
                         >
-                          Start Task
-                        </button>
-                        <button
-                          onClick={() => handleRegenerateTask(task.id)}
-                          className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200"
-                        >
-                          Regenerate
-                        </button>
-                        <button
-                          onClick={() => {
-                            setSelectedTaskForAssignment(task);
-                          }}
-                          className="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-200"
-                        >
-                          Assign
-                        </button>
-                      </>
-                    )}
-                    {task.status === TaskStatus.IN_PROGRESS && (
-                      <>
-                        <button
-                          onClick={() => {
-                            const outcome = prompt('Enter task outcome:');
-                            if (outcome) {
-                              handleCompleteTask(task.id, outcome);
-                            }
-                          }}
-                          className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700"
-                        >
-                          Complete
-                        </button>
-                        <button
-                          onClick={() => handleRegenerateTask(task.id)}
-                          className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200"
-                        >
-                          Regenerate
-                        </button>
-                      </>
-                    )}
-                    {task.status === TaskStatus.COMPLETED && (
-                      <div className="space-y-1">
-                        <span className="inline-flex px-4 py-2 text-sm font-medium text-green-700 bg-green-100 rounded-lg">
-                          ✓ Completed
-                        </span>
-                        {task.completedAt && (
-                          <div className="text-xs text-gray-500">
-                            {task.completedAt.toLocaleDateString()}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+                          Cancel Task
+                        </Menu.Item>
+                      </Menu.Dropdown>
+                    </Menu>
+                  </Group>
+                </Grid.Col>
+              </Grid>
+            </Card>
           );
         })}
-      </div>
+        
+        {filteredTasks.length === 0 && (
+          <Paper p="xl" withBorder ta="center">
+            <ThemeIcon size={48} radius="xl" color="gray" variant="light" mb="md">
+              <IconRefresh size={24} />
+            </ThemeIcon>
+            <Text size="lg" fw={500}>No tasks found</Text>
+            <Text size="sm" c="dimmed" mb="md">
+              Try adjusting your filters or generate new tasks
+            </Text>
+            <Button onClick={() => loadData()} variant="light">
+              Generate Tasks
+            </Button>
+          </Paper>
+        )}
+      </Stack>
 
-      {filteredTasks.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-gray-500">
-            <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-            </svg>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No tasks found</h3>
-            <p className="text-gray-600">All engineers are up to date or try adjusting your filters</p>
-          </div>
-        </div>
+      {/* Pagination */}
+      {filteredTasks.length > 0 && (
+        <Group justify="center" mt="md">
+          <Pagination
+            total={totalPages}
+            value={currentPage}
+            onChange={setCurrentPage}
+            size="sm"
+          />
+          <Text size="sm" c="dimmed">
+            Showing {startIndex + 1}-{Math.min(endIndex, filteredTasks.length)} of {filteredTasks.length} tasks
+          </Text>
+        </Group>
       )}
 
       {/* Task Assignment Modal */}
-      {selectedTaskForAssignment && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full m-4">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Assign Task</h3>
-              <p className="text-sm text-gray-600 mt-1">{selectedTaskForAssignment.title}</p>
-            </div>
-            
-            <div className="p-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Assign to:
-              </label>
-              <div className="space-y-2">
-                {availableUsers.map(user => (
-                  <button
-                    key={user.id}
-                    onClick={() => handleAssignTask(selectedTaskForAssignment.id, user.id)}
-                    className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <div className="font-medium text-gray-900">{user.name}</div>
-                    <div className="text-sm text-gray-600">{user.role}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-6 border-t border-gray-200 flex justify-end space-x-3">
-              <button
-                onClick={() => {
-                  setSelectedTaskForAssignment(null);
-                }}
-                className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+      <Modal
+        opened={showTaskAssignment && !!selectedTaskForAssignment}
+        onClose={() => {
+          setShowTaskAssignment(false);
+          setSelectedTaskForAssignment(null);
+        }}
+        title="Assign Task"
+      >
+        {selectedTaskForAssignment && (
+          <Stack>
+            <Text size="sm" c="dimmed">{selectedTaskForAssignment.title}</Text>
+            <Stack gap="xs">
+              {availableUsers.map(user => (
+                <Button
+                  key={user.id}
+                  variant="light"
+                  color="gray"
+                  fullWidth
+                  justify="space-between"
+                  onClick={() => handleAssignTask(selectedTaskForAssignment.id, user.id)}
+                  rightSection={<Text size="xs" c="dimmed">{user.role}</Text>}
+                >
+                  {user.name}
+                </Button>
+              ))}
+            </Stack>
+          </Stack>
+        )}
+      </Modal>
+    </Stack>
   );
 }
