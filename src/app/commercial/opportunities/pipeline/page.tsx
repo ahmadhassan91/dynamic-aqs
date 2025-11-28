@@ -180,109 +180,97 @@ function OpportunityCard({ opportunity, index }: OpportunityCardProps) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           shadow="sm"
-          padding="md"
-          radius="md"
+          padding="xs"
+          radius="sm"
           withBorder
-          mb="sm"
+          mb={6}
           style={{
             ...provided.draggableProps.style,
             opacity: snapshot.isDragging ? 0.8 : 1,
             transform: snapshot.isDragging 
               ? `${provided.draggableProps.style?.transform} rotate(5deg)`
               : provided.draggableProps.style?.transform,
+            height: 'auto',
+            minHeight: 'auto',
           }}
         >
-          <Stack gap="xs">
+          <Stack gap={4}>
             {/* Header */}
-            <Group justify="space-between" align="flex-start">
-              <Text fw={600} size="sm" style={{ flex: 1 }}>
+            <Group justify="space-between" align="flex-start" wrap="nowrap">
+              <Text fw={600} size="xs" lineClamp={2} style={{ flex: 1 }}>
                 {opportunity.title}
               </Text>
-              <Menu shadow="md" width={200}>
+              <Menu shadow="md" width={180}>
                 <Menu.Target>
-                  <ActionIcon variant="subtle" size="sm">
-                    <IconDots size={16} />
+                  <ActionIcon variant="subtle" size="xs">
+                    <IconDots size={14} />
                   </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item leftSection={<IconEye size={14} />}>
-                    View Details
-                  </Menu.Item>
-                  <Menu.Item leftSection={<IconEdit size={14} />}>
-                    Edit Opportunity
-                  </Menu.Item>
+                  <Menu.Item leftSection={<IconEye size={12} />}>View</Menu.Item>
+                  <Menu.Item leftSection={<IconEdit size={12} />}>Edit</Menu.Item>
                   <Menu.Divider />
-                  <Menu.Item leftSection={<IconTrash size={14} />} color="red">
-                    Delete
-                  </Menu.Item>
+                  <Menu.Item leftSection={<IconTrash size={12} />} color="red">Delete</Menu.Item>
                 </Menu.Dropdown>
               </Menu>
             </Group>
 
             {/* Value and Probability */}
-            <Group justify="space-between">
-              <Group gap="xs">
-                <IconCurrencyDollar size={14} color="var(--mantine-color-green-6)" />
+            <Group justify="space-between" wrap="nowrap">
+              <Text size="xs" fw={600}>
                 <NumberFormatter
                   value={opportunity.value}
                   prefix="$"
                   thousandSeparator
                   decimalScale={0}
                 />
-              </Group>
-              <Badge color={phaseColor} size="sm">
-                {opportunity.probability}% prob
+              </Text>
+              <Badge color={phaseColor} size="xs">
+                {opportunity.probability}%
               </Badge>
             </Group>
 
             {/* Market Segment */}
-            <Badge variant="light" size="sm" style={{ alignSelf: 'flex-start' }}>
+            <Badge variant="light" size="xs" style={{ alignSelf: 'flex-start' }}>
               {opportunity.marketSegment}
             </Badge>
 
-            {/* Key Stakeholders */}
-            <Stack gap={4}>
-              <Group gap="xs">
-                <IconBuilding size={12} />
-                <Text size="xs" c="dimmed" truncate>
-                  {opportunity.buildingOwner}
-                </Text>
-              </Group>
-              <Group gap="xs">
-                <IconUser size={12} />
-                <Text size="xs" c="dimmed" truncate>
-                  {opportunity.engineeringFirm}
-                </Text>
-              </Group>
+            {/* Key Stakeholders - Condensed */}
+            <Stack gap={2}>
+              <Text size="xs" c="dimmed" lineClamp={1}>
+                <IconBuilding size={10} style={{ display: 'inline', marginRight: 2 }} />
+                {opportunity.buildingOwner}
+              </Text>
+              <Text size="xs" c="dimmed" lineClamp={1}>
+                <IconUser size={10} style={{ display: 'inline', marginRight: 2 }} />
+                {opportunity.engineeringFirm}
+              </Text>
             </Stack>
 
-            {/* Assigned To and Date */}
-            <Group justify="space-between" mt="xs">
-              <Group gap="xs">
-                <Avatar size={20} radius="xl" />
-                <Text size="xs" c="dimmed">
+            {/* Assigned To and Date - Condensed */}
+            <Group justify="space-between" wrap="nowrap" gap={4}>
+              <Group gap={4}>
+                <Avatar size={16} radius="xl" />
+                <Text size="xs" c="dimmed" truncate style={{ fontSize: '10px' }}>
                   {opportunity.assignedTo}
                 </Text>
               </Group>
-              <Group gap="xs">
-                <IconCalendar size={12} />
-                <Text size="xs" c="dimmed">
-                  {new Date(opportunity.expectedCloseDate).toLocaleDateString()}
-                </Text>
-              </Group>
+              <Text size="xs" c="dimmed" style={{ fontSize: '10px', whiteSpace: 'nowrap' }}>
+                {new Date(opportunity.expectedCloseDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              </Text>
             </Group>
 
-            {/* Tags */}
+            {/* Tags - Only show if present */}
             {opportunity.tags && opportunity.tags.length > 0 && (
-              <Group gap={4}>
+              <Group gap={2}>
                 {opportunity.tags.slice(0, 2).map((tag, idx) => (
-                  <Badge key={idx} size="xs" variant="dot">
+                  <Badge key={idx} size="xs" variant="dot" style={{ fontSize: '9px' }}>
                     {tag}
                   </Badge>
                 ))}
                 {opportunity.tags.length > 2 && (
-                  <Text size="xs" c="dimmed">
-                    +{opportunity.tags.length - 2} more
+                  <Text size="xs" c="dimmed" style={{ fontSize: '9px' }}>
+                    +{opportunity.tags.length - 2}
                   </Text>
                 )}
               </Group>
@@ -465,12 +453,12 @@ export default function OpportunityPipelinePage() {
 
             {/* Pipeline Board */}
             <DragDropContext onDragEnd={handleDragEnd}>
-              <Grid gutter="md" align="stretch">
+              <Grid gutter="sm" align="flex-start">
                 {phaseTotals.map((phase) => (
                   <Grid.Col key={phase.id} span={{ base: 12, sm: 6, lg: 3 }}>
-                    <Paper p="md" withBorder style={{ height: '100%', minHeight: '500px', display: 'flex', flexDirection: 'column' }}>
+                    <Paper p="sm" withBorder style={{ minHeight: '300px' }}>
                       {/* Phase Header */}
-                      <Group justify="space-between" mb="md">
+                      <Group justify="space-between" mb="sm">
                         <div>
                           <Text fw={600} size="sm">
                             {phase.title}
@@ -499,13 +487,12 @@ export default function OpportunityPipelinePage() {
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             style={{
-                              flex: 1,
-                              minHeight: '400px',
+                              minHeight: '200px',
                               backgroundColor: snapshot.isDraggingOver 
                                 ? 'var(--mantine-color-blue-0)' 
                                 : 'transparent',
                               borderRadius: '8px',
-                              padding: '8px',
+                              padding: '4px',
                               transition: 'background-color 0.2s ease',
                             }}
                           >

@@ -533,11 +533,11 @@ export function PipelineAnalyticsDashboard({ opportunities, phaseTotals }: Pipel
       {/* Pipeline Velocity Analysis */}
       <Paper p="md" withBorder>
         <Title order={4} mb="md">Pipeline Velocity & Cycle Time</Title>
-        <Grid>
-          <Grid.Col span={{ base: 12, md: 8 }}>
+        <Grid gutter="md">
+          <Grid.Col span={{ base: 12, lg: 8 }}>
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
               {pipelineVelocity.map((phase, index) => (
-                <Card key={index} p="md" withBorder>
+                <Card key={index} p="md" withBorder style={{ height: '100%' }}>
                   <Center mb="md">
                     <RingProgress
                       size={120}
@@ -566,39 +566,43 @@ export function PipelineAnalyticsDashboard({ opportunities, phaseTotals }: Pipel
               ))}
             </SimpleGrid>
           </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 4 }}>
-            <Stack gap="md">
-              <Card p="md" withBorder>
-                <Text fw={500} mb="md">Total Cycle Time</Text>
-                <Text fw={700} size="xl" mb="xs">
-                  {pipelineVelocity.reduce((sum, phase) => sum + phase.avgDays, 0)} days
-                </Text>
-                <Text size="xs" c="dimmed">
-                  Average end-to-end pipeline
-                </Text>
+          <Grid.Col span={{ base: 12, lg: 4 }}>
+            <Stack gap="md" style={{ height: '100%' }}>
+              <Card p="md" withBorder style={{ flex: 1 }}>
+                <Stack justify="center" style={{ height: '100%' }}>
+                  <div>
+                    <Text fw={500} mb="xs">Total Cycle Time</Text>
+                    <Text fw={700} size="xl">
+                      {pipelineVelocity.reduce((sum, phase) => sum + phase.avgDays, 0)} days
+                    </Text>
+                    <Text size="xs" c="dimmed" mt={4}>
+                      Average end-to-end pipeline
+                    </Text>
+                  </div>
+                </Stack>
               </Card>
               
-              <Card p="md" withBorder>
+              <Card p="md" withBorder style={{ flex: 1 }}>
                 <Text fw={500} mb="md">Velocity Insights</Text>
-                <Stack gap="xs">
+                <Stack gap="sm">
                   <Group justify="space-between">
-                    <Text size="sm">Fastest Phase</Text>
-                    <Text size="sm" fw={500}>
+                    <Text size="sm" c="dimmed">Fastest Phase</Text>
+                    <Text size="sm" fw={500} style={{ textAlign: 'right', maxWidth: '60%' }}>
                       {pipelineVelocity.reduce((min, phase) => 
                         phase.avgDays < min.avgDays ? phase : min
                       ).phase}
                     </Text>
                   </Group>
                   <Group justify="space-between">
-                    <Text size="sm">Slowest Phase</Text>
-                    <Text size="sm" fw={500}>
+                    <Text size="sm" c="dimmed">Slowest Phase</Text>
+                    <Text size="sm" fw={500} style={{ textAlign: 'right', maxWidth: '60%' }}>
                       {pipelineVelocity.reduce((max, phase) => 
                         phase.avgDays > max.avgDays ? phase : max
                       ).phase}
                     </Text>
                   </Group>
                   <Group justify="space-between">
-                    <Text size="sm">Bottleneck Risk</Text>
+                    <Text size="sm" c="dimmed">Bottleneck Risk</Text>
                     <Badge 
                       size="sm" 
                       color={pipelineVelocity.some(p => p.avgDays > 45) ? 'red' : 'green'}
