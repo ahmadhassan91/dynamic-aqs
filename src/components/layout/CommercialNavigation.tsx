@@ -126,9 +126,12 @@ const commercialNavData = [
     label: 'Organizations',
     icon: IconBuilding,
     links: [
+      { label: 'Organization Management', link: '/commercial/organizations' },
+      { label: 'Consolidated Reports', link: '/commercial/organizations/reports' },
+      { label: 'Bulk Management', link: '/commercial/organizations/bulk' },
+      { label: 'Hierarchy View', link: '/commercial/organizations/hierarchy' },
       { label: 'Engineering Firms', link: '/commercial/organizations/firms' },
       { label: 'Manufacturer Reps', link: '/commercial/organizations/reps' },
-      { label: 'Hierarchy View', link: '/commercial/organizations/hierarchy' },
     ],
   },
   {

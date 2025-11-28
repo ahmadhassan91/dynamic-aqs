@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { Paper, Text, Group, Stack, Button, Grid, Title, ThemeIcon, ActionIcon, Badge, Alert } from '@mantine/core';
+import { IconDeviceFloppy, IconRotateClockwise, IconX, IconGripVertical, IconMinus, IconPlus, IconInfoCircle } from '@tabler/icons-react';
 
 interface DashboardCustomizerProps {
   widgets: string[];
@@ -121,7 +123,6 @@ export function DashboardCustomizer({ widgets, onWidgetReorder, onClose }: Dashb
   };
 
   const handleSaveLayout = () => {
-    // Mock save functionality
     const layout = {
       widgets: availableWidgets.filter(w => w.enabled).map(w => w.id),
       timestamp: new Date().toISOString()
@@ -146,124 +147,128 @@ export function DashboardCustomizer({ widgets, onWidgetReorder, onClose }: Dashb
   const disabledWidgets = availableWidgets.filter(w => !w.enabled);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border p-6 mb-6">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Customize Dashboard</h3>
-        <div className="flex space-x-3">
-          <button
+    <Paper p="md" radius="md" withBorder mb="lg">
+      <Group justify="space-between" mb="md">
+        <Title order={3}>Customize Dashboard</Title>
+        <Group>
+          <Button
+            leftSection={<IconDeviceFloppy size={16} />}
             onClick={handleSaveLayout}
-            className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+            color="green"
+            variant="light"
           >
             Save Layout
-          </button>
-          <button
+          </Button>
+          <Button
+            leftSection={<IconRotateClockwise size={16} />}
             onClick={handleResetLayout}
-            className="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
+            color="gray"
+            variant="light"
           >
             Reset
-          </button>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      </div>
+          </Button>
+          <ActionIcon onClick={onClose} variant="subtle" color="gray">
+            <IconX size={20} />
+          </ActionIcon>
+        </Group>
+      </Group>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <Grid>
         {/* Enabled Widgets */}
-        <div>
-          <h4 className="text-md font-medium text-gray-900 mb-3">Active Widgets</h4>
-          <div className="space-y-2 min-h-[200px] border-2 border-dashed border-gray-300 rounded-lg p-3">
+        <Grid.Col span={{ base: 12, md: 6 }}>
+          <Text fw={500} mb="sm">Active Widgets</Text>
+          <Stack gap="xs" style={{ minHeight: 200, border: '2px dashed var(--mantine-color-gray-3)', borderRadius: 'var(--mantine-radius-md)', padding: 'var(--mantine-spacing-sm)' }}>
             {enabledWidgets.map((widget, index) => (
-              <div
+              <Paper
                 key={widget.id}
                 draggable
                 onDragStart={(e) => handleDragStart(e, widget.id)}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e, widget.id)}
-                className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg cursor-move hover:bg-blue-100 transition-colors"
+                p="sm"
+                withBorder
+                style={{ 
+                  cursor: 'move',
+                  backgroundColor: 'var(--mantine-color-blue-0)',
+                  borderColor: 'var(--mantine-color-blue-2)'
+                }}
               >
-                <div className="flex items-center space-x-3">
-                  <span className="text-lg">{widget.icon}</span>
-                  <div>
-                    <div className="font-medium text-gray-900">{widget.name}</div>
-                    <div className="text-sm text-gray-600">{widget.description}</div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-xs text-gray-500">#{index + 1}</span>
-                  <button
-                    onClick={() => handleWidgetToggle(widget.id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
-                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </div>
-              </div>
+                <Group justify="space-between">
+                  <Group>
+                    <ThemeIcon variant="light" size="lg" color="blue">{widget.icon}</ThemeIcon>
+                    <div>
+                      <Text fw={500}>{widget.name}</Text>
+                      <Text size="xs" c="dimmed">{widget.description}</Text>
+                    </div>
+                  </Group>
+                  <Group gap="xs">
+                    <Badge size="sm" variant="light" color="gray">#{index + 1}</Badge>
+                    <ActionIcon 
+                      color="red" 
+                      variant="subtle"
+                      onClick={() => handleWidgetToggle(widget.id)}
+                    >
+                      <IconMinus size={16} />
+                    </ActionIcon>
+                    <IconGripVertical size={16} style={{ color: 'var(--mantine-color-gray-5)' }} />
+                  </Group>
+                </Group>
+              </Paper>
             ))}
             {enabledWidgets.length === 0 && (
-              <div className="text-center text-gray-500 py-8">
+              <Text c="dimmed" ta="center" py="xl">
                 No widgets selected. Add widgets from the available list.
-              </div>
+              </Text>
             )}
-          </div>
-        </div>
+          </Stack>
+        </Grid.Col>
 
         {/* Available Widgets */}
-        <div>
-          <h4 className="text-md font-medium text-gray-900 mb-3">Available Widgets</h4>
-          <div className="space-y-2 min-h-[200px]">
+        <Grid.Col span={{ base: 12, md: 6 }}>
+          <Text fw={500} mb="sm">Available Widgets</Text>
+          <Stack gap="xs" style={{ minHeight: 200 }}>
             {disabledWidgets.map((widget) => (
-              <div
+              <Paper
                 key={widget.id}
-                className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors"
+                p="sm"
+                withBorder
+                style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}
               >
-                <div className="flex items-center space-x-3">
-                  <span className="text-lg">{widget.icon}</span>
-                  <div>
-                    <div className="font-medium text-gray-900">{widget.name}</div>
-                    <div className="text-sm text-gray-600">{widget.description}</div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => handleWidgetToggle(widget.id)}
-                  className="text-green-600 hover:text-green-800"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                </button>
-              </div>
+                <Group justify="space-between">
+                  <Group>
+                    <ThemeIcon variant="light" size="lg" color="gray">{widget.icon}</ThemeIcon>
+                    <div>
+                      <Text fw={500}>{widget.name}</Text>
+                      <Text size="xs" c="dimmed">{widget.description}</Text>
+                    </div>
+                  </Group>
+                  <ActionIcon 
+                    color="green" 
+                    variant="subtle"
+                    onClick={() => handleWidgetToggle(widget.id)}
+                  >
+                    <IconPlus size={16} />
+                  </ActionIcon>
+                </Group>
+              </Paper>
             ))}
             {disabledWidgets.length === 0 && (
-              <div className="text-center text-gray-500 py-8">
+              <Text c="dimmed" ta="center" py="xl">
                 All available widgets are currently active.
-              </div>
+              </Text>
             )}
-          </div>
-        </div>
-      </div>
+          </Stack>
+        </Grid.Col>
+      </Grid>
 
-      {/* Instructions */}
-      <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-        <h5 className="font-medium text-blue-900 mb-2">Customization Instructions</h5>
-        <ul className="text-sm text-blue-800 space-y-1">
-          <li>• Drag and drop widgets in the Active Widgets section to reorder them</li>
-          <li>• Click the + button to add widgets from the Available Widgets section</li>
-          <li>• Click the trash button to remove widgets from your dashboard</li>
-          <li>• Use Save Layout to persist your changes</li>
-          <li>• Use Reset to return to the default layout</li>
-        </ul>
-      </div>
-    </div>
+      <Alert icon={<IconInfoCircle size={16} />} title="Customization Instructions" color="blue" mt="lg" variant="light">
+        <Stack gap={4}>
+          <Text size="sm">• Drag and drop widgets in the Active Widgets section to reorder them</Text>
+          <Text size="sm">• Click the + button to add widgets from the Available Widgets section</Text>
+          <Text size="sm">• Click the minus button to remove widgets from your dashboard</Text>
+          <Text size="sm">• Use Save Layout to persist your changes</Text>
+        </Stack>
+      </Alert>
+    </Paper>
   );
 }

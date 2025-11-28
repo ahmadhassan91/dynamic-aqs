@@ -3,6 +3,40 @@
 import React, { useState, useRef } from 'react';
 import { Organization, OrganizationType } from '@/types/commercial';
 import { commercialService } from '@/lib/services/commercialService';
+import {
+  Stack,
+  Group,
+  Title,
+  Text,
+  Paper,
+  Button,
+  FileInput,
+  Progress,
+  SimpleGrid,
+  Table,
+  Badge,
+  Alert,
+  Code,
+  ThemeIcon,
+  Grid,
+  FileButton,
+  ActionIcon,
+  ScrollArea
+} from '@mantine/core';
+import {
+  IconUpload,
+  IconCheck,
+  IconX,
+  IconAlertTriangle,
+  IconFileSpreadsheet,
+  IconRefresh,
+  IconChartBar,
+  IconDownload,
+  IconInfoCircle,
+  IconDatabaseImport,
+  IconDatabaseExport,
+  IconFile
+} from '@tabler/icons-react';
 
 interface BulkOperation {
   type: 'import' | 'update' | 'validate' | 'export';
@@ -61,10 +95,9 @@ export default function BulkOrganizationManager() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewData, setPreviewData] = useState<any[]>([]);
   const [showPreview, setShowPreview] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const resetRef = useRef<() => void>(null);
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleFileSelect = (file: File | null) => {
     if (file) {
       setSelectedFile(file);
       if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
@@ -82,9 +115,9 @@ export default function BulkOrganizationManager() {
       const lines = text.split('\n');
       const headers = lines[0].split(',').map(h => h.trim());
       
-      const data = lines.slice(1, 6).map((line, index) => { // Preview first 5 rows
+      const data = lines.slice(1, 6).map((line, index) => {
         const values = line.split(',').map(v => v.trim());
-        const row: any = { _row: index + 2 }; // +2 because we skip header and start from 1
+        const row: any = { _row: index + 2 };
         headers.forEach((header, i) => {
           row[header] = values[i] || '';
         });
@@ -102,11 +135,11 @@ export default function BulkOrganizationManager() {
     reader.onload = (e) => {
       try {
         const json = JSON.parse(e.target?.result as string);
-        const data = Array.isArray(json) ? json.slice(0, 5) : [json]; // Preview first 5 items
+        const data = Array.isArray(json) ? json.slice(0, 5) : [json];
         setPreviewData(data.map((item, index) => ({ ...item, _row: index + 1 })));
         setShowPreview(true);
       } catch (error) {
-        alert('Invalid JSON file format');
+        console.error('Invalid JSON file format');
       }
     };
     reader.readAsText(file);
@@ -123,7 +156,6 @@ export default function BulkOrganizationManager() {
     });
 
     try {
-      // Simulate validation process
       const reader = new FileReader();
       reader.onload = async (e) => {
         const text = e.target?.result as string;
@@ -149,11 +181,9 @@ export default function BulkOrganizationManager() {
         const errors: ValidationError[] = [];
         const warnings: ValidationWarning[] = [];
 
-        // Validate each row
         data.forEach((row, index) => {
           const rowNum = row._row || index + 1;
 
-          // Required fields validation
           if (!row.name || row.name.trim() === '') {
             errors.push({
               row: rowNum,
@@ -172,7 +202,6 @@ export default function BulkOrganizationManager() {
             });
           }
 
-          // Email validation
           if (row.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(row.email)) {
             errors.push({
               row: rowNum,
@@ -182,7 +211,6 @@ export default function BulkOrganizationManager() {
             });
           }
 
-          // Phone validation
           if (row.phone && !/^\+?[\d\s\-\(\)]+$/.test(row.phone)) {
             warnings.push({
               row: rowNum,
@@ -192,7 +220,6 @@ export default function BulkOrganizationManager() {
             });
           }
 
-          // Parent ID validation
           if (row.parentId && !data.some(d => d.id === row.parentId)) {
             warnings.push({
               row: rowNum,
@@ -248,7 +275,6 @@ export default function BulkOrganizationManager() {
     });
 
     try {
-      // Simulate import process with progress updates
       const progressSteps = [10, 30, 50, 70, 90, 100];
       const messages = [
         'Reading file data...',
@@ -299,9 +325,8 @@ export default function BulkOrganizationManager() {
     });
 
     try {
-      // Simulate bulk update process
       const organizations = await commercialService.getOrganizations();
-      const updateCount = Math.min(organizations.length, 10); // Update first 10 for demo
+      const updateCount = Math.min(organizations.length, 10);
 
       for (let i = 0; i < updateCount; i++) {
         await new Promise(resolve => setTimeout(resolve, 200));
@@ -371,8 +396,8 @@ export default function BulkOrganizationManager() {
           totalValue,
           averageRating,
           lastActivity: new Date(recentActivity),
-          conversionRate: Math.random() * 100, // Mock conversion rate
-          engagementScore: Math.random() * 100 // Mock engagement score
+          conversionRate: Math.random() * 100,
+          engagementScore: Math.random() * 100
         };
       });
 
@@ -424,70 +449,52 @@ export default function BulkOrganizationManager() {
     if (!currentOperation) return null;
 
     return (
-      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-lg font-semibold text-blue-900 capitalize">
-            {currentOperation.type} Operation
-          </h3>
-          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-            currentOperation.status === 'completed' ? 'bg-green-100 text-green-800' :
-            currentOperation.status === 'error' ? 'bg-red-100 text-red-800' :
-            'bg-blue-100 text-blue-800'
-          }`}>
-            {currentOperation.status}
-          </span>
-        </div>
-        
-        <div className="mb-2">
-          <div className="flex justify-between text-sm text-blue-700 mb-1">
-            <span>{currentOperation.message}</span>
-            <span>{currentOperation.progress}%</span>
-          </div>
-          <div className="w-full bg-blue-200 rounded-full h-2">
-            <div 
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${currentOperation.progress}%` }}
-            ></div>
-          </div>
-        </div>
+      <Alert 
+        variant="light" 
+        color={currentOperation.status === 'completed' ? 'green' : currentOperation.status === 'error' ? 'red' : 'blue'}
+        title={`${currentOperation.type.charAt(0).toUpperCase() + currentOperation.type.slice(1)} Operation`}
+        icon={currentOperation.status === 'completed' ? <IconCheck size={16} /> : currentOperation.status === 'error' ? <IconX size={16} /> : <IconRefresh size={16} className="animate-spin" />}
+        mb="lg"
+      >
+        <Stack gap="sm">
+          <Group justify="space-between">
+            <Text size="sm">{currentOperation.message}</Text>
+            <Badge 
+              color={currentOperation.status === 'completed' ? 'green' : currentOperation.status === 'error' ? 'red' : 'blue'}
+            >
+              {currentOperation.status}
+            </Badge>
+          </Group>
+          
+          <Progress 
+            value={currentOperation.progress} 
+            animated={currentOperation.status === 'processing'} 
+            color={currentOperation.status === 'completed' ? 'green' : currentOperation.status === 'error' ? 'red' : 'blue'}
+          />
 
-        {currentOperation.results && (
-          <div className="mt-4 text-sm">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <span className="font-medium text-blue-700">Total:</span>
-                <span className="ml-1 text-blue-900">{currentOperation.results.totalProcessed}</span>
-              </div>
-              <div>
-                <span className="font-medium text-green-700">Successful:</span>
-                <span className="ml-1 text-green-900">{currentOperation.results.successful}</span>
-              </div>
-              <div>
-                <span className="font-medium text-red-700">Failed:</span>
-                <span className="ml-1 text-red-900">{currentOperation.results.failed}</span>
-              </div>
-              <div>
-                <span className="font-medium text-yellow-700">Warnings:</span>
-                <span className="ml-1 text-yellow-900">{currentOperation.results.warnings.length}</span>
-              </div>
-            </div>
+          {currentOperation.results && (
+            <Paper withBorder p="xs" bg="white">
+              <SimpleGrid cols={{ base: 2, md: 4 }}>
+                <Text size="sm"><Text span fw={700} c="blue">Total:</Text> {currentOperation.results.totalProcessed}</Text>
+                <Text size="sm"><Text span fw={700} c="green">Success:</Text> {currentOperation.results.successful}</Text>
+                <Text size="sm"><Text span fw={700} c="red">Failed:</Text> {currentOperation.results.failed}</Text>
+                <Text size="sm"><Text span fw={700} c="yellow">Warnings:</Text> {currentOperation.results.warnings.length}</Text>
+              </SimpleGrid>
 
-            {currentOperation.results.errors.length > 0 && (
-              <div className="mt-3">
-                <h4 className="font-medium text-red-700 mb-1">Errors:</h4>
-                <ul className="text-red-600 text-xs space-y-1">
-                  {currentOperation.results.errors.slice(0, 5).map((error, index) => (
-                    <li key={index}>• {error}</li>
-                  ))}
-                  {currentOperation.results.errors.length > 5 && (
-                    <li>• ... and {currentOperation.results.errors.length - 5} more</li>
-                  )}
-                </ul>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+              {currentOperation.results.errors.length > 0 && (
+                <Stack gap="xs" mt="xs">
+                  <Text size="sm" fw={700} c="red">Errors:</Text>
+                  <ScrollArea h={100}>
+                    {currentOperation.results.errors.map((error, index) => (
+                      <Text key={index} size="xs" c="red">• {error}</Text>
+                    ))}
+                  </ScrollArea>
+                </Stack>
+              )}
+            </Paper>
+          )}
+        </Stack>
+      </Alert>
     );
   };
 
@@ -495,56 +502,54 @@ export default function BulkOrganizationManager() {
     if (!validationResult) return null;
 
     return (
-      <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Validation Results</h3>
+      <Paper withBorder p="md" mb="lg" bg="gray.0">
+        <Title order={4} mb="md">Validation Results</Title>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">{validationResult.organizationCount}</div>
-            <div className="text-sm text-gray-600">Organizations</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-red-600">{validationResult.errors.length}</div>
-            <div className="text-sm text-gray-600">Errors</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-yellow-600">{validationResult.warnings.length}</div>
-            <div className="text-sm text-gray-600">Warnings</div>
-          </div>
-        </div>
+        <SimpleGrid cols={3} mb="md">
+          <Stack align="center" gap={0}>
+            <Text size="xl" fw={700} c="blue">{validationResult.organizationCount}</Text>
+            <Text size="xs" c="dimmed">Organizations</Text>
+          </Stack>
+          <Stack align="center" gap={0}>
+            <Text size="xl" fw={700} c="red">{validationResult.errors.length}</Text>
+            <Text size="xs" c="dimmed">Errors</Text>
+          </Stack>
+          <Stack align="center" gap={0}>
+            <Text size="xl" fw={700} c="yellow">{validationResult.warnings.length}</Text>
+            <Text size="xs" c="dimmed">Warnings</Text>
+          </Stack>
+        </SimpleGrid>
 
         {validationResult.errors.length > 0 && (
-          <div className="mb-4">
-            <h4 className="font-medium text-red-700 mb-2">Errors (must be fixed before import):</h4>
-            <div className="max-h-32 overflow-y-auto">
-              <ul className="text-red-600 text-sm space-y-1">
+          <Alert color="red" title="Errors (must be fixed before import)" mb="sm" icon={<IconX size={16} />}>
+            <ScrollArea h={100}>
+              <Stack gap={4}>
                 {validationResult.errors.map((error, index) => (
-                  <li key={index}>
+                  <Text key={index} size="xs">
                     Row {error.row}, {error.field}: {error.message}
-                    {error.value && <span className="text-gray-500"> (value: "{error.value}")</span>}
-                  </li>
+                    {error.value && <Text span c="dimmed"> (value: "{error.value}")</Text>}
+                  </Text>
                 ))}
-              </ul>
-            </div>
-          </div>
+              </Stack>
+            </ScrollArea>
+          </Alert>
         )}
 
         {validationResult.warnings.length > 0 && (
-          <div>
-            <h4 className="font-medium text-yellow-700 mb-2">Warnings (recommended to review):</h4>
-            <div className="max-h-32 overflow-y-auto">
-              <ul className="text-yellow-600 text-sm space-y-1">
+          <Alert color="yellow" title="Warnings (recommended to review)" icon={<IconAlertTriangle size={16} />}>
+            <ScrollArea h={100}>
+              <Stack gap={4}>
                 {validationResult.warnings.map((warning, index) => (
-                  <li key={index}>
+                  <Text key={index} size="xs">
                     Row {warning.row}, {warning.field}: {warning.message}
-                    {warning.value && <span className="text-gray-500"> (value: "{warning.value}")</span>}
-                  </li>
+                    {warning.value && <Text span c="dimmed"> (value: "{warning.value}")</Text>}
+                  </Text>
                 ))}
-              </ul>
-            </div>
-          </div>
+              </Stack>
+            </ScrollArea>
+          </Alert>
         )}
-      </div>
+      </Paper>
     );
   };
 
@@ -552,33 +557,29 @@ export default function BulkOrganizationManager() {
     if (!showPreview || previewData.length === 0) return null;
 
     return (
-      <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">File Preview (first 5 rows)</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
-            <thead>
-              <tr className="bg-gray-100">
+      <Paper withBorder p="md" mb="lg">
+        <Title order={4} mb="md">File Preview (first 5 rows)</Title>
+        <ScrollArea>
+          <Table striped highlightOnHover withTableBorder withColumnBorders>
+            <Table.Thead>
+              <Table.Tr>
                 {Object.keys(previewData[0] || {}).filter(key => key !== '_row').map(key => (
-                  <th key={key} className="px-3 py-2 text-left font-medium text-gray-700 border-b">
-                    {key}
-                  </th>
+                  <Table.Th key={key}>{key}</Table.Th>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
               {previewData.map((row, index) => (
-                <tr key={index} className="border-b">
+                <Table.Tr key={index}>
                   {Object.entries(row).filter(([key]) => key !== '_row').map(([key, value]) => (
-                    <td key={key} className="px-3 py-2 text-gray-900">
-                      {String(value)}
-                    </td>
+                    <Table.Td key={key}>{String(value)}</Table.Td>
                   ))}
-                </tr>
+                </Table.Tr>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </Table.Tbody>
+          </Table>
+        </ScrollArea>
+      </Paper>
     );
   };
 
@@ -586,196 +587,207 @@ export default function BulkOrganizationManager() {
     if (performanceMetrics.length === 0) return null;
 
     return (
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Organization Performance Analytics</h3>
-          <button
+      <Paper withBorder p="md" mb="lg">
+        <Group justify="space-between" mb="md">
+          <Title order={3}>Organization Performance Analytics</Title>
+          <Button
+            leftSection={<IconDownload size={16} />}
+            color="green"
             onClick={() => exportToCSV(performanceMetrics, 'organization-performance.csv')}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
           >
             Export to CSV
-          </button>
-        </div>
+          </Button>
+        </Group>
         
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Organization
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Contacts
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Opportunities
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Total Value
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Avg Rating
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Engagement
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
+        <ScrollArea>
+          <Table striped highlightOnHover>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Organization</Table.Th>
+                <Table.Th>Contacts</Table.Th>
+                <Table.Th>Opportunities</Table.Th>
+                <Table.Th>Total Value</Table.Th>
+                <Table.Th>Avg Rating</Table.Th>
+                <Table.Th>Engagement</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
               {performanceMetrics.slice(0, 10).map((metric) => (
-                <tr key={metric.organizationId} className="hover:bg-gray-50">
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{metric.organizationName}</div>
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {metric.totalContacts}
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {metric.totalOpportunities}
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${metric.totalValue.toLocaleString()}
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {metric.averageRating.toFixed(1)}/5
-                  </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {metric.engagementScore.toFixed(0)}%
-                  </td>
-                </tr>
+                <Table.Tr key={metric.organizationId}>
+                  <Table.Td fw={500}>{metric.organizationName}</Table.Td>
+                  <Table.Td>{metric.totalContacts}</Table.Td>
+                  <Table.Td>{metric.totalOpportunities}</Table.Td>
+                  <Table.Td>${metric.totalValue.toLocaleString()}</Table.Td>
+                  <Table.Td>{metric.averageRating.toFixed(1)}/5</Table.Td>
+                  <Table.Td>{metric.engagementScore.toFixed(0)}%</Table.Td>
+                </Table.Tr>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </Table.Tbody>
+          </Table>
+        </ScrollArea>
+      </Paper>
     );
   };
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Bulk Organization Management</h1>
-        <p className="text-gray-600 mt-1">
+    <Stack gap="xl" p="md">
+      <Stack gap="xs">
+        <Title order={2}>Bulk Organization Management</Title>
+        <Text c="dimmed">
           Import, update, validate, and analyze organization data in bulk
-        </p>
-      </div>
+        </Text>
+      </Stack>
 
       {renderOperationProgress()}
 
       {/* Import Section */}
-      <div className="mb-8 bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Import Organizations</h2>
+      <Paper withBorder p="xl" radius="md">
+        <Title order={3} mb="md">Import Organizations</Title>
         
-        <div className="mb-4">
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".csv,.json"
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors mr-3"
-          >
-            Select File
-          </button>
+        <Group mb="md">
+          <FileButton resetRef={resetRef} onChange={handleFileSelect} accept=".csv,.json">
+            {(props) => (
+              <Button {...props} leftSection={<IconFileSpreadsheet size={16} />}>
+                Select File
+              </Button>
+            )}
+          </FileButton>
+          
           {selectedFile && (
-            <span className="text-sm text-gray-600">
-              Selected: {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)
-            </span>
+            <Group gap="xs">
+              <ThemeIcon size="sm" variant="light" color="blue"><IconFile size={12} /></ThemeIcon>
+              <Text size="sm">
+                {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)
+              </Text>
+              <ActionIcon size="sm" color="red" variant="subtle" onClick={() => {
+                setSelectedFile(null);
+                setPreviewData([]);
+                setShowPreview(false);
+                setValidationResult(null);
+                resetRef.current?.();
+              }}>
+                <IconX size={14} />
+              </ActionIcon>
+            </Group>
           )}
-        </div>
+        </Group>
 
         {renderFilePreview()}
         {renderValidationResults()}
 
-        <div className="flex space-x-3">
-          <button
+        <Group>
+          <Button
+            leftSection={<IconCheck size={16} />}
+            color="yellow"
             onClick={validateImportData}
             disabled={!selectedFile || currentOperation?.status === 'processing'}
-            className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 disabled:bg-gray-400 transition-colors"
           >
             Validate Data
-          </button>
-          <button
+          </Button>
+          <Button
+            leftSection={<IconDatabaseImport size={16} />}
+            color="green"
             onClick={performBulkImport}
             disabled={!validationResult?.isValid || currentOperation?.status === 'processing'}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 transition-colors"
           >
             Import Organizations
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Group>
+      </Paper>
 
       {/* Bulk Operations Section */}
-      <div className="mb-8 bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Bulk Operations</h2>
+      <Paper withBorder p="xl" radius="md">
+        <Title order={3} mb="md">Bulk Operations</Title>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <button
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
+          <Paper 
+            component="button" 
             onClick={performBulkUpdate}
             disabled={currentOperation?.status === 'processing'}
-            className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 hover:bg-blue-50 transition-colors text-left disabled:opacity-50"
+            withBorder 
+            p="lg" 
+            style={{ 
+              textAlign: 'left', 
+              cursor: 'pointer',
+              borderColor: 'var(--mantine-color-blue-3)',
+              backgroundColor: 'var(--mantine-color-blue-0)',
+              transition: 'all 0.2s ease'
+            }}
           >
-            <h3 className="font-semibold text-gray-900 mb-2">Bulk Update</h3>
-            <p className="text-sm text-gray-600">
+            <Group mb="xs">
+              <ThemeIcon size="lg" variant="light" color="blue"><IconRefresh size={20} /></ThemeIcon>
+              <Text fw={600} size="lg">Bulk Update</Text>
+            </Group>
+            <Text size="sm" c="dimmed">
               Update multiple organization records with new information
-            </p>
-          </button>
+            </Text>
+          </Paper>
           
-          <button
+          <Paper 
+            component="button" 
             onClick={generatePerformanceAnalytics}
             disabled={currentOperation?.status === 'processing'}
-            className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-400 hover:bg-green-50 transition-colors text-left disabled:opacity-50"
+            withBorder 
+            p="lg" 
+            style={{ 
+              textAlign: 'left', 
+              cursor: 'pointer',
+              borderColor: 'var(--mantine-color-green-3)',
+              backgroundColor: 'var(--mantine-color-green-0)',
+              transition: 'all 0.2s ease'
+            }}
           >
-            <h3 className="font-semibold text-gray-900 mb-2">Performance Analytics</h3>
-            <p className="text-sm text-gray-600">
+            <Group mb="xs">
+              <ThemeIcon size="lg" variant="light" color="green"><IconChartBar size={20} /></ThemeIcon>
+              <Text fw={600} size="lg">Performance Analytics</Text>
+            </Group>
+            <Text size="sm" c="dimmed">
               Generate comprehensive performance metrics for all organizations
-            </p>
-          </button>
-        </div>
-      </div>
+            </Text>
+          </Paper>
+        </SimpleGrid>
+      </Paper>
 
       {renderPerformanceMetrics()}
 
       {/* Help Section */}
-      <div className="bg-gray-50 rounded-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Import Format Guidelines</h2>
+      <Paper withBorder p="xl" radius="md" bg="gray.0">
+        <Group mb="md">
+          <IconInfoCircle size={24} />
+          <Title order={3}>Import Format Guidelines</Title>
+        </Group>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
           <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Required Fields</h3>
-            <ul className="text-sm text-gray-600 space-y-1">
-              <li>• <code className="bg-gray-200 px-1 rounded">name</code> - Organization name</li>
-              <li>• <code className="bg-gray-200 px-1 rounded">type</code> - Organization type</li>
-              <li>• <code className="bg-gray-200 px-1 rounded">email</code> - Contact email</li>
-              <li>• <code className="bg-gray-200 px-1 rounded">phone</code> - Contact phone</li>
-            </ul>
+            <Text fw={600} mb="xs">Required Fields</Text>
+            <Stack gap="xs">
+              <Text size="sm">• <Code>name</Code> - Organization name</Text>
+              <Text size="sm">• <Code>type</Code> - Organization type</Text>
+              <Text size="sm">• <Code>email</Code> - Contact email</Text>
+              <Text size="sm">• <Code>phone</Code> - Contact phone</Text>
+            </Stack>
           </div>
           
           <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Optional Fields</h3>
-            <ul className="text-sm text-gray-600 space-y-1">
-              <li>• <code className="bg-gray-200 px-1 rounded">parentId</code> - Parent organization ID</li>
-              <li>• <code className="bg-gray-200 px-1 rounded">territoryId</code> - Territory assignment</li>
-              <li>• <code className="bg-gray-200 px-1 rounded">address</code> - Physical address</li>
-              <li>• <code className="bg-gray-200 px-1 rounded">isActive</code> - Active status (true/false)</li>
-            </ul>
+            <Text fw={600} mb="xs">Optional Fields</Text>
+            <Stack gap="xs">
+              <Text size="sm">• <Code>parentId</Code> - Parent organization ID</Text>
+              <Text size="sm">• <Code>territoryId</Code> - Territory assignment</Text>
+              <Text size="sm">• <Code>address</Code> - Physical address</Text>
+              <Text size="sm">• <Code>isActive</Code> - Active status (true/false)</Text>
+            </Stack>
           </div>
-        </div>
+        </SimpleGrid>
         
-        <div className="mt-4">
-          <h3 className="font-semibold text-gray-900 mb-2">Supported Organization Types</h3>
-          <div className="flex flex-wrap gap-2">
-            {Object.values(OrganizationType).map(type => (
-              <span key={type} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
-                {type}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+        <Text fw={600} mt="lg" mb="xs">Supported Organization Types</Text>
+        <Group gap="xs">
+          {Object.values(OrganizationType).map(type => (
+            <Badge key={type} variant="light" color="blue">
+              {type}
+            </Badge>
+          ))}
+        </Group>
+      </Paper>
+    </Stack>
   );
 }

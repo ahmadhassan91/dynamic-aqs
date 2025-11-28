@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Stack, Group, Title, Text, Button, SimpleGrid, Paper, Box } from '@mantine/core';
+import { Stack, Group, Title, Text, Button, SimpleGrid, Paper, ThemeIcon } from '@mantine/core';
 import { DashboardWidget } from './DashboardWidget';
 import { DashboardCustomizer } from './DashboardCustomizer';
 import { generateAllMockData } from '@/lib/mockData/generators';
@@ -11,7 +11,8 @@ import {
   IconTarget,
   IconSchool,
   IconPackage,
-  IconChartBar
+  IconChartBar,
+  IconClock
 } from '@tabler/icons-react';
 
 interface DashboardMetric {
@@ -276,16 +277,14 @@ export function ExecutiveDashboard() {
             { type: 'customer', message: 'Customer onboarding completed for XYZ Contractors', time: '2 hours ago' },
           ].map((activity, index) => (
             <Group key={index} gap="sm" p="sm" style={{ backgroundColor: 'var(--mantine-color-gray-0)', borderRadius: 'var(--mantine-radius-sm)' }}>
-              <Box
-                w={8}
-                h={8}
-                style={{
-                  borderRadius: '50%',
-                  backgroundColor: 
-                    activity.type === 'order' ? 'var(--mantine-color-green-5)' :
-                    activity.type === 'training' ? 'var(--mantine-color-blue-5)' :
-                    activity.type === 'lead' ? 'var(--mantine-color-orange-5)' : 'var(--mantine-color-violet-5)'
-                }}
+              <ThemeIcon
+                size={8}
+                radius="xl"
+                color={
+                  activity.type === 'order' ? 'green' :
+                  activity.type === 'training' ? 'blue' :
+                  activity.type === 'lead' ? 'orange' : 'violet'
+                }
               />
               <Stack gap={2} style={{ flex: 1 }}>
                 <Text size="sm">{activity.message}</Text>
