@@ -157,12 +157,17 @@ export default function RelationshipTracker({ engineer, className = '' }: Relati
   };
 
   const getRatingColor = (rating: EngineerRating) => {
-    const colors = {
+    const colors: Record<number, string> = {
       [EngineerRating.HOSTILE]: 'text-red-600',
       [EngineerRating.UNFAVORABLE]: 'text-orange-600',
       [EngineerRating.NEUTRAL]: 'text-gray-600',
       [EngineerRating.FAVORABLE]: 'text-blue-600',
-      [EngineerRating.CHAMPION]: 'text-green-600'
+      [EngineerRating.CHAMPION]: 'text-green-600',
+      [EngineerRating.LEVEL_6]: 'text-teal-600',
+      [EngineerRating.LEVEL_7]: 'text-cyan-600',
+      [EngineerRating.LEVEL_8]: 'text-indigo-600',
+      [EngineerRating.LEVEL_9]: 'text-purple-600',
+      [EngineerRating.LEVEL_10]: 'text-emerald-600'
     };
     return colors[rating] || 'text-gray-600';
   };

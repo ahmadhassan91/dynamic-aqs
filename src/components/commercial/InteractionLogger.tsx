@@ -176,23 +176,33 @@ export default function InteractionLogger({
   };
 
   const getRatingColor = (rating: EngineerRating) => {
-    const colors = {
+    const colors: Record<number, string> = {
       [EngineerRating.HOSTILE]: 'bg-red-100 text-red-800 border-red-200',
       [EngineerRating.UNFAVORABLE]: 'bg-orange-100 text-orange-800 border-orange-200',
       [EngineerRating.NEUTRAL]: 'bg-gray-100 text-gray-800 border-gray-200',
       [EngineerRating.FAVORABLE]: 'bg-blue-100 text-blue-800 border-blue-200',
-      [EngineerRating.CHAMPION]: 'bg-green-100 text-green-800 border-green-200'
+      [EngineerRating.CHAMPION]: 'bg-green-100 text-green-800 border-green-200',
+      [EngineerRating.LEVEL_6]: 'bg-teal-100 text-teal-800 border-teal-200',
+      [EngineerRating.LEVEL_7]: 'bg-cyan-100 text-cyan-800 border-cyan-200',
+      [EngineerRating.LEVEL_8]: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      [EngineerRating.LEVEL_9]: 'bg-purple-100 text-purple-800 border-purple-200',
+      [EngineerRating.LEVEL_10]: 'bg-emerald-100 text-emerald-800 border-emerald-200'
     };
     return colors[rating] || 'bg-gray-100 text-gray-800 border-gray-200';
   };
 
   const getRatingLabel = (rating: EngineerRating) => {
-    const labels = {
+    const labels: Record<number, string> = {
       [EngineerRating.HOSTILE]: 'Hostile (1)',
       [EngineerRating.UNFAVORABLE]: 'Unfavorable (2)',
       [EngineerRating.NEUTRAL]: 'Neutral (3)',
       [EngineerRating.FAVORABLE]: 'Favorable (4)',
-      [EngineerRating.CHAMPION]: 'Champion (5)'
+      [EngineerRating.CHAMPION]: 'Champion (5)',
+      [EngineerRating.LEVEL_6]: 'Level 6',
+      [EngineerRating.LEVEL_7]: 'Level 7',
+      [EngineerRating.LEVEL_8]: 'Level 8',
+      [EngineerRating.LEVEL_9]: 'Level 9',
+      [EngineerRating.LEVEL_10]: 'Level 10'
     };
     return labels[rating] || 'Unknown';
   };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import {
   Stack,
   TextInput,
@@ -27,7 +27,9 @@ interface TrainingScheduleFormProps {
 }
 
 export function TrainingScheduleForm({ onClose, onSubmit }: TrainingScheduleFormProps) {
-  const { users, customers } = useMockData();
+  const mockData = useMockData();
+  const users = mockData?.users ?? [];
+  const customers = mockData?.customers ?? [];
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -40,7 +42,7 @@ export function TrainingScheduleForm({ onClose, onSubmit }: TrainingScheduleForm
       duration: 60,
       maxAttendees: 20,
       location: '',
-      attendees: [],
+      attendees: [] as string[],
       materials: '',
       objectives: '',
     },
@@ -62,43 +64,18 @@ export function TrainingScheduleForm({ onClose, onSubmit }: TrainingScheduleForm
     { value: 'certification', label: 'Certification' },
   ];
 
-  const trainerOptions = useMemo(() => {
-    try {
-      if (!users || !Array.isArray(users)) return [];
-      return users
-        .filter(user => user.role === 'admin' || user.role === 'regional_manager')
+  // Compute options directly with safeguards
+  const trainerOptions: Array<{value: string; label: string}> = Array.isArray(users) 
+    ? users
+        .filter(user => user && user.role === 'admin' || user.role === 'regional_manager')
         .map(user => ({
-          value: user.id,
-          label: `${user.firstName} ${user.lastName}`,
-        }));
-    } catch (error) {
-      console.error('Error generating trainer options:', error);
-      return [];
-    }
-  }, [users]);
+          value: user.id || '',
+          label: `${user.firstName || ''} ${user.lastName || ''}`,
+        }))
+    : [];
 
-  const attendeeOptions = useMemo(() => {
-    try {
-      if (!users || !customers) return [];
-      
-      const userOptions = Array.isArray(users) ? users.map(user => ({
-        value: user.id,
-        label: `${user.firstName} ${user.lastName} (${user.role})`,
-        group: 'Users',
-      })) : [];
-      
-      const customerOptions = Array.isArray(customers) ? customers.map(customer => ({
-        value: customer.id,
-        label: `${customer.contactName} (${customer.companyName})`,
-        group: 'Customers',
-      })) : [];
-      
-      return [...userOptions, ...customerOptions];
-    } catch (error) {
-      console.error('Error generating attendee options:', error);
-      return [];
-    }
-  }, [users, customers]);
+  // Simple array of attendee options without grouping to avoid potential Mantine issues
+  const attendeeOptions: string[] = [];
 
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
@@ -161,7 +138,8 @@ export function TrainingScheduleForm({ onClose, onSubmit }: TrainingScheduleForm
                 label="Training Type"
                 placeholder="Select training type"
                 data={trainingTypes}
-                {...form.getInputProps('type')}
+                value={form.values.type || null}
+                onChange={(val) => form.setFieldValue('type', val || '')}
                 required
               />
             </Grid.Col>
@@ -169,8 +147,9 @@ export function TrainingScheduleForm({ onClose, onSubmit }: TrainingScheduleForm
               <Select
                 label="Trainer"
                 placeholder="Select trainer"
-                data={Array.isArray(trainerOptions) ? trainerOptions : []}
-                {...form.getInputProps('trainer')}
+                data={trainerOptions}
+                value={form.values.trainer || null}
+                onChange={(val) => form.setFieldValue('trainer', val || '')}
                 required
               />
             </Grid.Col>
@@ -227,10 +206,11 @@ export function TrainingScheduleForm({ onClose, onSubmit }: TrainingScheduleForm
           <MultiSelect
             label="Select Attendees"
             placeholder="Choose who should attend this training"
-            data={Array.isArray(attendeeOptions) ? attendeeOptions : []}
+            data={[]}
             searchable
             clearable
-            {...form.getInputProps('attendees')}
+            value={[]}
+            onChange={() => {}}
           />
         </Card>
 

@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react';
 import {
   Modal,
-  Title,
   Group,
   Button,
   TextInput,
@@ -20,6 +19,7 @@ import {
   Divider,
   Avatar,
   Checkbox,
+  Title,
 } from '@mantine/core';
 import {
   IconCalendar,
@@ -209,12 +209,7 @@ export function TrainingScheduleModal({ opened, onClose, customerId }: TrainingS
     <Modal
       opened={opened}
       onClose={onClose}
-      title={
-        <Group gap="sm">
-          <IconCalendar size={20} />
-          <Title order={3}>Schedule Training Session</Title>
-        </Group>
-      }
+      title="Schedule Training Session"
       size="lg"
       centered
     >

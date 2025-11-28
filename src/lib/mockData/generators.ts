@@ -497,12 +497,12 @@ export function generateMockProducts(count: number = 50): MockProduct[] {
 // Generate all mock data
 export function generateAllMockData() {
   const users = generateMockUsers(20);
-  const customers = generateMockCustomers(500);
-  const leads = generateMockLeads(200);
-  const trainingSessions = generateMockTrainingSessions(customers, 300);
-  const orders = generateMockOrders(customers, 400);
-  const dealers = generateMockDealers(100);
-  const products = generateMockProducts(50);
+  const customers = generateMockCustomers(100);
+  const leads = generateMockLeads(50);
+  const trainingSessions = generateMockTrainingSessions(customers, 100);
+  const orders = generateMockOrders(customers, 100);
+  const dealers = generateMockDealers(30);
+  const products = generateMockProducts(30);
   
   return {
     users,

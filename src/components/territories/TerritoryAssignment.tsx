@@ -56,6 +56,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { useMockData } from '@/lib/mockData/MockDataProvider';
 import type { MockCustomer, MockUser } from '@/lib/mockData/generators';
+import { CustomerFormModal } from '@/components/customers/CustomerFormModal';
 
 interface SortableCustomerProps {
   customer: MockCustomer;
@@ -128,6 +129,7 @@ interface TerritoryCardProps {
   onCustomerEdit: (customer: MockCustomer) => void;
   onCustomerRemove: (customerId: string, territoryId: string) => void;
   onCustomersReorder: (territoryId: string, customerIds: string[]) => void;
+  onAddCustomer: (territoryId: string) => void;
 }
 
 function DroppableTerritoryCard({
@@ -136,7 +138,8 @@ function DroppableTerritoryCard({
   customers,
   onCustomerEdit,
   onCustomerRemove,
-  onCustomersReorder
+  onCustomersReorder,
+  onAddCustomer
 }: TerritoryCardProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: territory.id,
@@ -245,7 +248,7 @@ function DroppableTerritoryCard({
         </ScrollArea>
 
         {/* Add Customer Button */}
-        <Button variant="light" leftSection={<IconPlus size={16} />} fullWidth>
+        <Button variant="light" leftSection={<IconPlus size={16} />} fullWidth onClick={() => onAddCustomer(territory.id)}>
           Add Customer
         </Button>
       </Stack>
@@ -261,6 +264,8 @@ export function TerritoryAssignment() {
   const [draggedCustomer, setDraggedCustomer] = useState<MockCustomer | null>(null);
   const [customerAssignments, setCustomerAssignments] = useState<Record<string, string>>({});
   const [opened, { open, close }] = useDisclosure(false);
+  const [addCustomerOpened, { open: openAddCustomer, close: closeAddCustomer }] = useDisclosure(false);
+  const [selectedTerritoryId, setSelectedTerritoryId] = useState<string | null>(null);
 
   // Get territory managers
   const territoryManagers = users.filter(user => user.role === 'territory_manager');
@@ -386,6 +391,27 @@ export function TerritoryAssignment() {
     });
   };
 
+  const handleAddCustomer = (territoryId: string) => {
+    setSelectedTerritoryId(territoryId);
+    openAddCustomer();
+  };
+
+  const handleSaveNewCustomer = (customerData: Partial<MockCustomer>) => {
+    // Assign the customer to the selected territory
+    if (selectedTerritoryId) {
+      const manager = territoryManagers.find(tm => tm.id === `tm-${selectedTerritoryId}`);
+      if (manager) {
+        customerData.territoryManagerId = manager.id;
+      }
+    }
+    notifications.show({
+      title: 'Customer Added',
+      message: `Customer has been added to the territory`,
+      color: 'green',
+    });
+    closeAddCustomer();
+  };
+
   return (
     <Stack gap="lg">
       {/* Controls */}
@@ -444,6 +470,7 @@ export function TerritoryAssignment() {
                   onCustomerEdit={handleCustomerEdit}
                   onCustomerRemove={handleCustomerRemove}
                   onCustomersReorder={handleCustomersReorder}
+                  onAddCustomer={handleAddCustomer}
                 />
               </Grid.Col>
             );
@@ -480,6 +507,13 @@ export function TerritoryAssignment() {
           </Stack>
         )}
       </Modal>
+
+      {/* Add Customer Modal */}
+      <CustomerFormModal
+        opened={addCustomerOpened}
+        onClose={closeAddCustomer}
+        onSave={handleSaveNewCustomer}
+      />
     </Stack>
   );
 }

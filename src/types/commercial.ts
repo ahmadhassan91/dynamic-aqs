@@ -41,7 +41,10 @@ export interface EngineerContact {
   personalInfo: ContactInfo;
   engineeringFirmId: string;
   manufacturerRepId?: string;
-  rating: EngineerRating;
+  territoryManagerId?: string;
+  architectId?: string;
+  contractorId?: string;
+  rating: number; // 1-10 scale
   ratingHistory: RatingChange[];
   
   // Relationship tracking
@@ -268,7 +271,12 @@ export enum EngineerRating {
   UNFAVORABLE = 2,
   NEUTRAL = 3,
   FAVORABLE = 4,
-  CHAMPION = 5
+  CHAMPION = 5,
+  LEVEL_6 = 6,
+  LEVEL_7 = 7,
+  LEVEL_8 = 8,
+  LEVEL_9 = 9,
+  LEVEL_10 = 10
 }
 
 export enum OrganizationType {

@@ -43,7 +43,10 @@ interface CalendarDay {
 }
 
 export function TrainingCalendar() {
-  const { trainingSessions, users, customers } = useMockData();
+  const mockData = useMockData();
+  const trainingSessions = mockData?.trainingSessions || [];
+  const users = mockData?.users || [];
+  const customers = mockData?.customers || [];
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedSession, setSelectedSession] = useState<any>(null);
   const [showSessionModal, setShowSessionModal] = useState(false);
@@ -54,7 +57,7 @@ export function TrainingCalendar() {
 
   // Generate calendar days for the current month
   const calendarDays = useMemo(() => {
-    if (!trainingSessions) return [];
+    if (!Array.isArray(trainingSessions)) return [];
     
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -173,7 +176,7 @@ export function TrainingCalendar() {
 
   // Get unique trainers and types for filters
   const trainers = useMemo(() => {
-    if (!trainingSessions || !users) return [];
+    if (!Array.isArray(trainingSessions) || !Array.isArray(users)) return [];
     const trainerIds = [...new Set(trainingSessions.map(s => s.trainerId))];
     return trainerIds.map(id => {
       const trainer = users.find(u => u.id === id);
@@ -448,13 +451,15 @@ export function TrainingCalendar() {
         title="Schedule New Training Session"
         size="lg"
       >
-        <TrainingScheduleForm 
-          onClose={() => setShowScheduleModal(false)}
-          onSubmit={(data) => {
-            console.log('Training scheduled:', data);
-            setShowScheduleModal(false);
-          }}
-        />
+        {showScheduleModal && (
+          <TrainingScheduleForm 
+            onClose={() => setShowScheduleModal(false)}
+            onSubmit={(data) => {
+              console.log('Training scheduled:', data);
+              setShowScheduleModal(false);
+            }}
+          />
+        )}
       </Modal>
     </Stack>
   );

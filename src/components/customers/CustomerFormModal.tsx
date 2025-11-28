@@ -10,11 +10,11 @@ import {
     Group,
     Stack,
     Grid,
-    Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import type { MockCustomer } from '@/lib/mockData/generators';
+import { useMockData } from '@/lib/mockData/MockDataProvider';
 
 interface CustomerFormModalProps {
     opened: boolean;
@@ -26,6 +26,10 @@ interface CustomerFormModalProps {
 export function CustomerFormModal({ opened, onClose, customer, onSave }: CustomerFormModalProps) {
     const [loading, setLoading] = useState(false);
     const isEditing = !!customer;
+    const { territories, users, affinityGroups, ownershipGroups } = useMockData();
+
+    // Get territory managers
+    const territoryManagers = users.filter(user => user.role === 'territory_manager');
 
     const form = useForm({
         initialValues: {
@@ -38,6 +42,9 @@ export function CustomerFormModal({ opened, onClose, customer, onSave }: Custome
             state: customer?.address?.state || '',
             zipCode: customer?.address?.zipCode || '',
             status: customer?.status || 'prospect',
+            territoryManagerId: customer?.territoryManagerId || '',
+            affinityGroupId: customer?.affinityGroupId || '',
+            ownershipGroupId: customer?.ownershipGroupId || '',
         },
         validate: {
             contactName: (value: string) => (!value ? 'Contact name is required' : null),
@@ -66,6 +73,9 @@ export function CustomerFormModal({ opened, onClose, customer, onSave }: Custome
                     zipCode: values.zipCode,
                 },
                 status: values.status as 'active' | 'inactive' | 'prospect',
+                territoryManagerId: values.territoryManagerId,
+                affinityGroupId: values.affinityGroupId || undefined,
+                ownershipGroupId: values.ownershipGroupId || undefined,
                 createdAt: customer?.createdAt || new Date(),
                 updatedAt: new Date(),
             };
@@ -100,11 +110,7 @@ export function CustomerFormModal({ opened, onClose, customer, onSave }: Custome
         <Modal
             opened={opened}
             onClose={handleClose}
-            title={
-                <Title order={3}>
-                    {isEditing ? 'Edit Customer' : 'Add New Customer'}
-                </Title>
-            }
+            title={isEditing ? 'Edit Customer' : 'Add New Customer'}
             size="lg"
         >
             <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -188,7 +194,44 @@ export function CustomerFormModal({ opened, onClose, customer, onSave }: Custome
                         {...form.getInputProps('status')}
                     />
 
+                    {/* Assignment Fields */}
+                    <Select
+                        label="Territory Manager"
+                        placeholder="Select territory manager"
+                        data={territoryManagers.map(tm => ({
+                            value: tm.id,
+                            label: `${tm.firstName} ${tm.lastName}`
+                        }))}
+                        clearable
+                        {...form.getInputProps('territoryManagerId')}
+                    />
 
+                    <Grid>
+                        <Grid.Col span={6}>
+                            <Select
+                                label="Affinity Group"
+                                placeholder="Select affinity group"
+                                data={affinityGroups.map(ag => ({
+                                    value: ag.id,
+                                    label: ag.name
+                                }))}
+                                clearable
+                                {...form.getInputProps('affinityGroupId')}
+                            />
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                            <Select
+                                label="Ownership Group"
+                                placeholder="Select ownership group"
+                                data={ownershipGroups.map(og => ({
+                                    value: og.id,
+                                    label: og.name
+                                }))}
+                                clearable
+                                {...form.getInputProps('ownershipGroupId')}
+                            />
+                        </Grid.Col>
+                    </Grid>
 
                     <Group justify="flex-end" mt="md">
                         <Button variant="outline" onClick={handleClose} disabled={loading}>

@@ -33,7 +33,9 @@ import {
   IconUsers,
   IconStar,
 } from '@tabler/icons-react';
+import { useDisclosure } from '@mantine/hooks';
 import { useMockData } from '@/lib/mockData/MockDataProvider';
+import { TrainingScheduleModal } from '@/components/training/TrainingScheduleModal';
 
 interface CustomerTrainingProps {
   customerId: string;
@@ -47,6 +49,7 @@ export function CustomerTraining({ customerId }: CustomerTrainingProps) {
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [scheduleModalOpened, { open: openScheduleModal, close: closeScheduleModal }] = useDisclosure(false);
 
   // Get customer training sessions
   const customerTraining = useMemo(() => {
@@ -210,7 +213,7 @@ export function CustomerTraining({ customerId }: CustomerTrainingProps) {
       <Card withBorder p="md">
         <Group justify="space-between" mb="md">
           <Title order={3}>Training History</Title>
-          <Button leftSection={<IconPlus size={16} />}>
+          <Button leftSection={<IconPlus size={16} />} onClick={openScheduleModal}>
             Schedule Training
           </Button>
         </Group>
@@ -393,7 +396,7 @@ export function CustomerTraining({ customerId }: CustomerTrainingProps) {
               <Text size="sm" fw={500}>Advanced Installation Techniques</Text>
               <Text size="xs" c="dimmed">Based on recent product purchases</Text>
             </div>
-            <Button size="xs" variant="light">
+            <Button size="xs" variant="light" onClick={openScheduleModal}>
               Schedule
             </Button>
           </Group>
@@ -402,7 +405,7 @@ export function CustomerTraining({ customerId }: CustomerTrainingProps) {
               <Text size="sm" fw={500}>Maintenance Best Practices</Text>
               <Text size="xs" c="dimmed">Annual refresher training</Text>
             </div>
-            <Button size="xs" variant="light">
+            <Button size="xs" variant="light" onClick={openScheduleModal}>
               Schedule
             </Button>
           </Group>
@@ -411,12 +414,19 @@ export function CustomerTraining({ customerId }: CustomerTrainingProps) {
               <Text size="sm" fw={500}>New Product Features</Text>
               <Text size="xs" c="dimmed">Latest AQS Pro Series updates</Text>
             </div>
-            <Button size="xs" variant="light">
+            <Button size="xs" variant="light" onClick={openScheduleModal}>
               Schedule
             </Button>
           </Group>
         </Stack>
       </Card>
+
+      {/* Training Schedule Modal */}
+      <TrainingScheduleModal
+        opened={scheduleModalOpened}
+        onClose={closeScheduleModal}
+        customerId={customerId}
+      />
     </Stack>
   );
 }
