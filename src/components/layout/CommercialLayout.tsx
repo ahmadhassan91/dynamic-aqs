@@ -37,10 +37,11 @@ export function CommercialLayout({ children }: CommercialLayoutProps) {
     <AppShell
       header={{ height: 60 }}
       navbar={{
-        width: 280,
+        width: 220,
         breakpoint: 'sm',
         collapsed: { mobile: !opened },
       }}
+      padding={0}
       style={{ minHeight: '100vh' }}
     >
       <AppShell.Header>
@@ -113,7 +114,7 @@ export function CommercialLayout({ children }: CommercialLayoutProps) {
         </Group>
       </AppShell.Header>
 
-      <AppShell.Navbar p="md" style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 60px)' }}>
+      <AppShell.Navbar p="xs" style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 60px)' }}>
         <CommercialNavigation />
       </AppShell.Navbar>
 

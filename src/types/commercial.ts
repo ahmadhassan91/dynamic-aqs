@@ -9,6 +9,14 @@ export interface CommercialOpportunity {
   probability: number;
   salesPhase: SalesPhase;
   
+  // Lead Source (per Dan's feedback - Reps are THE source)
+  leadSource: LeadSource;
+  isMissedLead?: boolean; // True if trade show lead in rep's territory
+  
+  // Location for territory matching
+  county?: string;
+  state?: string;
+  
   // Stakeholders
   buildingOwnerId?: string;
   architectId?: string;
@@ -69,6 +77,25 @@ export interface ManufacturerRep {
   organizationId: string;
   personalInfo: ContactInfo;
   territoryIds: string[];
+  
+  // Territory - Exclusivity by County (per Dan's feedback)
+  territory: {
+    counties: string[];
+    state: string;
+    isExclusive: boolean;
+  };
+  
+  // Rating System (Core Metric - per Dan/Ownership)
+  rating: RepRating;
+  ratingHistory: RepRatingChange[];
+  
+  // Lead Tracking (per Dan's feedback)
+  leadsThisMonth: number;
+  leadsThisQuarter: number;
+  leadsThisYear: number;
+  missedLeads: number; // Trade show leads in their territory = rep failure
+  missedLeadHistory: MissedLead[];
+  
   quota: RepQuota;
   performance: RepPerformance;
   engineeringFirms: string[];
@@ -76,6 +103,46 @@ export interface ManufacturerRep {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
+}
+
+// Rep Rating (1-5) - Core commercial metric per ownership
+export enum RepRating {
+  NOT_ENGAGED = 1,      // Requires outreach, consider replacement
+  MINIMAL_ACTIVITY = 2, // Needs support, set improvement plan
+  ACTIVE = 3,           // Monitor progress, regular check-ins
+  STRONG_PERFORMER = 4, // Nurture, deepen relationship
+  CHAMPION = 5          // Leverage for growth, reference partner
+}
+
+export interface RepRatingChange {
+  previousRating: RepRating;
+  newRating: RepRating;
+  reason: string;
+  changedBy: string;
+  changedAt: Date;
+}
+
+// Lead Source - Track where opportunities come from
+export enum LeadSource {
+  MANUFACTURER_REP = 'Manufacturer Rep',     // Expected (~95%)
+  TRADE_SHOW_DOMESTIC = 'Trade Show (Domestic)', // Rep failure indicator
+  TRADE_SHOW_INTERNATIONAL = 'Trade Show (International)', // OK - no rep coverage
+  WEBSITE = 'Website',
+  REFERRAL = 'Referral',
+  OTHER = 'Other'
+}
+
+// Missed Lead - When trade show lead is in rep's territory
+export interface MissedLead {
+  id: string;
+  opportunityId: string;
+  opportunityName: string;
+  leadSource: LeadSource;
+  county: string;
+  state: string;
+  dateIdentified: Date;
+  wasAddressed: boolean;
+  notes?: string;
 }
 
 export interface Quote {

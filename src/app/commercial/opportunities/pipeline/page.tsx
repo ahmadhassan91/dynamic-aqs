@@ -465,10 +465,10 @@ export default function OpportunityPipelinePage() {
 
             {/* Pipeline Board */}
             <DragDropContext onDragEnd={handleDragEnd}>
-              <Grid gutter="md">
+              <Grid gutter="md" align="stretch">
                 {phaseTotals.map((phase) => (
                   <Grid.Col key={phase.id} span={{ base: 12, sm: 6, lg: 3 }}>
-                    <Paper p="md" withBorder style={{ minHeight: '600px' }}>
+                    <Paper p="md" withBorder style={{ height: '100%', minHeight: '500px', display: 'flex', flexDirection: 'column' }}>
                       {/* Phase Header */}
                       <Group justify="space-between" mb="md">
                         <div>
@@ -499,7 +499,8 @@ export default function OpportunityPipelinePage() {
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             style={{
-                              minHeight: '500px',
+                              flex: 1,
+                              minHeight: '400px',
                               backgroundColor: snapshot.isDraggingOver 
                                 ? 'var(--mantine-color-blue-0)' 
                                 : 'transparent',

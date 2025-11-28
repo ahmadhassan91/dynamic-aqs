@@ -3,12 +3,16 @@
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Title, Text, Stack, Card, Group, Badge, Button, Grid, TextInput, Select, Menu, ActionIcon, Table, Pagination } from '@mantine/core';
-import { IconBriefcase, IconCurrencyDollar, IconTrendingUp, IconTarget, IconPlus, IconSearch, IconFilter, IconDots, IconEye, IconEdit, IconDownload } from '@tabler/icons-react';
+import { IconBriefcase, IconCurrencyDollar, IconTrendingUp, IconTarget, IconPlus, IconSearch, IconFilter, IconDots, IconEye, IconEdit, IconDownload, IconAlertTriangle, IconUser } from '@tabler/icons-react';
+import { Tooltip } from '@mantine/core';
 import { CommercialLayout } from '@/components/layout/CommercialLayout';
 
 const ITEMS_PER_PAGE = 10;
 
-// Mock data for opportunities
+// Lead Source types
+type LeadSourceType = 'Manufacturer Rep' | 'Trade Show (Domestic)' | 'Trade Show (International)' | 'Website' | 'Referral';
+
+// Mock data for opportunities with Lead Source (per Dan's feedback)
 const mockOpportunities = [
   {
     id: '1',
@@ -19,7 +23,11 @@ const mockOpportunities = [
     probability: 75,
     salesPhase: 'Final Quote',
     engineeringFirm: 'MEP Engineering Solutions',
-    manufacturerRep: 'Johnson Controls Rep',
+    manufacturerRep: 'John Smith (TX)',
+    leadSource: 'Manufacturer Rep' as LeadSourceType,
+    isMissedLead: false,
+    county: 'Harris',
+    state: 'TX',
     expectedCloseDate: '2024-02-15',
     createdAt: '2024-01-10',
     status: 'active'
@@ -33,21 +41,29 @@ const mockOpportunities = [
     probability: 60,
     salesPhase: 'Proposal',
     engineeringFirm: 'Urban Design Engineers',
-    manufacturerRep: 'Carrier Commercial Rep',
+    manufacturerRep: 'Maria Garcia (AZ)',
+    leadSource: 'Manufacturer Rep' as LeadSourceType,
+    isMissedLead: false,
+    county: 'Maricopa',
+    state: 'AZ',
     expectedCloseDate: '2024-03-01',
     createdAt: '2024-01-05',
     status: 'active'
   },
   {
     id: '3',
-    jobSiteName: 'Manufacturing Plant Expansion',
+    jobSiteName: 'Chicago Hospital Expansion',
     description: 'Industrial HVAC system for new production facility',
-    marketSegment: 'Industrial',
+    marketSegment: 'Healthcare',
     estimatedValue: 650000,
     probability: 45,
     salesPhase: 'Prospect',
     engineeringFirm: 'Industrial Systems Inc',
-    manufacturerRep: 'Trane Industrial Rep',
+    manufacturerRep: 'Robert Johnson (IL)',
+    leadSource: 'Trade Show (Domestic)' as LeadSourceType,
+    isMissedLead: true, // ⚠️ Rep should have brought this lead
+    county: 'Cook',
+    state: 'IL',
     expectedCloseDate: '2024-04-15',
     createdAt: '2024-01-08',
     status: 'active'
@@ -61,21 +77,29 @@ const mockOpportunities = [
     probability: 80,
     salesPhase: 'Negotiation',
     engineeringFirm: 'Educational Facilities Engineering',
-    manufacturerRep: 'Lennox Education Rep',
+    manufacturerRep: 'John Smith (TX)',
+    leadSource: 'Manufacturer Rep' as LeadSourceType,
+    isMissedLead: false,
+    county: 'Fort Bend',
+    state: 'TX',
     expectedCloseDate: '2024-01-30',
     createdAt: '2023-12-15',
     status: 'active'
   },
   {
     id: '5',
-    jobSiteName: 'Hotel Renovation Project',
-    description: 'Complete HVAC replacement for 200-room hotel',
+    jobSiteName: 'Dubai Expo Center',
+    description: 'Complete HVAC replacement for international expo center',
     marketSegment: 'Hospitality',
-    estimatedValue: 380000,
+    estimatedValue: 980000,
     probability: 50,
     salesPhase: 'Qualification',
-    engineeringFirm: 'Hospitality Engineering Group',
-    manufacturerRep: 'York Hospitality Rep',
+    engineeringFirm: 'International Engineering Group',
+    manufacturerRep: 'N/A (International)',
+    leadSource: 'Trade Show (International)' as LeadSourceType,
+    isMissedLead: false, // OK - no rep coverage internationally
+    county: 'N/A',
+    state: 'International',
     expectedCloseDate: '2024-05-01',
     createdAt: '2024-01-12',
     status: 'active'
@@ -89,7 +113,11 @@ const mockOpportunities = [
     probability: 65,
     salesPhase: 'Proposal',
     engineeringFirm: 'Retail Systems Engineering',
-    manufacturerRep: 'Daikin Retail Rep',
+    manufacturerRep: 'Maria Garcia (AZ)',
+    leadSource: 'Manufacturer Rep' as LeadSourceType,
+    isMissedLead: false,
+    county: 'Pima',
+    state: 'AZ',
     expectedCloseDate: '2024-03-20',
     createdAt: '2024-01-03',
     status: 'active'
@@ -166,6 +194,18 @@ export default function CommercialOpportunitiesPage() {
       'Lost': 'red'
     };
     return colors[phase] || 'gray';
+  };
+
+  const getLeadSourceColor = (source: LeadSourceType, isMissedLead: boolean) => {
+    if (isMissedLead) return 'red';
+    const colors: Record<string, string> = {
+      'Manufacturer Rep': 'green',
+      'Trade Show (Domestic)': 'orange',
+      'Trade Show (International)': 'blue',
+      'Website': 'gray',
+      'Referral': 'teal'
+    };
+    return colors[source] || 'gray';
   };
 
   const formatCurrency = (amount: number) => {
@@ -290,11 +330,11 @@ export default function CommercialOpportunitiesPage() {
                   <Table.Thead>
                     <Table.Tr>
                       <Table.Th>Job Site</Table.Th>
-                      <Table.Th>Engineering Firm</Table.Th>
+                      <Table.Th>Manufacturer Rep</Table.Th>
+                      <Table.Th>Lead Source</Table.Th>
                       <Table.Th>Segment</Table.Th>
                       <Table.Th>Phase</Table.Th>
                       <Table.Th>Value</Table.Th>
-                      <Table.Th>Probability</Table.Th>
                       <Table.Th>Close Date</Table.Th>
                       <Table.Th>Actions</Table.Th>
                     </Table.Tr>
@@ -314,15 +354,42 @@ export default function CommercialOpportunitiesPage() {
                       </Table.Tr>
                     ) : (
                       paginatedOpportunities.map((opp) => (
-                        <Table.Tr key={opp.id} style={{ cursor: 'pointer' }}>
+                        <Table.Tr 
+                          key={opp.id} 
+                          style={{ 
+                            cursor: 'pointer',
+                            backgroundColor: opp.isMissedLead ? 'var(--mantine-color-red-0)' : undefined
+                          }}
+                        >
                           <Table.Td>
                             <div>
-                              <Text fw={500} size="sm">{opp.jobSiteName}</Text>
-                              <Text size="xs" c="dimmed" lineClamp={1}>{opp.description}</Text>
+                              <Group gap="xs">
+                                {opp.isMissedLead && (
+                                  <Tooltip label="Missed Lead: Rep should have brought this">
+                                    <IconAlertTriangle size={14} color="var(--mantine-color-red-6)" />
+                                  </Tooltip>
+                                )}
+                                <Text fw={500} size="sm">{opp.jobSiteName}</Text>
+                              </Group>
+                              <Text size="xs" c="dimmed" lineClamp={1}>{opp.county}, {opp.state}</Text>
                             </div>
                           </Table.Td>
                           <Table.Td>
-                            <Text size="sm">{opp.engineeringFirm}</Text>
+                            <Group gap="xs">
+                              <IconUser size={14} />
+                              <Text size="sm" fw={500}>{opp.manufacturerRep}</Text>
+                            </Group>
+                          </Table.Td>
+                          <Table.Td>
+                            <Tooltip label={opp.isMissedLead ? '⚠️ Rep should have brought this lead' : ''}>
+                              <Badge 
+                                variant={opp.isMissedLead ? 'filled' : 'light'}
+                                color={getLeadSourceColor(opp.leadSource, opp.isMissedLead)}
+                                leftSection={opp.isMissedLead ? <IconAlertTriangle size={10} /> : undefined}
+                              >
+                                {opp.leadSource}
+                              </Badge>
+                            </Tooltip>
                           </Table.Td>
                           <Table.Td>
                             <Badge 
@@ -343,11 +410,6 @@ export default function CommercialOpportunitiesPage() {
                           </Table.Td>
                           <Table.Td>
                             <Text fw={500} size="sm">{formatCurrency(opp.estimatedValue)}</Text>
-                          </Table.Td>
-                          <Table.Td>
-                            <Group gap="xs">
-                              <Text size="sm">{opp.probability}%</Text>
-                            </Group>
                           </Table.Td>
                           <Table.Td>
                             <Text size="sm">{formatDate(opp.expectedCloseDate)}</Text>

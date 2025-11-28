@@ -711,12 +711,33 @@ html, body {
 /* COMMERCIAL PAGES STYLING */
 /* ============================================ */
 
+/* Override residential-content-container padding when inside AppShell (Commercial pages) */
+.mantine-AppShell-main .residential-content-container {
+  padding: 0.75rem !important;
+  max-width: none !important;
+}
+
+/* Override Mantine Container inside AppShell to prevent centering/max-width */
+.mantine-AppShell-main .mantine-Container-root {
+  max-width: none !important;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+  margin: 0 !important;
+}
+
+/* Adjust AppShell main padding for header/navbar offsets */
+.mantine-AppShell-main {
+  /* Mantine handles padding-top for header and padding-left for navbar automatically */
+  padding-bottom: 0 !important;
+  padding-right: 0 !important;
+}
+
 /* Commercial content container - full width for AppShell layout */
 .commercial-content-container {
   min-height: calc(100vh - 60px); /* Account for header height */
-  padding: var(--mantine-spacing-xl, 1.5rem) var(--mantine-spacing-md, 1rem);
+  padding: var(--mantine-spacing-md, 0.75rem);
   width: 100%;
-  max-width: 1400px;
+  max-width: none; /* Allow full width in AppShell */
   margin: 0 auto;
   overflow: visible;
 }
@@ -966,8 +987,17 @@ html, body {
 
 /* Responsive adjustments for commercial pages */
 @media (max-width: 768px) {
+  .mantine-AppShell-main .residential-content-container {
+    padding: 0.5rem !important;
+  }
+
+  .mantine-AppShell-main .mantine-Container-root {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
   .commercial-content-container {
-    padding: var(--mantine-spacing-md, 1rem);
+    padding: 0.5rem;
   }
 
   .commercial-content-container .mantine-Stack-root {
@@ -984,14 +1014,32 @@ html, body {
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
+  .mantine-AppShell-main .residential-content-container {
+    padding: 0.75rem !important;
+  }
+
+  .mantine-AppShell-main .mantine-Container-root {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
   .commercial-content-container {
-    padding: var(--mantine-spacing-lg, 1.5rem);
+    padding: 0.75rem;
   }
 }
 
 @media (min-width: 1025px) {
+  .mantine-AppShell-main .residential-content-container {
+    padding: 1rem !important;
+  }
+
+  .mantine-AppShell-main .mantine-Container-root {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
   .commercial-content-container {
-    padding: var(--mantine-spacing-xl, 2rem);
+    padding: 1rem;
   }
 }
 

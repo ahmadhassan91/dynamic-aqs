@@ -2,10 +2,10 @@
   font-weight: 500;
   display: block;
   width: 100%;
-  padding: var(--mantine-spacing-xs, 8px) var(--mantine-spacing-md, 16px);
+  padding: 6px 10px;
   color: var(--mantine-color-dark-7, #495057);
-  font-size: var(--mantine-font-size-sm, 14px);
-  border-radius: var(--mantine-radius-md, 8px);
+  font-size: 13px;
+  border-radius: var(--mantine-radius-sm, 4px);
   transition: background-color 100ms ease;
   border: none;
   background: transparent;
@@ -25,13 +25,13 @@
   font-weight: 500;
   display: block;
   text-decoration: none;
-  padding: var(--mantine-spacing-xs, 8px) var(--mantine-spacing-md, 16px);
-  padding-left: calc(var(--mantine-spacing-md, 16px) * 2);
-  margin-left: var(--mantine-spacing-md, 16px);
-  font-size: var(--mantine-font-size-sm, 14px);
+  padding: 5px 10px;
+  padding-left: 32px;
+  margin-left: 12px;
+  font-size: 12px;
   color: var(--mantine-color-dark-7, #495057);
   border-left: 1px solid var(--mantine-color-gray-3, #dee2e6);
-  border-radius: var(--mantine-radius-md, 8px);
+  border-radius: var(--mantine-radius-sm, 4px);
   transition: background-color 100ms ease;
 }
 

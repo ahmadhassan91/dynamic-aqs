@@ -63,10 +63,10 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links, link }: LinksGr
       >
         <Group justify="space-between" gap={0}>
           <Box style={{ display: 'flex', alignItems: 'center' }}>
-            <ThemeIcon variant="light" size={30}>
-              <Icon style={{ width: rem(18), height: rem(18) }} />
+            <ThemeIcon variant="light" size={24}>
+              <Icon style={{ width: rem(14), height: rem(14) }} />
             </ThemeIcon>
-            <Box ml="md">{label}</Box>
+            <Box ml="sm" style={{ fontSize: rem(13) }}>{label}</Box>
           </Box>
         </Group>
       </UnstyledButton>
@@ -78,10 +78,10 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links, link }: LinksGr
       <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
         <Group justify="space-between" gap={0}>
           <Box style={{ display: 'flex', alignItems: 'center' }}>
-            <ThemeIcon variant="light" size={30}>
-              <Icon style={{ width: rem(18), height: rem(18) }} />
+            <ThemeIcon variant="light" size={24}>
+              <Icon style={{ width: rem(14), height: rem(14) }} />
             </ThemeIcon>
-            <Box ml="md">{label}</Box>
+            <Box ml="sm" style={{ fontSize: rem(13) }}>{label}</Box>
           </Box>
           {hasLinks && (
             <IconChevronRight
@@ -175,7 +175,7 @@ export function CommercialNavigation() {
   const links = commercialNavData.map((item) => <LinksGroup {...item} key={item.label} />);
 
   return (
-    <Stack gap="xs">
+    <Stack gap={2}>
       {links}
     </Stack>
   );
