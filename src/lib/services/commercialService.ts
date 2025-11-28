@@ -22,7 +22,9 @@ import {
   TaskExecution,
   TaskMetrics,
   TaskPriority,
-  TaskCategory
+  TaskCategory,
+  LeadSource,
+  RepRating
 } from '@/types/commercial';
 import { pricingIntegrationService } from './pricingIntegrationService';
 
@@ -456,6 +458,7 @@ class CommercialService {
     const opportunities: CommercialOpportunity[] = [];
     const marketSegments = Object.values(MarketSegment);
     const salesPhases = Object.values(SalesPhase);
+    const leadSources = Object.values(LeadSource);
     
     for (let i = 1; i <= 50; i++) {
       opportunities.push({
@@ -468,6 +471,7 @@ class CommercialService {
         estimatedValue: Math.floor(Math.random() * 500000) + 50000,
         probability: Math.floor(Math.random() * 100),
         salesPhase: this.getRandomElement(salesPhases),
+        leadSource: this.getRandomElement(leadSources),
         engineeringFirmId: `eng_firm_${Math.floor(Math.random() * 10) + 1}`,
         manufacturerRepId: `rep_${Math.floor(Math.random() * 5) + 1}`,
         regionalSalesManagerId: `rsm_${Math.floor(Math.random() * 3) + 1}`,
@@ -564,6 +568,7 @@ class CommercialService {
 
   private generateMockManufacturerReps(): ManufacturerRep[] {
     const reps: ManufacturerRep[] = [];
+    const repRatings = Object.values(RepRating).filter(r => typeof r === 'number') as RepRating[];
     
     for (let i = 1; i <= 10; i++) {
       reps.push({
@@ -577,6 +582,18 @@ class CommercialService {
           title: 'Manufacturer Representative'
         },
         territoryIds: [`territory_${i}`, `territory_${i + 10}`],
+        territory: {
+          counties: [`County${i}A`, `County${i}B`],
+          state: this.getRandomElement(['California', 'Texas', 'Florida', 'New York']),
+          isExclusive: true
+        },
+        rating: this.getRandomElement(repRatings),
+        ratingHistory: [],
+        leadsThisMonth: Math.floor(Math.random() * 20) + 5,
+        leadsThisQuarter: Math.floor(Math.random() * 60) + 15,
+        leadsThisYear: Math.floor(Math.random() * 200) + 50,
+        missedLeads: Math.floor(Math.random() * 5),
+        missedLeadHistory: [],
         quota: {
           fiscalYear: new Date().getFullYear(),
           annualQuota: 1000000 + (i * 100000),
