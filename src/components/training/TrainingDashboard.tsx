@@ -17,6 +17,7 @@ import {
   Menu,
   rem,
   Tabs,
+  Select,
 } from '@mantine/core';
 import {
   IconSchool,
@@ -30,17 +31,45 @@ import {
   IconEye,
   IconEdit,
   IconTrash,
+  IconFilter,
 } from '@tabler/icons-react';
 import { useMockData } from '@/lib/mockData/MockDataProvider';
+import { useSearchParams } from 'next/navigation';
 
 export function TrainingDashboard() {
-  const { trainingSessions, users, customers } = useMockData();
+  const { trainingSessions, users, customers, territories } = useMockData();
   const [activeTab, setActiveTab] = useState<string | null>('overview');
+  const searchParams = useSearchParams();
+  const territoryParam = searchParams.get('territory');
+  const [selectedTerritory, setSelectedTerritory] = useState<string | null>(territoryParam);
+
+  // Get territory managers for filter dropdown
+  const territoryManagers = users.filter(user => user.role === 'territory_manager');
+  const territoryOptions = territories.map(t => {
+    const manager = territoryManagers.find(tm => tm.id === `tm-${t.id}`);
+    return {
+      value: t.id,
+      label: `${t.name} ${manager ? `(${manager.firstName} ${manager.lastName})` : ''}`,
+    };
+  });
+
+  // Filter training sessions by territory if selected
+  const filteredSessions = useMemo(() => {
+    if (!Array.isArray(trainingSessions)) return [];
+    if (!selectedTerritory) return trainingSessions;
+    
+    // Get customers in the selected territory
+    const territoryCustomerIds = customers
+      .filter(c => c.territoryManagerId === `tm-${selectedTerritory}`)
+      .map(c => c.id);
+    
+    return trainingSessions.filter(s => territoryCustomerIds.includes(s.customerId));
+  }, [trainingSessions, selectedTerritory, customers]);
 
   // Calculate dashboard metrics
   const metrics = useMemo(() => {
     try {
-      if (!Array.isArray(trainingSessions)) {
+      if (!Array.isArray(filteredSessions)) {
       return {
         totalSessions: 0,
         completedSessions: 0,
@@ -58,30 +87,30 @@ export function TrainingDashboard() {
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 
-    const totalSessions = trainingSessions.length;
-    const completedSessions = trainingSessions.filter(s => s.status === 'completed').length;
-    const scheduledSessions = trainingSessions.filter(s => s.status === 'scheduled').length;
-    const thisMonthSessions = trainingSessions.filter(s => 
+    const totalSessions = filteredSessions.length;
+    const completedSessions = filteredSessions.filter(s => s.status === 'completed').length;
+    const scheduledSessions = filteredSessions.filter(s => s.status === 'scheduled').length;
+    const thisMonthSessions = filteredSessions.filter(s => 
       s.scheduledDate >= thisMonth && s.scheduledDate < nextMonth
     ).length;
 
     const completionRate = totalSessions > 0 ? (completedSessions / totalSessions) * 100 : 0;
     
-    const totalTrainingHours = trainingSessions
+    const totalTrainingHours = filteredSessions
       .filter(s => s.status === 'completed')
       .reduce((sum, s) => sum + s.duration, 0) / 60;
 
-    const certificationsAwarded = trainingSessions
+    const certificationsAwarded = filteredSessions
       .filter(s => s.certificationAwarded)
       .length;
 
-    const sessionsWithRatings = trainingSessions.filter(s => s.feedback?.rating);
+    const sessionsWithRatings = filteredSessions.filter(s => s.feedback?.rating);
     const averageRating = sessionsWithRatings.length > 0
       ? sessionsWithRatings.reduce((sum, s) => sum + (s.feedback?.rating || 0), 0) / sessionsWithRatings.length
       : 0;
 
     const activeTrainers = new Set(
-      trainingSessions
+      filteredSessions
         .filter(s => s.status === 'scheduled' || 
           (s.status === 'completed' && s.completedDate && s.completedDate >= thisMonth))
         .map(s => s.trainerId)
@@ -116,26 +145,26 @@ export function TrainingDashboard() {
 
   // Get upcoming sessions (next 7 days)
   const upcomingSessions = useMemo(() => {
-    if (!Array.isArray(trainingSessions)) return [];
+    if (!Array.isArray(filteredSessions)) return [];
     
     const now = new Date();
     const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
     
-    return trainingSessions
+    return filteredSessions
       .filter(s => s.status === 'scheduled' && s.scheduledDate >= now && s.scheduledDate <= nextWeek)
       .sort((a, b) => a.scheduledDate.getTime() - b.scheduledDate.getTime())
       .slice(0, 5);
-  }, [trainingSessions]);
+  }, [filteredSessions]);
 
   // Get recent completions
   const recentCompletions = useMemo(() => {
-    if (!Array.isArray(trainingSessions)) return [];
+    if (!Array.isArray(filteredSessions)) return [];
     
-    return trainingSessions
+    return filteredSessions
       .filter(s => s.status === 'completed' && s.completedDate)
       .sort((a, b) => (b.completedDate?.getTime() || 0) - (a.completedDate?.getTime() || 0))
       .slice(0, 5);
-  }, [trainingSessions]);
+  }, [filteredSessions]);
 
   const getCustomerName = (customerId: string) => {
     if (!Array.isArray(customers)) return 'Unknown Customer';
@@ -185,10 +214,37 @@ export function TrainingDashboard() {
             Manage training sessions, track progress, and monitor effectiveness
           </Text>
         </div>
-        <Button leftSection={<IconPlus size={16} />}>
-          Schedule Training
-        </Button>
+        <Group gap="sm">
+          <Select
+            placeholder="All Territories"
+            data={territoryOptions}
+            value={selectedTerritory}
+            onChange={setSelectedTerritory}
+            clearable
+            leftSection={<IconFilter size={16} />}
+            w={250}
+          />
+          <Button leftSection={<IconPlus size={16} />}>
+            Schedule Training
+          </Button>
+        </Group>
       </Group>
+
+      {/* Territory Filter Badge */}
+      {selectedTerritory && (
+        <Badge 
+          size="lg" 
+          variant="light" 
+          color="blue"
+          rightSection={
+            <ActionIcon size="xs" variant="transparent" onClick={() => setSelectedTerritory(null)}>
+              ×
+            </ActionIcon>
+          }
+        >
+          Filtered by: {territoryOptions.find(t => t.value === selectedTerritory)?.label}
+        </Badge>
+      )}
 
       {/* Key Metrics */}
       <SimpleGrid cols={{ base: 2, sm: 3, lg: 6 }}>
