@@ -1,0 +1,17 @@
+Month,Release,Module,Epic,Story,Task,Story_Points,Priority,Value_Proposition,Dependencies
+Month 2,Mobile Foundation,Mobile App,Mobile Foundation,React Native Setup,Initialize React Native project,5,P1,Mobile platform,None
+Month 2,Mobile Foundation,Mobile App,Mobile Foundation,Navigation,Setup React Navigation,3,P1,App navigation,Initialize RN
+Month 2,Mobile Foundation,Mobile App,Mobile Foundation,Authentication,Mobile authentication,5,P1,Secure access,Setup navigation
+Month 2,Mobile Foundation,Mobile App,Mobile Foundation,API Client,Build mobile API client,5,P1,Backend connectivity,Setup auth
+Month 3,Mobile Foundation,Mobile App,Residential Mobile,TM Dashboard,Build TM mobile dashboard,8,P1,Mobile workspace,Build API client
+Month 3,Mobile Foundation,Mobile App,Residential Mobile,Customer List,Build customer list mobile,5,P1,Customer access,Build dashboard
+Month 3,Mobile Foundation,Mobile App,Residential Mobile,Activity Logging,Mobile activity logging,8,P1,Field productivity,Build list
+Month 4,Mobile Residential,Mobile App,Residential Mobile,Training,Mobile training completion,5,P1,Training efficiency,Build activity
+Month 4,Mobile Residential,Mobile App,Residential Mobile,Voice Notes,Voice-to-text notes,8,P1,Replaces MapMyCustomers voice,Build activity
+Month 4,Mobile Residential,Mobile App,Map Integration,Map View,Build map view of customers,13,P1,Replaces MapMyCustomers,Build customer list
+Month 5,Mobile Residential,Mobile App,Map Integration,Route Planning,Route planning feature,8,P1,Field optimization,Build map
+Month 5,Mobile Residential,Mobile App,Map Integration,Check-in,Customer check-in feature,5,P1,Visit verification,Build map
+Month 6,Mobile Commercial,Mobile App,Commercial Mobile,RSM Dashboard,Build RSM mobile dashboard,8,P2,Commercial mobile,Build API client
+Month 6,Mobile Commercial,Mobile App,Commercial Mobile,Engineer List,Build engineer list mobile,5,P2,Engineer access,Build dashboard
+Month 6,Mobile Commercial,Mobile App,Commercial Mobile,Interaction Log,Mobile interaction logging,8,P2,Field interactions,Build list
+Month 6,Mobile Commercial,Mobile App,Commercial Mobile,Rating Update,Mobile rating update,5,P2,Rating efficiency,Build interaction

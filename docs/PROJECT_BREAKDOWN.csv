@@ -126,11 +126,6 @@ Integration - HubSpot,HubSpot Integration,Lead Import,Build lead import service,
 Integration - HubSpot,HubSpot Integration,Field Mapping,Build mapping config,Build import,5,Sprint 4,P1,Map fields
 Integration - HubSpot,HubSpot Integration,Scheduled Sync,Scheduled lead sync,Build import,5,Sprint 5,P1,Hourly sync
 
-Integration - MapMyCustomers,MMC Integration,API Research,Research MMC API,None,3,Sprint 7,P1,API documentation
-Integration - MapMyCustomers,MMC Integration,API Service,Build MMC integration,Research API,8,Sprint 7,P1,API wrapper
-Integration - MapMyCustomers,MMC Integration,Activity Sync,Sync check-ins to activities,Build service,8,Sprint 7,P1,Import MMC activities
-Integration - MapMyCustomers,MMC Integration,Training Sync,Sync training completions,Build service,8,Sprint 8,P1,Training checkbox sync
-
 Dealer Portal,Dealer Account,Authentication,Dealer user registration,Setup auth,5,Sprint 11,P1,Separate from internal
 Dealer Portal,Dealer Account,Login,Build dealer login interface,Implement registration,3,Sprint 11,P1,Portal entry
 Dealer Portal,Dealer Account,Profile,Build account overview,Build login,5,Sprint 11,P1,Account info stats
@@ -151,72 +146,6 @@ Dealer Portal,Account Management,Billing,Build billing statement view,Build prof
 Dealer Portal,Account Management,Payments,Build payment history view,Build profile,3,Sprint 14,P2,Payment records
 Dealer Portal,Account Management,Credit,Display credit utilization,Build profile,3,Sprint 14,P2,Credit widget
 
-Commercial CRM,Opportunity Mgmt,Opportunity Pipeline,Create opportunity model,Configure database,8,Sprint 15,P0,Job site stakeholders
-Commercial CRM,Opportunity Mgmt,Pipeline Board,Build Kanban pipeline,Create model,13,Sprint 15,P0,Drag phases
-Commercial CRM,Opportunity Mgmt,Detail Page,Build opportunity detail,Create model,8,Sprint 15,P0,All opp data
-Commercial CRM,Opportunity Mgmt,Workflow,Opportunity workflow automation,Create model,8,Sprint 16,P0,Auto-advance phases
-
-Commercial CRM,Opportunity Mgmt,Stakeholders,Stakeholder linking system,Create model,8,Sprint 15,P0,Multiple types
-Commercial CRM,Opportunity Mgmt,Stakeholder UI,Stakeholder selection UI,Create linking,5,Sprint 15,P0,Search assign
-
-Commercial CRM,Opportunity Mgmt,Quote Integration,Integrate pricing tool,Research tool,13,Sprint 16,P0,Read from pricing DB
-Commercial CRM,Opportunity Mgmt,Quote Import,Quote import from pricing,Integrate tool,8,Sprint 16,P0,Auto-create quotes
-Commercial CRM,Opportunity Mgmt,Quote Display,Quote display in opp,Build import,5,Sprint 16,P0,Quote history
-
-Commercial CRM,Opportunity Mgmt,Analytics,Pipeline analytics dashboard,Build board,8,Sprint 17,P1,Conversion velocity
-Commercial CRM,Opportunity Mgmt,Forecasting,Pipeline forecasting,Build analytics,8,Sprint 17,P2,Predictive analytics
-
-Commercial CRM,Engineer Mgmt,Engineer Database,Create engineer model,Configure database,5,Sprint 15,P0,Rating system
-Commercial CRM,Engineer Mgmt,Engineer List,Build engineer list view,Create model,8,Sprint 15,P0,Filterable grid
-Commercial CRM,Engineer Mgmt,Engineer Detail,Build engineer detail page,Create model,8,Sprint 15,P0,Full profile history
-
-Commercial CRM,Engineer Mgmt,Rating System,Implement 1-5 rating,Create model,5,Sprint 15,P0,Track changes
-Commercial CRM,Engineer Mgmt,Rating Interface,Rating change interface,Implement rating,5,Sprint 15,P0,Update with reason
-Commercial CRM,Engineer Mgmt,Rating History,Rating history timeline,Implement rating,5,Sprint 16,P1,Visualize changes
-Commercial CRM,Engineer Mgmt,Rating Analytics,Rating analytics dashboard,Implement rating,8,Sprint 17,P1,Distribution trends
-Commercial CRM,Engineer Mgmt,Bulk Rating,Bulk rating update tool,Implement rating,5,Sprint 16,P1,Update multiple
-
-Commercial CRM,Engineer Mgmt,Interaction Logging,Engineer interaction logging,Create model,5,Sprint 16,P0,Log calls meetings
-Commercial CRM,Engineer Mgmt,Voice Notes,Voice-to-text notes,Build logging,8,Sprint 16,P1,Mobile voice capture
-
-Commercial CRM,Organization Mgmt,Org Hierarchy,Create organization model,Configure database,8,Sprint 15,P0,Parent-child
-Commercial CRM,Organization Mgmt,Org List,Build organization list,Create model,5,Sprint 15,P0,Hierarchical view
-Commercial CRM,Organization Mgmt,Org Detail,Build org detail page,Create model,8,Sprint 15,P0,Org info children
-Commercial CRM,Organization Mgmt,Org Chart,Org chart visualization,Create model,13,Sprint 16,P1,Interactive chart
-Commercial CRM,Organization Mgmt,Validation,Organization validation,Create model,5,Sprint 16,P1,Prevent circular refs
-
-Commercial CRM,Organization Mgmt,Org Types,Organization type system,Create model,3,Sprint 15,P0,Rep Engineering Arch
-Commercial CRM,Organization Mgmt,Type Views,Type-specific views,Implement types,5,Sprint 16,P1,Different UI per type
-
-Commercial CRM,Organization Mgmt,Roll-up,Organization roll-up,Create model,8,Sprint 16,P0,Aggregate child data
-Commercial CRM,Organization Mgmt,Org Reports,Org performance reports,Implement rollup,8,Sprint 17,P1,Performance by org
-
-Commercial CRM,Rep Management,Rep Model,Create rep data model,Configure database,5,Sprint 15,P0,Quota territories
-Commercial CRM,Rep Management,Rep List,Build rep list view,Create model,5,Sprint 15,P0,Filterable list
-Commercial CRM,Rep Management,Rep Detail,Build rep detail page,Create model,8,Sprint 15,P0,Full rep profile
-
-Commercial CRM,Rep Management,Territory Assignment,County territory assignment,Create model,8,Sprint 16,P0,Exclusive mapping
-Commercial CRM,Rep Management,Territory UI,Territory assignment UI,Implement assignment,8,Sprint 16,P0,Assign counties
-
-Commercial CRM,Rep Management,Quota Tracking,Quota tracking system,Create model,8,Sprint 16,P0,Annual quarterly
-Commercial CRM,Rep Management,Quota Dashboard,Build quota dashboard,Implement tracking,8,Sprint 16,P0,Quota vs actual
-
-Commercial CRM,Rep Management,Performance Metrics,Rep performance metrics,Create model,8,Sprint 17,P0,Quotes POs conversion
-Commercial CRM,Rep Management,Perf Dashboard,Rep performance dashboard,Calculate metrics,8,Sprint 17,P0,Rep KPIs trends
-Commercial CRM,Rep Management,Status Report,Rep status report,Calculate metrics,8,Sprint 17,P1,Printable email
-
-Commercial CRM,Commercial Reporting,Sales Reports,Opp by phase report,Build board,5,Sprint 17,P0,Opps in phases
-Commercial CRM,Commercial Reporting,Sales Reports,Revenue by segment report,Implement sync,5,Sprint 17,P0,Market segment
-Commercial CRM,Commercial Reporting,Sales Reports,RSM performance report,Calculate metrics,5,Sprint 17,P0,Performance by RSM
-Commercial CRM,Commercial Reporting,Sales Reports,YoY commercial report,Implement sync,5,Sprint 18,P1,YoY comparison
-
-Commercial CRM,Commercial Reporting,Contact Reports,Engineer rating report,Implement rating,3,Sprint 17,P1,Engineers by rating
-Commercial CRM,Commercial Reporting,Contact Reports,Contact interaction report,Build logging,3,Sprint 17,P1,Interaction frequency
-
-Commercial CRM,Commercial Dashboards,Territory RSM,Build Territory RSM dashboard,Build reports,8,Sprint 18,P0,Territory KPIs
-Commercial CRM,Commercial Dashboards,Engineering RSM,Build Engineering RSM dashboard,Build reports,8,Sprint 18,P0,Engineering KPIs
-Commercial CRM,Commercial Dashboards,Commercial VP,Build Commercial VP dashboard,Build reports,8,Sprint 18,P0,Executive commercial
-
 Notifications,Notification System,Notification Engine,Design notification architecture,Configure database,8,Sprint 6,P0,Event-driven
 Notifications,Notification System,Notification Service,Build notification service,Design architecture,13,Sprint 6,P0,Create send notifications
 Notifications,Notification System,Preferences,Notification preferences,Build service,5,Sprint 6,P1,User settings
@@ -232,13 +161,6 @@ Notifications,Residential Notif,Training Notif,Training scheduled notifications,
 Notifications,Residential Notif,Training Notif,Training reminder notifications,Build calendar,3,Sprint 7,P1,Day before
 Notifications,Residential Notif,Onboarding Notif,Onboarding step notifications,Create engine,3,Sprint 6,P0,On each step
 
-Notifications,Commercial Notif,Opp Notifications,New opp notifications,Create model,3,Sprint 15,P0,Notify RSMs
-Notifications,Commercial Notif,Quote Notif,Quote submitted notifications,Build import,3,Sprint 16,P0,Notify RSMs
-Notifications,Commercial Notif,PO Notifications,PO received notifications,Implement sync,3,Sprint 16,P0,With job PO#
-Notifications,Commercial Notif,Ship Notif,ESD notifications,Implement sync,3,Sprint 16,P0,Notify ship date
-Notifications,Commercial Notif,Ship Notif,Shipment completed notifications,Implement sync,3,Sprint 16,P0,With tracking
-Notifications,Commercial Notif,Follow-up,Opp follow-up reminders,Create model,5,Sprint 17,P1,6mo 1yr 3yr
-
 Mobile App,Mobile Foundation,React Native Setup,Initialize React Native project,None,5,Sprint 11,P1,iOS Android
 Mobile App,Mobile Foundation,Navigation,Setup React Navigation,Initialize RN,3,Sprint 11,P1,Stack tab navigation
 Mobile App,Mobile Foundation,Authentication,Mobile authentication,Setup navigation,5,Sprint 11,P1,Secure token storage
@@ -248,16 +170,11 @@ Mobile App,Residential Mobile,TM Dashboard,Build TM mobile dashboard,Build API c
 Mobile App,Residential Mobile,Customer List,Build customer list mobile,Build dashboard,5,Sprint 12,P1,Search filter
 Mobile App,Residential Mobile,Activity Logging,Mobile activity logging,Build list,8,Sprint 12,P1,Quick entry
 Mobile App,Residential Mobile,Training,Mobile training completion,Build activity,5,Sprint 13,P1,Mark complete
-Mobile App,Residential Mobile,Voice Notes,Voice-to-text notes,Build activity,8,Sprint 13,P1,Speech to text
+Mobile App,Residential Mobile,Voice Notes,Voice-to-text notes,Build activity,8,Sprint 13,P1,Replaces MapMyCustomers voice
 
-Mobile App,Commercial Mobile,RSM Dashboard,Build RSM mobile dashboard,Build API client,8,Sprint 14,P2,Key metrics
-Mobile App,Commercial Mobile,Engineer List,Build engineer list mobile,Build dashboard,5,Sprint 14,P2,Quick access
-Mobile App,Commercial Mobile,Interaction Log,Mobile interaction logging,Build list,8,Sprint 14,P2,Voice notes
-Mobile App,Commercial Mobile,Rating Update,Mobile rating update,Build interaction,5,Sprint 14,P2,Quick rating change
-
-Mobile App,Map Integration,Map View,Build map view of customers,Build customer list,13,Sprint 15,P2,MapMyCustomers alternative
-Mobile App,Map Integration,Route Planning,Route planning feature,Build map,8,Sprint 15,P2,Optimize routes
-Mobile App,Map Integration,Check-in,Customer check-in feature,Build map,5,Sprint 15,P2,GPS verification
+Mobile App,Map Integration,Map View,Build map view of customers,Build customer list,13,Sprint 15,P1,Replaces MapMyCustomers
+Mobile App,Map Integration,Route Planning,Route planning feature,Build map,8,Sprint 15,P1,Optimize routes
+Mobile App,Map Integration,Check-in,Customer check-in feature,Build map,5,Sprint 15,P1,GPS verification
 
 Admin,User Management,User CRUD,Create user data model,Configure database,5,Sprint 2,P0,Roles permissions
 Admin,User Management,User Interface,Build user management UI,Create model,8,Sprint 2,P0,List add edit delete
@@ -295,7 +212,6 @@ Deployment,Production Setup,Monitoring,Production monitoring setup,Setup environ
 
 Training,User Training,TM Training,Territory Manager training,Complete features,8,Sprint 19,P0,2-hour sessions
 Training,User Training,RM Training,Regional Manager training,Complete features,5,Sprint 19,P0,2-hour sessions
-Training,User Training,RSM Training,RSM training commercial,Complete features,8,Sprint 19,P0,2-hour sessions
 Training,User Training,Admin Training,Administrator training,Complete features,5,Sprint 19,P0,2-hour sessions
 Training,User Training,Dealer Training,Dealer portal training,Complete features,3,Sprint 19,P1,1-hour session
 

@@ -1,0 +1,17 @@
+Month,Release,Module,Epic,Story,Task,Story_Points,Priority,Value_Proposition,Dependencies
+Month 6,Dealer Portal MVP,Dealer Portal,Dealer Account,Authentication,Dealer user registration,5,P1,Dealer access,Setup auth
+Month 6,Dealer Portal MVP,Dealer Portal,Dealer Account,Login,Build dealer login interface,3,P1,Portal entry,Implement registration
+Month 6,Dealer Portal MVP,Dealer Portal,Dealer Account,Profile,Build account overview,5,P1,Account management,Build login
+Month 6,Dealer Portal MVP,Dealer Portal,Product Catalog,Catalog View,Build catalog view,8,P1,Product browsing,Configure database
+Month 6,Dealer Portal MVP,Dealer Portal,Product Catalog,Search,Product search and filters,5,P1,Product discovery,Build catalog
+Month 6,Dealer Portal MVP,Dealer Portal,Product Catalog,Product Details,Build product detail pages,5,P1,Product information,Build catalog
+Month 6,Dealer Portal MVP,Dealer Portal,Order Management,Shopping Cart,Build shopping cart,8,P1,Order placement,Build catalog
+Month 6,Dealer Portal MVP,Dealer Portal,Order Management,Order History,Build order history view,5,P1,Order tracking,Implement sync
+Month 6,Dealer Portal MVP,Dealer Portal,Order Management,Order Tracking,Order detail with tracking,5,P1,Delivery tracking,Build history
+Month 7,Dealer Portal Advanced,Dealer Portal,Product Catalog,Comparison,Product comparison tool,5,P2,Product selection,Build details
+Month 7,Dealer Portal Advanced,Dealer Portal,Product Catalog,Saved Searches,Saved search functionality,3,P2,Search efficiency,Build search
+Month 7,Dealer Portal Advanced,Dealer Portal,Product Catalog,Favorites,Favorite products,3,P2,Quick access,Build catalog
+Month 7,Dealer Portal Advanced,Dealer Portal,Order Management,Repeat Orders,Repeat order feature,3,P1,Reorder convenience,Build cart
+Month 7,Dealer Portal Advanced,Dealer Portal,Account Management,Billing,Build billing statement view,5,P2,Account visibility,Build profile
+Month 7,Dealer Portal Advanced,Dealer Portal,Account Management,Payments,Build payment history view,3,P2,Payment tracking,Build profile
+Month 7,Dealer Portal Advanced,Dealer Portal,Account Management,Credit,Display credit utilization,3,P2,Credit management,Build profile

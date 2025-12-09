@@ -1,0 +1,59 @@
+Month,Release,Module,Epic,Story,Task,Story_Points,Priority,Value_Proposition,Dependencies
+Month 7,Commercial MVP,Commercial CRM,Opportunity Mgmt,Opportunity Pipeline,Create opportunity model,8,P0,Commercial pipeline,Configure database
+Month 7,Commercial MVP,Commercial CRM,Opportunity Mgmt,Pipeline Board,Build Kanban pipeline,13,P0,Opportunity tracking,Create model
+Month 7,Commercial MVP,Commercial CRM,Opportunity Mgmt,Detail Page,Build opportunity detail,8,P0,Opportunity 360°,Create model
+Month 7,Commercial MVP,Commercial CRM,Opportunity Mgmt,Stakeholders,Stakeholder linking system,8,P0,Relationship tracking,Create model
+Month 7,Commercial MVP,Commercial CRM,Opportunity Mgmt,Stakeholder UI,Stakeholder selection UI,5,P0,Stakeholder management,Create linking
+Month 7,Commercial MVP,Commercial CRM,Engineer Mgmt,Engineer Database,Create engineer model,5,P0,Engineer tracking,Configure database
+Month 7,Commercial MVP,Commercial CRM,Engineer Mgmt,Engineer List,Build engineer list view,8,P0,Engineer overview,Create model
+Month 7,Commercial MVP,Commercial CRM,Engineer Mgmt,Engineer Detail,Build engineer detail page,8,P0,Engineer 360°,Create model
+Month 7,Commercial MVP,Commercial CRM,Engineer Mgmt,Rating System,Implement 1-5 rating,5,P0,Performance tracking,Create model
+Month 7,Commercial MVP,Commercial CRM,Engineer Mgmt,Rating Interface,Rating change interface,5,P0,Rating updates,Implement rating
+Month 7,Commercial MVP,Commercial CRM,Organization Mgmt,Org Hierarchy,Create organization model,8,P0,Company structure,Configure database
+Month 7,Commercial MVP,Commercial CRM,Organization Mgmt,Org List,Build organization list,5,P0,Organization overview,Create model
+Month 7,Commercial MVP,Commercial CRM,Organization Mgmt,Org Detail,Build org detail page,8,P0,Organization 360°,Create model
+Month 7,Commercial MVP,Commercial CRM,Organization Mgmt,Org Types,Organization type system,3,P0,Org categorization,Create model
+Month 7,Commercial MVP,Commercial CRM,Rep Management,Rep Model,Create rep data model,5,P0,Rep tracking,Configure database
+Month 7,Commercial MVP,Commercial CRM,Rep Management,Rep List,Build rep list view,5,P0,Rep overview,Create model
+Month 7,Commercial MVP,Commercial CRM,Rep Management,Rep Detail,Build rep detail page,8,P0,Rep 360°,Create model
+Month 7,Commercial MVP,Notifications,Commercial Notif,Opp Notifications,New opp notifications,3,P0,Opportunity alerts,Create model
+Month 8,Commercial Core,Commercial CRM,Opportunity Mgmt,Workflow,Opportunity workflow automation,8,P0,Process automation,Create model
+Month 8,Commercial Core,Commercial CRM,Opportunity Mgmt,Quote Integration,Integrate pricing tool,13,P0,Quote generation,Research tool
+Month 8,Commercial Core,Commercial CRM,Opportunity Mgmt,Quote Import,Quote import from pricing,8,P0,Quote automation,Integrate tool
+Month 8,Commercial Core,Commercial CRM,Opportunity Mgmt,Quote Display,Quote display in opp,5,P0,Quote history,Build import
+Month 8,Commercial Core,Commercial CRM,Opportunity Mgmt,Analytics,Pipeline analytics dashboard,8,P1,Revenue insights,Build board
+Month 8,Commercial Core,Commercial CRM,Engineer Mgmt,Rating History,Rating history timeline,5,P1,Rating trends,Implement rating
+Month 8,Commercial Core,Commercial CRM,Engineer Mgmt,Rating Analytics,Rating analytics dashboard,8,P1,Rating insights,Implement rating
+Month 8,Commercial Core,Commercial CRM,Engineer Mgmt,Bulk Rating,Bulk rating update tool,5,P1,Bulk updates,Implement rating
+Month 8,Commercial Core,Commercial CRM,Engineer Mgmt,Interaction Logging,Engineer interaction logging,5,P0,Interaction history,Create model
+Month 8,Commercial Core,Commercial CRM,Engineer Mgmt,Voice Notes,Voice-to-text notes,8,P1,Mobile efficiency,Build logging
+Month 8,Commercial Core,Commercial CRM,Organization Mgmt,Org Chart,Org chart visualization,13,P1,Visual hierarchy,Create model
+Month 8,Commercial Core,Commercial CRM,Organization Mgmt,Validation,Organization validation,5,P1,Data integrity,Create model
+Month 8,Commercial Core,Commercial CRM,Organization Mgmt,Type Views,Type-specific views,5,P1,Customized UI,Implement types
+Month 8,Commercial Core,Commercial CRM,Organization Mgmt,Roll-up,Organization roll-up,8,P0,Org analytics,Create model
+Month 8,Commercial Core,Commercial CRM,Rep Management,Territory Assignment,County territory assignment,8,P0,Territory mgmt,Create model
+Month 8,Commercial Core,Commercial CRM,Rep Management,Territory UI,Territory assignment UI,8,P0,Territory mapping,Implement assignment
+Month 8,Commercial Core,Commercial CRM,Rep Management,Quota Tracking,Quota tracking system,8,P0,Performance tracking,Create model
+Month 8,Commercial Core,Commercial CRM,Rep Management,Quota Dashboard,Build quota dashboard,8,P0,Quota insights,Implement tracking
+Month 8,Commercial Core,Notifications,Commercial Notif,Quote Notif,Quote submitted notifications,3,P0,Quote alerts,Build import
+Month 8,Commercial Core,Notifications,Commercial Notif,PO Notifications,PO received notifications,3,P0,PO alerts,Implement sync
+Month 8,Commercial Core,Notifications,Commercial Notif,Ship Notif,ESD notifications,3,P0,Shipping alerts,Implement sync
+Month 8,Commercial Core,Notifications,Commercial Notif,Ship Notif,Shipment completed notifications,3,P0,Delivery alerts,Implement sync
+Month 9,Commercial Advanced,Commercial CRM,Opportunity Mgmt,Forecasting,Pipeline forecasting,8,P2,Revenue prediction,Build analytics
+Month 9,Commercial Advanced,Commercial CRM,Organization Mgmt,Org Reports,Org performance reports,8,P1,Org insights,Implement rollup
+Month 9,Commercial Advanced,Commercial CRM,Rep Management,Performance Metrics,Rep performance metrics,8,P0,Rep analytics,Create model
+Month 9,Commercial Advanced,Commercial CRM,Rep Management,Perf Dashboard,Rep performance dashboard,8,P0,Rep insights,Calculate metrics
+Month 9,Commercial Advanced,Commercial CRM,Rep Management,Status Report,Rep status report,8,P1,Rep reporting,Calculate metrics
+Month 9,Commercial Advanced,Commercial CRM,Commercial Reporting,Sales Reports,Opp by phase report,5,P0,Pipeline insights,Build board
+Month 9,Commercial Advanced,Commercial CRM,Commercial Reporting,Sales Reports,Revenue by segment report,5,P0,Market insights,Implement sync
+Month 9,Commercial Advanced,Commercial CRM,Commercial Reporting,Sales Reports,RSM performance report,5,P0,RSM insights,Calculate metrics
+Month 9,Commercial Advanced,Commercial CRM,Commercial Reporting,Contact Reports,Engineer rating report,3,P1,Engineer insights,Implement rating
+Month 9,Commercial Advanced,Commercial CRM,Commercial Reporting,Contact Reports,Contact interaction report,3,P1,Interaction insights,Build logging
+Month 9,Commercial Advanced,Commercial CRM,Commercial Dashboards,Territory RSM,Build Territory RSM dashboard,8,P0,Territory insights,Build reports
+Month 9,Commercial Advanced,Commercial CRM,Commercial Dashboards,Engineering RSM,Build Engineering RSM dashboard,8,P0,Engineering insights,Build reports
+Month 9,Commercial Advanced,Commercial CRM,Commercial Dashboards,Commercial VP,Build Commercial VP dashboard,8,P0,Executive view,Build reports
+Month 9,Commercial Advanced,Notifications,Commercial Notif,Follow-up,Opp follow-up reminders,5,P1,Follow-up automation,Create model
+Month 9,Commercial Advanced,Integration - HubSpot,HubSpot Integration,API Setup,Setup HubSpot API,5,P1,Lead integration,Configure database
+Month 9,Commercial Advanced,Integration - HubSpot,HubSpot Integration,Lead Import,Build lead import service,8,P1,Lead automation,Setup API
+Month 9,Commercial Advanced,Integration - HubSpot,HubSpot Integration,Field Mapping,Build mapping config,5,P1,Data mapping,Build import
+Month 9,Commercial Advanced,Integration - HubSpot,HubSpot Integration,Scheduled Sync,Scheduled lead sync,5,P1,Automated sync,Build import

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic AQS CRM - Editable Gantt Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-dragdata@2.2.5/dist/chartjs-plugin-dragdata.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .chart-container {
+            padding: 30px;
+            position: relative;
+            height: 600px;
+        }
+
+        .timeline-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card.foundation { border-left-color: #e74c3c; }
+        .info-card.residential { border-left-color: #3498db; }
+        .info-card.mobile { border-left-color: #2ecc71; }
+        .info-card.dealer { border-left-color: #f39c12; }
+
+        .info-card h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .info-card p {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        .info-card .duration {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 10px;
+        }
+
+        .milestone-marker {
+            position: absolute;
+            top: 0;
+            width: 2px;
+            background: #e74c3c;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .milestone-label {
+            position: absolute;
+            top: -25px;
+            transform: translateX(-50%);
+            background: #e74c3c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+
+        .edit-panel {
+            padding: 20px;
+            background: #ecf0f1;
+            border-top: 1px solid #bdc3c7;
+        }
+
+        .edit-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+
+        .form-group input {
+            padding: 8px 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .instructions {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .instructions h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            color: #7f8c8d;
+        }
+
+        .instructions li {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .legend {
+                gap: 15px;
+            }
+            
+            .chart-container {
+                height: 400px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Dynamic AQS CRM</h1>
+            <p>Interactive Implementation Timeline - Editable Gantt Chart</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="resetChart()">🔄 Reset to Original</button>
+            <button class="btn btn-success" onclick="exportData()">💾 Export Timeline</button>
+            <button class="btn btn-warning" onclick="toggleEdit()">✏️ Toggle Edit Mode</button>
+        </div>
+
+        <div class="instructions">
+            <h4>📝 How to Use This Gantt Chart:</h4>
+            <ul>
+                <li><strong>Drag bars</strong> to adjust start/end dates of phases</li>
+                <li><strong>Click "Edit Phase"</strong> to modify phase details</li>
+                <li><strong>Export Timeline</strong> to save your changes</li>
+                <li><strong>Reset to Original</strong> to restore default timeline</li>
+            </ul>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e74c3c;"></div>
+                <span>Foundation (Month 1)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #3498db;"></div>
+                <span>Residential CRM (Months 2-6)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #2ecc71;"></div>
+                <span>Mobile App (Months 2-6)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f39c12;"></div>
+                <span>Dealer Portal (Months 6-7)</span>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="ganttChart"></canvas>
+        </div>
+
+        <div class="edit-panel" id="editPanel" style="display: none;">
+            <h3 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">Edit Phase Details</h3>
+            <div class="edit-form">
+                <div class="form-group">
+                    <label>Phase Name:</label>
+                    <input type="text" id="phaseName" placeholder="Enter phase name">
+                </div>
+                <div class="form-group">
+                    <label>Start Month:</label>
+                    <input type="number" id="startMonth" min="1" max="24" placeholder="1">
+                </div>
+                <div class="form-group">
+                    <label>Duration (Months):</label>
+                    <input type="number" id="duration" min="1" max="12" placeholder="1">
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <input type="text" id="description" placeholder="Enter description">
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="updatePhase()">✅ Update Phase</button>
+                <button class="btn btn-warning" onclick="addNewPhase()">➕ Add New Phase</button>
+            </div>
+        </div>
+
+        <div class="timeline-info">
+            <div class="info-card foundation">
+                <h3>🏗️ Foundation</h3>
+                <p>Core infrastructure, authentication, database, and user management for all modules</p>
+                <div class="duration" id="foundationDuration">Month 1</div>
+            </div>
+            <div class="info-card residential">
+                <h3>🏠 Residential CRM</h3>
+                <p>Customer management, territories, training, analytics for 16 Territory Managers</p>
+                <div class="duration" id="residentialDuration">Months 2-6</div>
+            </div>
+            <div class="info-card mobile">
+                <h3>📱 Mobile App</h3>
+                <p>Field mobility app with voice-to-text, route planning, training tracking</p>
+                <div class="duration" id="mobileDuration">Months 2-6 (Parallel)</div>
+            </div>
+            <div class="info-card dealer">
+                <h3>🛒 Dealer Portal</h3>
+                <p>B2B portal for product catalog, ordering, account management</p>
+                <div class="duration" id="dealerDuration">Months 6-7</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Original phases data
+        const originalPhases = [
+            {
+                name: 'Foundation',
+                start: 0,
+                duration: 1,
+                color: '#e74c3c',
+                borderColor: '#c0392b',
+                description: 'Core Infrastructure'
+            },
+            {
+                name: 'Residential CRM',
+                start: 1,
+                duration: 5,
+                color: '#3498db',
+                borderColor: '#2980b9',
+                description: 'Customer Management, Territories, Training'
+            },
+            {
+                name: 'Mobile App',
+                start: 1,
+                duration: 5,
+                color: '#2ecc71',
+                borderColor: '#27ae60',
+                description: 'Field Mobility, Voice-to-Text'
+            },
+            {
+                name: 'Dealer Portal',
+                start: 5,
+                duration: 2,
+                color: '#f39c12',
+                borderColor: '#e67e22',
+                description: 'B2B Portal, Product Catalog'
+            }
+        ];
+
+        // Working copy of phases
+        let phases = JSON.parse(JSON.stringify(originalPhases));
+        let selectedPhaseIndex = -1;
+        let myChart = null;
+
+        // Initialize chart
+        function initChart() {
+            const ctx = document.getElementById('ganttChart').getContext('2d');
+            
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: phases.map(p => p.name),
+                    datasets: [{
+                        label: 'Project Timeline',
+                        data: phases.map(p => ({ x: [p.start, p.start + p.duration], y: p.name })),
+                        backgroundColor: phases.map(p => p.color),
+                        borderColor: phases.map(p => p.borderColor),
+                        borderWidth: 2,
+                        borderRadius: 5,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const phase = phases[context.dataIndex];
+                                    return [
+                                        `${phase.name}: Months ${phase.start + 1}-${phase.start + phase.duration}`,
+                                        phase.description
+                                    ];
+                                }
+                            }
+                        },
+                        dragData: {
+                            round: 0,
+                            showTooltip: true,
+                            onDragStart: function(e, datasetIndex, index, value) {
+                                selectedPhaseIndex = index;
+                            },
+                            onDrag: function(e, datasetIndex, index, value) {
+                                // Update phase data while dragging
+                                phases[index].start = Math.max(0, value[0]);
+                                phases[index].duration = Math.max(1, value[1] - value[0]);
+                                updateInfoCards();
+                            },
+                            onDragEnd: function(e, datasetIndex, index, value) {
+                                // Final update after drag
+                                phases[index].start = Math.max(0, value[0]);
+                                phases[index].duration = Math.max(1, value[1] - value[0]);
+                                updateInfoCards();
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            position: 'bottom',
+                            min: 0,
+                            max: 12,
+                            title: {
+                                display: true,
+                                text: 'Timeline (Months)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    return `Month ${value}`;
+                                }
+                            },
+                            grid: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Project Phases',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 20,
+                            right: 20,
+                            top: 20,
+                            bottom: 20
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        // Update info cards
+        function updateInfoCards() {
+            phases.forEach(phase => {
+                const elementId = phase.name.toLowerCase().replace(' ', '');
+                const element = document.getElementById(elementId + 'Duration');
+                if (element) {
+                    if (phase.duration === 1) {
+                        element.textContent = `Month ${phase.start + 1}`;
+                    } else {
+                        element.textContent = `Months ${phase.start + 1}-${phase.start + phase.duration}`;
+                    }
+                }
+            });
+        }
+
+        // Toggle edit panel
+        function toggleEdit() {
+            const panel = document.getElementById('editPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Update phase
+        function updatePhase() {
+            if (selectedPhaseIndex >= 0) {
+                const name = document.getElementById('phaseName').value;
+                const start = parseInt(document.getElementById('startMonth').value) - 1;
+                const duration = parseInt(document.getElementById('duration').value);
+                const description = document.getElementById('description').value;
+
+                phases[selectedPhaseIndex] = {
+                    ...phases[selectedPhaseIndex],
+                    name: name || phases[selectedPhaseIndex].name,
+                    start: start >= 0 ? start : phases[selectedPhaseIndex].start,
+                    duration: duration > 0 ? duration : phases[selectedPhaseIndex].duration,
+                    description: description || phases[selectedPhaseIndex].description
+                };
+
+                refreshChart();
+                updateInfoCards();
+            }
+        }
+
+        // Add new phase
+        function addNewPhase() {
+            const name = document.getElementById('phaseName').value;
+            const start = parseInt(document.getElementById('startMonth').value) - 1;
+            const duration = parseInt(document.getElementById('duration').value);
+            const description = document.getElementById('description').value;
+
+            if (name && start >= 0 && duration > 0) {
+                phases.push({
+                    name: name,
+                    start: start,
+                    duration: duration,
+                    color: '#' + Math.floor(Math.random()*16777215).toString(16),
+                    borderColor: '#' + Math.floor(Math.random()*16777215).toString(16),
+                    description: description
+                });
+
+                refreshChart();
+                updateInfoCards();
+            }
+        }
+
+        // Refresh chart
+        function refreshChart() {
+            myChart.data.labels = phases.map(p => p.name);
+            myChart.data.datasets[0].data = phases.map(p => ({ x: [p.start, p.start + p.duration], y: p.name }));
+            myChart.data.datasets[0].backgroundColor = phases.map(p => p.color);
+            myChart.data.datasets[0].borderColor = phases.map(p => p.borderColor);
+            myChart.update();
+        }
+
+        // Reset chart
+        function resetChart() {
+            phases = JSON.parse(JSON.stringify(originalPhases));
+            refreshChart();
+            updateInfoCards();
+        }
+
+        // Export data
+        function exportData() {
+            const dataStr = JSON.stringify(phases, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'gantt-chart-timeline.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        // Add milestone markers
+        function addMilestones() {
+            setTimeout(() => {
+                addMilestone(1, 'Foundation Complete');
+                addMilestone(6, 'Residential & Mobile Complete');
+                addMilestone(7, 'Dealer Portal Live');
+            }, 100);
+        }
+
+        function addMilestone(month, label) {
+            const chartArea = myChart.chartArea;
+            const chartWidth = chartArea.right - chartArea.left;
+            const monthWidth = chartWidth / 12;
+            const position = chartArea.left + (month * monthWidth);
+            
+            // Create milestone marker
+            const marker = document.createElement('div');
+            marker.className = 'milestone-marker';
+            marker.style.left = position + 'px';
+            marker.style.height = chartArea.bottom - chartArea.top + 'px';
+            
+            // Create milestone label
+            const labelEl = document.createElement('div');
+            labelEl.className = 'milestone-label';
+            labelEl.textContent = label;
+            labelEl.style.left = position + 'px';
+            
+            document.querySelector('.chart-container').appendChild(marker);
+            document.querySelector('.chart-container').appendChild(labelEl);
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            initChart();
+            updateInfoCards();
+            addMilestones();
+        };
+    </script>
+</body>
+</html>

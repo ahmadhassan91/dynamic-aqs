@@ -1,0 +1,538 @@
+Module,Epic,Story,Task,Sub-Task,Component,Dependencies,Story_Points,Sprint,Priority,Acceptance_Criteria,Notes
+Core Infrastructure,System Foundation,Project Setup,Initialize Next.js 14,Create project with TypeScript,-,None,2,Sprint 1,P0,Project runs on localhost,App Router + Mantine UI
+Core Infrastructure,System Foundation,Project Setup,Initialize Next.js 14,Configure Mantine UI theme,-,Initialize project,1,Sprint 1,P0,Theme applies globally,
+Core Infrastructure,System Foundation,Project Setup,Initialize Next.js 14,Setup path aliases,-,Initialize project,1,Sprint 1,P0,@ imports work,tsconfig.json
+Core Infrastructure,System Foundation,Project Setup,Configure PostgreSQL,Create database instance,-,None,2,Sprint 1,P0,Connection verified,AWS RDS or Azure
+Core Infrastructure,System Foundation,Project Setup,Configure PostgreSQL,Initialize Prisma ORM,-,Create DB,2,Sprint 1,P0,Migrations run,
+Core Infrastructure,System Foundation,Project Setup,Configure PostgreSQL,Design base schema,-,Initialize Prisma,4,Sprint 1,P0,ERD approved,Users Roles Permissions
+Core Infrastructure,System Foundation,Project Setup,Configure PostgreSQL,Create seed data scripts,-,Design schema,2,Sprint 1,P0,Dev data consistent,
+Core Infrastructure,System Foundation,Project Setup,Setup NextAuth,Install and configure,-,Configure DB,2,Sprint 1,P0,Login works,Credentials provider
+Core Infrastructure,System Foundation,Project Setup,Setup NextAuth,JWT token management,-,Install NextAuth,2,Sprint 1,P0,Tokens expire correctly,
+Core Infrastructure,System Foundation,Project Setup,Setup NextAuth,Role-based middleware,-,JWT management,3,Sprint 1,P0,Routes protected,
+Core Infrastructure,System Foundation,Project Setup,Setup NextAuth,Build login page,-,Configure NextAuth,2,Sprint 1,P0,Matches design system,
+Core Infrastructure,System Foundation,Project Setup,Setup NextAuth,Password reset flow,-,Build login,3,Sprint 1,P1,Reset email works,
+Core Infrastructure,System Foundation,Project Setup,Configure hosting,Provision cloud resources,-,None,4,Sprint 1,P0,IaC complete,AWS or Azure
+Core Infrastructure,System Foundation,Project Setup,Configure hosting,Setup Vercel deployment,-,Provision cloud,2,Sprint 1,P0,App accessible via URL,
+Core Infrastructure,System Foundation,Project Setup,Configure hosting,SSL certificate,-,Setup deployment,1,Sprint 1,P0,HTTPS works,
+Core Infrastructure,System Foundation,Environment Setup,Setup CI/CD,Create GitHub Actions workflows,-,Configure hosting,3,Sprint 1,P0,Auto-deploy on push,
+Core Infrastructure,System Foundation,Environment Setup,Setup CI/CD,Configure branch protection,-,Create workflows,1,Sprint 1,P0,PRs required,
+Core Infrastructure,System Foundation,Environment Setup,Setup CI/CD,Setup staging environment,-,Configure protection,2,Sprint 1,P1,Preview URLs work,
+Core Infrastructure,System Foundation,Environment Setup,Setup monitoring,Configure logging,-,Setup CI/CD,2,Sprint 2,P1,Logs visible,Application Insights
+
+Admin,User Management,User CRUD,Create user data model,Define Prisma schema,-,Configure database,2,Sprint 2,P0,Schema migrated,
+Admin,User Management,User CRUD,Create user data model,Define user roles,-,Define schema,1,Sprint 2,P0,Roles documented,TM RM VP BD Admin
+Admin,User Management,User CRUD,Create user data model,Create permissions matrix,-,Define roles,2,Sprint 2,P0,Matrix approved,
+Admin,User Management,User Interface,Build user list,Create SimpleUserManagement.tsx,SimpleUserManagement.tsx,Create model,4,Sprint 2,P0,Lists all users,
+Admin,User Management,User Interface,Build user list,Add search functionality,-,Create component,2,Sprint 2,P0,Search filters instantly,By name email role
+Admin,User Management,User Interface,Build user list,Add role filter dropdown,-,Create component,1,Sprint 2,P0,Filter works,
+Admin,User Management,User Interface,Build user list,Implement pagination,-,Create component,1,Sprint 2,P0,Large lists paginate,25/50/100 options
+Admin,User Management,User Forms,Build add/edit form,Create UserFormModal.tsx,UserFormModal.tsx,Build list,3,Sprint 2,P0,CRUD works,
+Admin,User Management,User Forms,Build add/edit form,Territory assignment dropdown,-,Create modal,2,Sprint 2,P0,TM assigned to territory,
+Admin,User Management,User Forms,Build add/edit form,Manager assignment,-,Create modal,2,Sprint 2,P0,Hierarchy established,
+Admin,User Management,User Forms,Build add/edit form,Status toggle,-,Create modal,1,Sprint 2,P0,Status updates,Active/Inactive/Suspended
+Admin,User Management,Bulk Operations,Build user import,Create UserImportModal.tsx,UserImportModal.tsx,Build forms,3,Sprint 3,P1,CSV import works,
+Admin,User Management,Bulk Operations,Build user import,Add validation rules,-,Create modal,2,Sprint 3,P1,Bad data rejected,
+Admin,User Management,Bulk Operations,Build user import,Error reporting,-,Add validation,1,Sprint 3,P1,Clear error messages,
+
+Residential - Customer,Customer Entity,Customer CRUD,Create customer model,Define Prisma schema,-,Configure database,3,Sprint 2,P0,Schema migrated,
+Residential - Customer,Customer Entity,Customer CRUD,Create customer model,Address fields,-,Define schema,1,Sprint 2,P0,Address validation,Street city state zip county
+Residential - Customer,Customer Entity,Customer CRUD,Create customer model,Contact fields,-,Define schema,1,Sprint 2,P0,Format validation,phone email website
+Residential - Customer,Customer Entity,Customer CRUD,Create customer model,Assignment fields,-,Define schema,1,Sprint 2,P0,FKs work,territoryId tmId rmId
+Residential - Customer,Customer Entity,Customer CRUD,Create customer model,Group fields,-,Define schema,1,Sprint 2,P0,Hierarchy links,affinityGroupId ownershipGroupId
+Residential - Customer,Customer Entity,Customer Views,Build customer list,Create CustomerList.tsx,CustomerList.tsx,Create model,4,Sprint 2,P0,Displays 1000+ customers,
+Residential - Customer,Customer Entity,Customer Views,Build customer list,Add sortable columns,-,Create component,2,Sprint 2,P0,Sort asc/desc,Name territory status revenue
+Residential - Customer,Customer Entity,Customer Views,Build customer list,Add advanced filters,-,Create component,2,Sprint 2,P0,Multiple filters combo,Status territory TM group
+Residential - Customer,Customer Entity,Customer Views,Build customer list,Add quick search,-,Create component,1,Sprint 2,P0,Instant results,Search name address
+Residential - Customer,Customer Entity,Customer Views,Build customer list,Export to CSV,-,Create component,2,Sprint 2,P0,CSV downloads,
+Residential - Customer,Customer Entity,Customer Views,Build customer detail,Create CustomerDetail.tsx,CustomerDetail.tsx,Build list,5,Sprint 2,P0,All data visible,
+Residential - Customer,Customer Entity,Customer Views,Build customer detail,Contact tab,-,Create detail,2,Sprint 2,P0,Contacts managed,
+Residential - Customer,Customer Entity,Customer Views,Build customer detail,Training tab,-,Create detail,3,Sprint 2,P0,Training history visible,KEY: Training tracking
+Residential - Customer,Customer Entity,Customer Views,Build customer detail,Orders tab,-,Create detail,3,Sprint 2,P0,Orders displayed,Read-only from Acumatica
+Residential - Customer,Customer Entity,Customer Views,Build customer detail,Activities tab,-,Create detail,3,Sprint 3,P0,Timeline visible,
+Residential - Customer,Customer Entity,Customer Views,Build customer detail,Notes tab,-,Create detail,2,Sprint 3,P0,Notes editable,
+Residential - Customer,Customer Entity,Customer Forms,Build customer form,Create CustomerFormModal.tsx,CustomerFormModal.tsx,Build detail,4,Sprint 2,P0,CRUD works,
+Residential - Customer,Customer Entity,Customer Forms,Build customer form,Territory auto-assignment,-,Create modal,2,Sprint 2,P0,Auto-assigns TM,Based on state/county
+Residential - Customer,Customer Entity,Customer Forms,Build customer form,Form validation,-,Create modal,2,Sprint 2,P0,Invalid blocked,Required fields formats
+Residential - Customer,Customer Entity,Customer Overview,Build overview,Create CustomerOverview.tsx,CustomerOverview.tsx,Build detail,3,Sprint 3,P1,Summary visible,
+
+Residential - Territory,Territory Management,Territory Assignment,Create territory model,Define Prisma schema,-,Configure database,2,Sprint 2,P0,Schema migrated,
+Residential - Territory,Territory Management,Territory Assignment,Create territory model,State/county mapping,-,Define schema,2,Sprint 2,P0,Covers all states,
+Residential - Territory,Territory Management,Territory Assignment,Build assignment UI,Create TerritoryAssignment.tsx,TerritoryAssignment.tsx,Create model,4,Sprint 3,P0,TMs assigned visually,Drag-drop
+Residential - Territory,Territory Management,Territory Assignment,Build assignment UI,Reassignment workflow,-,Create component,3,Sprint 3,P0,Customers follow territory,
+Residential - Territory,Territory Management,Territory Assignment,Build assignment UI,Conflict detection,-,Create component,2,Sprint 3,P0,Overlaps flagged,
+Residential - Territory,Territory Management,Territory Visualization,Build territory map,Create InteractiveTerritoryMap.tsx,InteractiveTerritoryMap.tsx,Build assignment,6,Sprint 3,P1,Map renders territories,US map with boundaries
+Residential - Territory,Territory Management,Territory Visualization,Build territory map,Click to drill-down,-,Create map,2,Sprint 3,P1,Drill-down works,
+Residential - Territory,Territory Management,Territory Visualization,Build territory map,Color coding by performance,-,Create map,2,Sprint 3,P1,Visual distinction,
+Residential - Territory,Territory Management,Territory Restructuring,Build restructuring tools,Create BulkTerritoryOperations.tsx,BulkTerritoryOperations.tsx,Build map,4,Sprint 3,P1,Bulk ops work,Split merge territories
+Residential - Territory,Territory Management,Territory Restructuring,Build restructuring tools,Impact preview,-,Create component,2,Sprint 3,P1,Preview before save,
+Residential - Territory,Territory Management,Territory Reporting,Build performance dashboard,Create TerritoryPerformanceAnalytics.tsx,TerritoryPerformanceAnalytics.tsx,Build restructuring,4,Sprint 3,P1,VP sees all territories,KEY: VP dashboard
+Residential - Territory,Territory Management,Territory Reporting,Build performance dashboard,Compare territories,-,Create dashboard,2,Sprint 3,P1,Comparison charts,
+
+Residential - Groups,Affinity Groups,Group Structure,Create affinity model,Define Prisma schema,-,Configure database,2,Sprint 2,P0,Hierarchical structure,
+Residential - Groups,Affinity Groups,Group Structure,Create affinity model,Parent-child relationships,-,Define schema,2,Sprint 2,P0,Up to 3 levels,
+Residential - Groups,Ownership Groups,Group Structure,Create ownership model,Define Prisma schema,-,Configure database,2,Sprint 2,P0,Same as affinity,
+Residential - Groups,Group Management,Group Interface,Build affinity UI,Create AffinityGroupManagement.tsx,AffinityGroupManagement.tsx,Create models,4,Sprint 3,P0,Tree view displays,
+Residential - Groups,Group Management,Group Interface,Build ownership UI,Create OwnershipGroupManagement.tsx,OwnershipGroupManagement.tsx,Create models,3,Sprint 3,P0,Reuse affinity patterns,
+Residential - Groups,Group Management,Group Interface,Build group forms,Add/edit/delete modals,-,Build UIs,2,Sprint 3,P0,CRUD works,
+Residential - Groups,Group Management,Group Interface,Build group forms,Assign customers to groups,-,Build modals,3,Sprint 3,P0,Customers assigned,Drag-drop or dropdown
+Residential - Groups,Group Management,Group Visualization,Build hierarchy viz,Create OrganizationChart.tsx,OrganizationChart.tsx,Build interface,4,Sprint 3,P1,Tree structure clear,
+Residential - Groups,Group Management,Group Visualization,Build hierarchy viz,Expand/collapse nodes,-,Create chart,2,Sprint 3,P1,Navigation intuitive,
+Residential - Groups,Roll-up Reporting,Calculations,Implement roll-up logic,Build aggregation service,-,Create models,4,Sprint 4,P0,Numbers roll up correctly,Sum child to parent
+Residential - Groups,Roll-up Reporting,Calculations,Implement roll-up logic,Revenue roll-up,-,Build service,2,Sprint 4,P0,Revenue accurate,
+Residential - Groups,Roll-up Reporting,Calculations,Implement roll-up logic,Training roll-up,-,Build service,2,Sprint 4,P0,Training counts accurate,
+
+Residential - Activities,Activity Timeline,Activity Model,Create activity model,Define Prisma schema,-,Configure database,2,Sprint 3,P0,Schema migrated,
+Residential - Activities,Activity Timeline,Activity Model,Create activity model,Define activity types,-,Define schema,1,Sprint 3,P0,Types defined,Call Visit Email Training Meeting
+Residential - Activities,Activity Timeline,Timeline View,Build timeline,Create InteractionTimeline.tsx,InteractionTimeline.tsx,Create model,4,Sprint 3,P0,Timeline renders,
+Residential - Activities,Activity Timeline,Timeline View,Build timeline,Activity icons per type,-,Create component,1,Sprint 3,P0,Visual distinction,
+Residential - Activities,Activity Timeline,Timeline View,Build timeline,Expandable details,-,Create component,2,Sprint 3,P0,Details accessible,
+Residential - Activities,Activity Timeline,Timeline View,Build timeline,Filter by type,-,Create component,2,Sprint 3,P1,Filters work,
+Residential - Activities,Activity Timeline,Quick Add,Build quick add,Create CustomerActivities.tsx,CustomerActivities.tsx,Build timeline,3,Sprint 3,P1,Add activity inline,
+Residential - Activities,Activity Timeline,Quick Add,Build quick add,Voice note field,-,Create component,2,Sprint 3,P1,Notes captured,
+Residential - Activities,Activity Timeline,Quick Add,Build quick add,Auto-log call option,-,Create component,2,Sprint 3,P1,Call tracking ready,
+
+Residential - Leads,Lead Pipeline,Lead Management,Create lead model,Define Prisma schema,-,Configure database,3,Sprint 4,P0,Schema migrated,
+Residential - Leads,Lead Pipeline,Lead Management,Create lead model,Define lead sources,-,Define schema,1,Sprint 4,P0,Sources tracked,HubSpot Website Referral Trade Show
+Residential - Leads,Lead Pipeline,Lead Management,Create lead model,Define lead stages,-,Define schema,1,Sprint 4,P0,Stages defined,New Contacted Qualified Proposal Closed
+Residential - Leads,Lead Pipeline,Pipeline Board,Build Kanban board,Create LeadPipeline.tsx,LeadPipeline.tsx,Create model,6,Sprint 4,P0,Drag-drop between stages,KEY: Kanban board
+Residential - Leads,Lead Pipeline,Pipeline Board,Build Kanban board,Stage columns,-,Create component,2,Sprint 4,P0,Stages customizable,
+Residential - Leads,Lead Pipeline,Pipeline Board,Build Kanban board,Card details,-,Create component,2,Sprint 4,P0,Key info on cards,Company contact value age
+Residential - Leads,Lead Pipeline,Pipeline Board,Build Kanban board,Stage counts,-,Create component,1,Sprint 4,P0,Counts accurate,
+Residential - Leads,Lead Pipeline,Lead Forms,Build lead form,Create LeadFormModal.tsx,LeadFormModal.tsx,Build board,4,Sprint 4,P0,CRUD works,
+Residential - Leads,Lead Pipeline,Lead Forms,Build lead detail,Create LeadDetailModal.tsx,LeadDetailModal.tsx,Build form,3,Sprint 4,P0,All info visible,
+Residential - Leads,Lead Conversion,Workflow,Build conversion workflow,Create LeadConversionWorkflow.tsx,LeadConversionWorkflow.tsx,Build forms,4,Sprint 4,P0,Lead to Customer flow,KEY: Conversion
+Residential - Leads,Lead Conversion,Workflow,Build conversion workflow,Auto-populate customer,-,Create workflow,2,Sprint 4,P0,Data carries over,
+Residential - Leads,Lead Conversion,Workflow,Build conversion workflow,Conversion confirmation,-,Create workflow,2,Sprint 4,P0,No accidental conversions,
+Residential - Leads,Lead Scoring,AI Scoring,Implement lead scoring,Define scoring factors,-,Create model,2,Sprint 5,P1,Factors defined,Source engagement company size
+Residential - Leads,Lead Scoring,AI Scoring,Implement lead scoring,Build scoring algorithm,-,Define factors,4,Sprint 5,P1,Scores calculated,
+Residential - Leads,Lead Scoring,AI Scoring,Implement lead scoring,Historical training,-,Build algorithm,4,Sprint 5,P1,Model improves,
+Residential - Leads,Lead Analytics,Dashboard,Build analytics,Create LeadAnalytics.tsx,LeadAnalytics.tsx,Build board,4,Sprint 5,P1,Analytics visible,
+Residential - Leads,Lead Analytics,Dashboard,Build analytics,Create ConversionAnalytics.tsx,ConversionAnalytics.tsx,Build LeadAnalytics,3,Sprint 5,P1,Funnel metrics,
+Residential - Leads,Lead Analytics,Dashboard,Build analytics,Score distribution chart,-,Build analytics,2,Sprint 5,P1,Score insight,
+
+Residential - CIS,CIS Automation,Email Parser,Build parser service,Email connector,-,Configure database,4,Sprint 5,P0,Read CIS emails,Graph API or IMAP
+Residential - CIS,CIS Automation,Email Parser,Build parser service,Field extraction logic,-,Email connector,6,Sprint 5,P0,Fields extracted,Name address equipment
+Residential - CIS,CIS Automation,Email Parser,Build parser service,Confidence scoring,-,Field extraction,2,Sprint 5,P0,Low confidence flagged,
+Residential - CIS,CIS Automation,Review UI,Build review UI,Create CustomerInformationSheet.tsx,CustomerInformationSheet.tsx,Build parser,4,Sprint 5,P0,Review before save,
+Residential - CIS,CIS Automation,Review UI,Build review UI,Edit inline capability,-,Create component,2,Sprint 5,P0,Manual corrections,
+Residential - CIS,CIS Automation,Review UI,Build review UI,Approve/reject workflow,-,Create component,1,Sprint 5,P0,Clear workflow,
+Residential - CIS,CIS Automation,Auto Population,Build auto-creation,Create customer from CIS,-,Build review,3,Sprint 5,P0,Customer created,
+Residential - CIS,CIS Automation,Auto Population,Build auto-creation,Link to originating lead,-,Create customer,2,Sprint 5,P0,Lead to CIS to Customer,
+
+Residential - Onboarding,Onboarding Workflow,Workflow Engine,Build workflow engine,Create step-based engine,-,Configure database,6,Sprint 6,P0,Workflows execute,Multi-step
+Residential - Onboarding,Onboarding Workflow,Workflow Engine,Build workflow engine,Define step types,-,Create engine,2,Sprint 6,P0,Steps defined,Equipment Training Follow-up
+Residential - Onboarding,Onboarding Workflow,Workflow Engine,Build workflow engine,Conditional logic,-,Define steps,3,Sprint 6,P0,Conditions work,If X skip Y
+Residential - Onboarding,Onboarding Workflow,Wizard UI,Build wizard,Create OnboardingWizard.tsx,OnboardingWizard.tsx,Build engine,5,Sprint 6,P0,Wizard navigates,
+Residential - Onboarding,Onboarding Workflow,Workflow View,Build workflow view,Create OnboardingWorkflow.tsx,OnboardingWorkflow.tsx,Build wizard,4,Sprint 6,P0,List of onboardings,
+Residential - Onboarding,Onboarding Workflow,Workflow View,Build workflow view,Progress tracking,-,Create workflow,2,Sprint 6,P0,% complete visible,
+Residential - Onboarding,Onboarding Workflow,Workflow View,Build workflow view,Task checklist,-,Create workflow,2,Sprint 6,P0,Tasks markable,
+Residential - Onboarding,Onboarding Workflow,Notifications,Onboarding notifications,Email on step complete,-,Build engine,2,Sprint 6,P0,Emails sent,
+Residential - Onboarding,Onboarding Workflow,Notifications,Onboarding notifications,Overdue alerts,-,Build engine,2,Sprint 6,P0,Alerts trigger,
+
+Residential - Training,Training Scheduling,Calendar,Create training model,Define Prisma schema,-,Configure database,3,Sprint 7,P0,Schema migrated,
+Residential - Training,Training Scheduling,Calendar,Create training model,Define training types,-,Define schema,1,Sprint 7,P0,Types defined,Product Safety Advanced
+Residential - Training,Training Scheduling,Calendar,Create training model,Define training status,-,Define schema,1,Sprint 7,P0,Status workflow,Scheduled Completed Cancelled No-Show
+Residential - Training,Training Scheduling,Calendar View,Build calendar,Create TrainingCalendar.tsx,TrainingCalendar.tsx,Create model,6,Sprint 7,P0,Month/week/day views,KEY: Training calendar
+Residential - Training,Training Scheduling,Calendar View,Build calendar,Month view,-,Create calendar,2,Sprint 7,P0,Month displays,
+Residential - Training,Training Scheduling,Calendar View,Build calendar,Week view,-,Create calendar,2,Sprint 7,P0,Week displays,
+Residential - Training,Training Scheduling,Calendar View,Build calendar,Day view,-,Create calendar,2,Sprint 7,P0,Day displays,
+Residential - Training,Training Scheduling,Calendar View,Build calendar,Drag to reschedule,-,Create calendar,3,Sprint 7,P0,Drag-drop reschedule,
+Residential - Training,Training Scheduling,Calendar View,Build calendar,Color by type,-,Create calendar,1,Sprint 7,P0,Visual distinction,
+Residential - Training,Training Scheduling,Calendar View,Build calendar,Filter by TM,-,Create calendar,1,Sprint 7,P0,TM filter works,
+Residential - Training,Training Scheduling,Calendar View,Build calendar,Filter by customer,-,Create calendar,1,Sprint 7,P0,Customer filter works,
+Residential - Training,Training Scheduling,Scheduling Form,Build schedule form,Create TrainingScheduleForm.tsx,TrainingScheduleForm.tsx,Build calendar,5,Sprint 7,P0,Schedule in < 1 min,KEY: Quick scheduling
+Residential - Training,Training Scheduling,Scheduling Form,Build schedule form,Customer selector,-,Create form,2,Sprint 7,P0,Customer found quickly,
+Residential - Training,Training Scheduling,Scheduling Form,Build schedule form,Trainer selector,-,Create form,1,Sprint 7,P0,Trainer assigned,
+Residential - Training,Training Scheduling,Scheduling Form,Build schedule form,Date/time picker,-,Create form,1,Sprint 7,P0,Date/time set,
+Residential - Training,Training Scheduling,Scheduling Form,Build schedule form,Training type selector,-,Create form,1,Sprint 7,P0,Type selected,
+Residential - Training,Training Scheduling,Scheduling Form,Build schedule modal,Create TrainingScheduleModal.tsx,TrainingScheduleModal.tsx,Build form,2,Sprint 7,P0,Modal opens/closes,
+Residential - Training,Training Scheduling,Availability,Build trainer management,Create TrainerManagement.tsx,TrainerManagement.tsx,Build form,4,Sprint 7,P0,Availability tracked,
+Residential - Training,Training Scheduling,Availability,Build trainer management,Conflict detection,-,Create management,2,Sprint 7,P0,Conflicts flagged,
+Residential - Training,Training Scheduling,Availability,Build trainer management,Block time,-,Create management,2,Sprint 7,P0,Blocked time works,
+Residential - Training,Training Scheduling,Outlook Sync,Setup Graph API,Microsoft Graph auth,-,Build calendar,3,Sprint 7,P1,Auth works,
+Residential - Training,Training Scheduling,Outlook Sync,Setup Graph API,Calendar permissions,-,Setup auth,2,Sprint 7,P1,Permissions granted,
+Residential - Training,Training Scheduling,Outlook Sync,Build calendar sync,Two-way sync service,-,Setup Graph,5,Sprint 7,P1,Trainings in Outlook,KEY: Outlook sync
+Residential - Training,Training Scheduling,Outlook Sync,Build calendar sync,Create events in Outlook,-,Build sync,2,Sprint 7,P1,Events created,
+Residential - Training,Training Scheduling,Outlook Sync,Build calendar sync,Update events in Outlook,-,Build sync,2,Sprint 7,P1,Events updated,
+Residential - Training,Training Scheduling,Outlook Sync,Build calendar sync,Delete events in Outlook,-,Build sync,1,Sprint 7,P1,Events removed,
+
+Residential - Training,Training Tracking,Completion,Build completion form,Create TrainingCompletion.tsx,TrainingCompletion.tsx,Create model,4,Sprint 7,P0,One-tap complete,KEY: Quick complete
+Residential - Training,Training Tracking,Completion,Build completion form,Completion status options,-,Create component,1,Sprint 7,P0,Status options,Complete Partial No-Show
+Residential - Training,Training Tracking,Completion,Build completion form,Completion notes field,-,Create component,1,Sprint 7,P0,Notes captured,
+Residential - Training,Training Tracking,Completion,Build completion form,Photo upload,-,Create component,2,Sprint 7,P0,Photos attached,
+Residential - Training,Training Tracking,Completion Tracker,Build tracker,Create TrainingCompletionTracker.tsx,TrainingCompletionTracker.tsx,Build completion,4,Sprint 7,P0,Completion stats visible,
+Residential - Training,Training Tracking,Completion Tracker,Build tracker,By TM breakdown,-,Create tracker,2,Sprint 7,P0,Answer how many trainings,KEY: Currie's question
+Residential - Training,Training Tracking,Completion Tracker,Build tracker,By customer breakdown,-,Create tracker,2,Sprint 7,P0,Customer history,
+Residential - Training,Training Tracking,Completion Tracker,Build tracker,By period filters,-,Create tracker,2,Sprint 7,P0,Period filters,Week month quarter year
+
+Residential - Training,Training Reports,Dashboard,Build training dashboard,Create TrainingDashboard.tsx,TrainingDashboard.tsx,Build tracker,5,Sprint 8,P0,One-click training stats,KEY: Currie's dashboard
+Residential - Training,Training Reports,Dashboard,Build training dashboard,Total trainings widget,-,Create dashboard,1,Sprint 8,P0,Count accurate,
+Residential - Training,Training Reports,Dashboard,Build training dashboard,By TM chart,-,Create dashboard,2,Sprint 8,P0,By TM visible,
+Residential - Training,Training Reports,Dashboard,Build training dashboard,By type chart,-,Create dashboard,2,Sprint 8,P0,By type visible,
+Residential - Training,Training Reports,Dashboard,Build training dashboard,Trend line,-,Create dashboard,2,Sprint 8,P0,Month-over-month,
+Residential - Training,Training Reports,Analytics,Build analytics dashboard,Create TrainingAnalyticsDashboard.tsx,TrainingAnalyticsDashboard.tsx,Build dashboard,6,Sprint 8,P0,Rich analytics,
+Residential - Training,Training Reports,Analytics,Build analytics dashboard,Completion rate metric,-,Create analytics,2,Sprint 8,P0,Rate calculated,
+Residential - Training,Training Reports,Analytics,Build analytics dashboard,Average per TM metric,-,Create analytics,1,Sprint 8,P0,Average shown,
+Residential - Training,Training Reports,Analytics,Build analytics dashboard,Customer coverage metric,-,Create analytics,2,Sprint 8,P0,Coverage visible,
+Residential - Training,Training Reports,Analytics,Build analytics dashboard,No-show rate metric,-,Create analytics,1,Sprint 8,P0,No-show tracked,
+Residential - Training,Training Reports,Custom Reports,Build custom reports,Create CustomTrainingReports.tsx,CustomTrainingReports.tsx,Build analytics,4,Sprint 8,P0,Reports export,
+Residential - Training,Training Reports,Custom Reports,Build custom reports,By TM report,-,Create reports,2,Sprint 8,P0,TM report works,
+Residential - Training,Training Reports,Custom Reports,Build custom reports,By customer report,-,Create reports,2,Sprint 8,P0,Customer report works,
+Residential - Training,Training Reports,Custom Reports,Build custom reports,Export PDF/Excel,-,Create reports,2,Sprint 8,P0,Downloads work,
+
+Residential - Training,Trainer Management,Trainer Profile,Build trainer profiles,Create trainer data model,-,Configure database,2,Sprint 7,P1,Trainer data stored,
+Residential - Training,Trainer Management,Trainer Profile,Build trainer profiles,Trainer list view,-,Create model,2,Sprint 8,P1,Trainers listed,
+Residential - Training,Trainer Management,Trainer Profile,Build trainer profiles,Trainer detail view,-,Create model,2,Sprint 8,P1,Profile complete,
+Residential - Training,Trainer Management,Trainer Performance,Build performance metrics,Performance calculations,-,Build profiles,3,Sprint 8,P1,Metrics calculated,
+Residential - Training,Trainer Management,Trainer Performance,Build performance metrics,Trainer leaderboard,-,Build calculations,3,Sprint 8,P1,Leaderboard visible,
+Residential - Training,Trainer Management,Trainer Performance,Build performance metrics,Customer feedback,-,Build leaderboard,2,Sprint 8,P1,Ratings collected,
+
+Residential - Training,Certification,Cert Model,Create certification model,Define Prisma schema,-,Configure database,2,Sprint 8,P1,Schema migrated,
+Residential - Training,Certification,Cert Model,Create certification model,Define cert types,-,Define schema,1,Sprint 8,P1,Types defined,Product Safety Advanced
+Residential - Training,Certification,Cert Tracking,Build cert tracking,Create CertificationManager.tsx,CertificationManager.tsx,Create model,4,Sprint 8,P1,Certs tracked,
+Residential - Training,Certification,Cert Tracking,Build cert tracking,Create CertificationTracking.tsx,CertificationTracking.tsx,Build manager,3,Sprint 8,P1,Status visible,
+Residential - Training,Certification,Cert Tracking,Build cert tracking,Expiration alerts,-,Build tracking,2,Sprint 8,P1,Alerts sent,30/60/90 days
+Residential - Training,Certification,Cert Tracking,Build cert tracking,Renewal workflow,-,Build tracking,2,Sprint 8,P1,Renewal initiated,
+
+Residential - Training,Training Extras,ROI Calculator,Build ROI calculator,Create TrainingROICalculator.tsx,TrainingROICalculator.tsx,Build analytics,4,Sprint 8,P2,ROI calculated,
+Residential - Training,Training Extras,ROI Calculator,Build ROI calculator,Create TrainingROIMetrics.tsx,TrainingROIMetrics.tsx,Build calculator,2,Sprint 8,P2,Metrics visible,
+Residential - Training,Training Extras,Effectiveness,Build effectiveness,Create TrainingEffectivenessReporter.tsx,TrainingEffectivenessReporter.tsx,Build analytics,4,Sprint 8,P1,Effectiveness measured,
+Residential - Training,Training Extras,Effectiveness,Build effectiveness,Create TrainingEffectivenessSurveys.tsx,TrainingEffectivenessSurveys.tsx,Build reporter,3,Sprint 8,P2,Surveys work,
+Residential - Training,Training Extras,Resources,Build resource library,Create TrainingResourceLibrary.tsx,TrainingResourceLibrary.tsx,Build tracker,4,Sprint 8,P2,Resources accessible,John's videos
+Residential - Training,Training Extras,History,Build training history,Create TrainingHistoryProgress.tsx,TrainingHistoryProgress.tsx,Build tracker,3,Sprint 8,P1,History visible,
+
+Residential - Reporting,Report Builder,Report Engine,Design architecture,Design query builder,-,Configure database,6,Sprint 9,P0,Queries generate,Dynamic SQL
+Residential - Reporting,Report Builder,Report Engine,Design architecture,Report definitions,-,Design builder,3,Sprint 9,P0,Reports configurable,JSON-based
+Residential - Reporting,Report Builder,Report Engine,Design architecture,Aggregation engine,-,Design builder,4,Sprint 9,P0,Aggregations work,SUM AVG COUNT GROUP BY
+Residential - Reporting,Report Builder,Builder UI,Build report builder,Create CustomReportBuilder.tsx,CustomReportBuilder.tsx,Design engine,6,Sprint 9,P0,Custom reports,KEY: Custom reports
+Residential - Reporting,Report Builder,Builder UI,Build report builder,Field selector,-,Create builder,2,Sprint 9,P0,Fields selectable,
+Residential - Reporting,Report Builder,Builder UI,Build report builder,Filter builder,-,Create builder,3,Sprint 9,P0,Filters apply,
+Residential - Reporting,Report Builder,Builder UI,Build report builder,Grouping options,-,Create builder,2,Sprint 9,P0,Grouping works,
+Residential - Reporting,Report Builder,Builder UI,Build report builder,Sorting options,-,Create builder,1,Sprint 9,P0,Sorting works,
+Residential - Reporting,Report Builder,Execution,Report execution,Execute reports,-,Design engine,3,Sprint 9,P0,Reports execute,
+Residential - Reporting,Report Builder,Execution,Report execution,Report caching,-,Execute reports,2,Sprint 9,P1,Fast repeat runs,
+Residential - Reporting,Report Builder,Execution,Report execution,Pagination,-,Execute reports,1,Sprint 9,P0,Large results paginate,
+
+Residential - Reporting,Visualization,Report Preview,Build preview,Create ReportPreview.tsx,ReportPreview.tsx,Build builder,3,Sprint 9,P0,Preview renders,
+Residential - Reporting,Visualization,Report Preview,Build preview,Table view,-,Create preview,2,Sprint 9,P0,Table displays,
+Residential - Reporting,Visualization,Report Preview,Build preview,Chart views,-,Create preview,4,Sprint 9,P0,Charts render,Bar line pie
+Residential - Reporting,Visualization,Widgets,Build widgets,Create DashboardWidget.tsx,DashboardWidget.tsx,Build preview,3,Sprint 9,P0,Widgets work,Embeddable
+Residential - Reporting,Visualization,Export,Build export,Export PDF,-,Build preview,3,Sprint 9,P0,PDFs download,
+Residential - Reporting,Visualization,Export,Build export,Export Excel,-,Build preview,2,Sprint 9,P0,Excel works,
+Residential - Reporting,Visualization,Export,Build export,Export CSV,-,Build preview,1,Sprint 9,P0,CSV works,
+
+Residential - Reporting,Pre-Built Reports,Sales Reports,Build sales reports,Create SalesReports.tsx,SalesReports.tsx,Build engine,4,Sprint 9,P0,Sales reports work,
+Residential - Reporting,Pre-Built Reports,Sales Reports,Build sales reports,TM sales report,-,Create component,2,Sprint 9,P0,Revenue by TM,KEY: TM performance
+Residential - Reporting,Pre-Built Reports,Sales Reports,Build sales reports,RM sales report,-,Create component,2,Sprint 9,P0,RM roll-up,
+Residential - Reporting,Pre-Built Reports,Sales Reports,Build sales reports,Affinity group report,-,Create component,2,Sprint 9,P0,Group roll-up,
+Residential - Reporting,Pre-Built Reports,Sales Reports,Build sales reports,Ownership group report,-,Create component,2,Sprint 9,P0,Ownership roll-up,
+Residential - Reporting,Pre-Built Reports,Sales Reports,Build sales reports,YoY comparison,-,Create component,3,Sprint 10,P1,YoY accurate,
+Residential - Reporting,Pre-Built Reports,Templates,Build templates,Create ReportTemplates.tsx,ReportTemplates.tsx,Build reports,3,Sprint 9,P1,Templates save,
+Residential - Reporting,Pre-Built Reports,Filters,Build filters,Create ReportFilters.tsx,ReportFilters.tsx,Build builder,3,Sprint 9,P0,Filters reusable,
+
+Residential - Dashboards,Role Dashboards,Executive Dashboard,Build VP dashboard,Create ExecutiveDashboard.tsx,ExecutiveDashboard.tsx,Build reports,6,Sprint 10,P0,Currie's dashboard,KEY: VP overview
+Residential - Dashboards,Role Dashboards,Executive Dashboard,Build VP dashboard,Total trainings widget,-,Create dashboard,2,Sprint 10,P0,Count accurate,
+Residential - Dashboards,Role Dashboards,Executive Dashboard,Build VP dashboard,Revenue widget,-,Create dashboard,2,Sprint 10,P0,Revenue from Acu,
+Residential - Dashboards,Role Dashboards,Executive Dashboard,Build VP dashboard,TM leaderboard,-,Create dashboard,3,Sprint 10,P0,Rankings visible,
+Residential - Dashboards,Role Dashboards,Executive Dashboard,Build VP dashboard,Territory map,-,Create dashboard,3,Sprint 10,P0,Map renders,
+Residential - Dashboards,Role Dashboards,Executive Dashboard,Build VP dashboard,Trend charts,-,Create dashboard,2,Sprint 10,P0,Trends visible,
+Residential - Dashboards,Role Dashboards,TM Dashboard,Build TM dashboard,TM-specific view,-,Build reports,5,Sprint 10,P0,TM sees their data,
+Residential - Dashboards,Role Dashboards,TM Dashboard,Build TM dashboard,Today's schedule,-,TM view,2,Sprint 10,P0,Schedule visible,
+Residential - Dashboards,Role Dashboards,TM Dashboard,Build TM dashboard,My customers,-,TM view,2,Sprint 10,P0,Customer list,
+Residential - Dashboards,Role Dashboards,TM Dashboard,Build TM dashboard,My performance,-,TM view,2,Sprint 10,P0,Self-assessment,
+Residential - Dashboards,Role Dashboards,RM Dashboard,Build RM dashboard,RM-specific view,-,Build reports,5,Sprint 10,P0,RM sees team data,
+Residential - Dashboards,Role Dashboards,RM Dashboard,Build RM dashboard,Team leaderboard,-,RM view,2,Sprint 10,P0,TM rankings,
+Residential - Dashboards,Role Dashboards,RM Dashboard,Build RM dashboard,Team trainings,-,RM view,2,Sprint 10,P0,All TM trainings,
+Residential - Dashboards,Dashboard Customization,Widget System,Build customizer,Create DashboardCustomizer.tsx,DashboardCustomizer.tsx,Build dashboards,5,Sprint 11,P1,Widgets movable,Drag-drop
+Residential - Dashboards,Dashboard Customization,Widget System,Build customizer,Widget library,-,Create customizer,3,Sprint 11,P1,Widget options,
+Residential - Dashboards,Dashboard Customization,Widget System,Build customizer,Save layout,-,Create customizer,2,Sprint 11,P1,Layout saves,
+Residential - Dashboards,Dashboard Customization,Personalization,Build personalization,User preferences,-,Build customizer,2,Sprint 11,P1,Per-user config,
+Residential - Dashboards,Dashboard Customization,Personalization,Build personalization,Default by role,-,User prefs,1,Sprint 11,P1,Defaults apply,
+Residential - Reporting,Report Scheduling,Scheduler,Build scheduler,Create ReportScheduler.tsx,ReportScheduler.tsx,Build reports,4,Sprint 10,P1,Reports scheduled,
+Residential - Reporting,Report Scheduling,Scheduler,Build scheduler,Daily/weekly/monthly,-,Create scheduler,2,Sprint 10,P1,Recurrence works,
+Residential - Reporting,Report Scheduling,Scheduler,Build scheduler,Recipients list,-,Create scheduler,1,Sprint 10,P1,Recipients receive,
+Residential - Reporting,Report Scheduling,Scheduler,Build scheduler,Format selection,-,Create scheduler,1,Sprint 10,P1,PDF/Excel,
+Residential - Reporting,Report Scheduling,Background Jobs,Build job system,Cron-based execution,-,Build scheduler,3,Sprint 10,P1,Jobs run on schedule,
+Residential - Reporting,Report Scheduling,Background Jobs,Build job system,Job monitoring,-,Cron setup,2,Sprint 10,P1,Status visible,
+
+Integration - Acumatica,API Setup,Research,Research API,Document endpoints,-,None,4,Sprint 4,P0,API docs complete,Customer Order Invoice
+Integration - Acumatica,API Setup,Authentication,Setup auth,OAuth or API key,-,Research API,3,Sprint 4,P0,Auth works,
+Integration - Acumatica,API Setup,Service Layer,Build service,Abstract API calls,-,Setup auth,4,Sprint 4,P0,Service layer created,
+Integration - Acumatica,API Setup,Error Handling,Build error handling,Retry logic and logging,-,Build service,2,Sprint 4,P0,Errors handled,
+Integration - Acumatica,Customer Sync,Sync Service,Build sync,One-way sync Acu to CRM,-,Build service,6,Sprint 5,P0,Single source of truth,KEY: Acumatica sync
+Integration - Acumatica,Customer Sync,Sync Service,Build sync,Field mapping,-,Build sync,3,Sprint 5,P0,All fields mapped,
+Integration - Acumatica,Customer Sync,Sync Service,Build sync,Incremental sync,-,Build sync,3,Sprint 5,P0,Efficient syncing,
+Integration - Acumatica,Customer Sync,Monitoring,Build monitoring,Create DataSynchronizationInterface.tsx,DataSynchronizationInterface.tsx,Build sync,4,Sprint 5,P1,Sync health visible,
+Integration - Acumatica,Customer Sync,Monitoring,Build monitoring,Error dashboard,-,Create interface,2,Sprint 5,P1,Errors flagged,
+Integration - Acumatica,Customer Sync,Monitoring,Build monitoring,Manual retry,-,Create interface,1,Sprint 5,P1,Manual intervention,
+Integration - Acumatica,Order Sync,Sync Service,Build order sync,Read-only sync Acu to CRM,-,Build service,6,Sprint 6,P0,Orders visible in CRM,KEY: Order display
+Integration - Acumatica,Order Sync,Sync Service,Build order sync,Order history display,-,Build sync,3,Sprint 6,P0,Orders on customer page,
+Integration - Acumatica,Order Sync,Sync Service,Build order sync,Status tracking,-,Build sync,2,Sprint 6,P0,Status accurate,
+Integration - Acumatica,Order Sync,Order Display,Build order UI,Create CustomerOrders.tsx,CustomerOrders.tsx,Build sync,4,Sprint 6,P0,Orders display,
+Integration - Acumatica,Order Sync,Order Display,Build order UI,Order detail view,-,Create component,3,Sprint 6,P0,Full order visible,
+Integration - Acumatica,Order Sync,Order Display,Build order UI,Tracking info display,-,Create component,2,Sprint 6,P0,Tracking links work,
+Integration - Acumatica,Financial Sync,Sync Service,Build financial sync,Revenue payment data,-,Build service,6,Sprint 6,P0,Financial data in CRM,
+Integration - Acumatica,Financial Sync,Reports,Financial reports,Accurate sales reports,-,Build sync,4,Sprint 7,P0,Reports use Acu data,
+Integration - Acumatica,Sync Monitoring,Health Check,Build health check,Create IntegrationStatusMonitor.tsx,IntegrationStatusMonitor.tsx,Build syncs,4,Sprint 7,P1,Error tracking alerts,
+Integration - Acumatica,Sync Monitoring,Simulation,Build simulation,Create IntegrationSimulationDashboard.tsx,IntegrationSimulationDashboard.tsx,Build health,3,Sprint 7,P2,Test integrations,
+Integration - Acumatica,Sync Monitoring,Scheduling,Scheduled jobs,Hourly or realtime sync,-,Build syncs,3,Sprint 6,P0,Jobs run reliably,
+
+Integration - HubSpot,API Setup,Research,Research API,HubSpot documentation,-,None,2,Sprint 4,P1,API understood,
+Integration - HubSpot,API Setup,Authentication,Setup OAuth,HubSpot app auth,-,Research API,3,Sprint 4,P1,Auth flow works,
+Integration - HubSpot,Lead Import,Import Service,Build import,Fetch leads from HubSpot,-,Setup OAuth,4,Sprint 4,P1,Leads import,
+Integration - HubSpot,Lead Import,Import Service,Build import,Field mapping,-,Build import,3,Sprint 4,P1,Michelle's field mapping,KEY: Field mapping
+Integration - HubSpot,Lead Import,Import Service,Build import,Duplicate detection,-,Build import,2,Sprint 4,P1,No duplicates,
+Integration - HubSpot,Scheduled Sync,Sync Jobs,Scheduled sync,Cron job hourly,-,Build import,3,Sprint 5,P1,Syncs every hour,
+Integration - HubSpot,Scheduled Sync,Sync Jobs,Scheduled sync,Sync status UI,-,Cron job,2,Sprint 5,P1,Admins monitor,
+Integration - HubSpot,Scheduled Sync,Sync Jobs,Scheduled sync,Manual sync trigger,-,Cron job,1,Sprint 5,P1,On-demand sync,
+
+Integration - Email,Outlook Setup,Graph API,Setup Graph,Authentication,-,Configure database,3,Sprint 8,P1,Auth works,
+Integration - Email,Outlook Setup,Graph API,Setup Graph,Permissions,-,Setup auth,2,Sprint 8,P1,Permissions granted,
+Integration - Email,Email Tracking,Tracking Service,Build tracking,Log emails to CRM,-,Setup Graph,4,Sprint 8,P1,Emails logged,
+Integration - Email,Email Tracking,Tracking Service,Build tracking,Email thread view,-,Build tracking,3,Sprint 8,P1,Threads visible,
+Integration - Email,Notifications,Templates,Design templates,HTML email templates,-,Configure database,3,Sprint 6,P0,Templates render,
+Integration - Email,Notifications,Service,Build notification service,SendGrid integration,-,Design templates,4,Sprint 6,P0,Emails delivered,
+Integration - Email,Notifications,Preferences,Build preferences,User opt-in/out,-,Build service,3,Sprint 6,P1,Preferences work,
+
+Notifications,Notification System,Architecture,Design architecture,Event-driven system,-,Configure database,4,Sprint 6,P0,Events trigger notifications,
+Notifications,Notification System,Architecture,Design architecture,Notification types,-,Design architecture,2,Sprint 6,P0,Types supported,Email In-app SMS
+Notifications,Notification System,Service,Build service,Create send notifications,-,Design architecture,6,Sprint 6,P0,Notifications sent,
+Notifications,Notification System,Service,Build service,Queue management,-,Build service,2,Sprint 6,P0,No blocking,
+Notifications,Notification System,Service,Build service,Retry logic,-,Build service,2,Sprint 6,P0,Retries work,
+Notifications,Notification UI,Center,Build center,In-app notification list,-,Build service,4,Sprint 6,P0,Notifications display,
+Notifications,Notification UI,Center,Build center,Unread badges,-,Build center,1,Sprint 6,P0,Badge updates,
+Notifications,Notification UI,Center,Build center,Mark as read,-,Build center,1,Sprint 6,P0,Read status works,
+Notifications,Notification UI,Settings,Build settings,Notification settings page,-,Build center,3,Sprint 6,P1,Users control prefs,
+Notifications,Residential Notif,Order Notifications,New order notif,Notify TM RM,-,Build service,1,Sprint 6,P0,Notified on order,
+Notifications,Residential Notif,Order Notifications,Shipped notif,With tracking,-,Build service,1,Sprint 6,P0,Tracking included,
+Notifications,Residential Notif,CIS Notifications,CIS received notif,On submission,-,Build parser,1,Sprint 5,P0,CIS notified,
+Notifications,Residential Notif,Training Notif,Scheduled notif,Customer trainer notified,-,Build calendar,1,Sprint 7,P0,Training notified,
+Notifications,Residential Notif,Training Notif,Reminder notif,Day before,-,Build calendar,1,Sprint 7,P1,Reminder sent,
+Notifications,Residential Notif,Onboarding Notif,Step notif,On each step,-,Build engine,1,Sprint 6,P0,Steps notified,
+
+Dealer Portal,Dealer Account,Authentication,Dealer registration,Create DealerRegistrationForm.tsx,DealerRegistrationForm.tsx,Setup auth,4,Sprint 11,P1,Registration works,
+Dealer Portal,Dealer Account,Authentication,Dealer registration,Company lookup,-,Create form,2,Sprint 11,P1,Company found,
+Dealer Portal,Dealer Account,Authentication,Dealer registration,Approval workflow,-,Create form,3,Sprint 11,P1,Approval required,
+Dealer Portal,Dealer Account,Login,Build dealer login,Create DealerLoginForm.tsx,DealerLoginForm.tsx,Build registration,3,Sprint 11,P1,Login works,
+Dealer Portal,Dealer Account,Login,Build dealer login,Separate auth provider,-,Create form,2,Sprint 11,P1,Separate from internal,
+Dealer Portal,Dealer Account,Profile,Build dealer profile,Create DealerProfileManagement.tsx,DealerProfileManagement.tsx,Build login,3,Sprint 11,P1,Profile editable,
+Dealer Portal,Dealer Account,Profile,Build dealer profile,Company info,-,Create profile,2,Sprint 11,P1,Company info saved,
+Dealer Portal,Dealer Account,Profile,Build dealer profile,Preferences,-,Create profile,2,Sprint 11,P1,Preferences saved,
+Dealer Portal,Dealer Dashboard,Dashboard,Build dealer dashboard,Create DealerDashboard.tsx,DealerDashboard.tsx,Build profile,5,Sprint 11,P1,Dashboard renders,
+Dealer Portal,Dealer Dashboard,Dashboard,Build dealer dashboard,Recent orders widget,-,Create dashboard,2,Sprint 11,P1,Orders visible,
+Dealer Portal,Dealer Dashboard,Dashboard,Build dealer dashboard,Order status widget,-,Create dashboard,2,Sprint 11,P1,Status accurate,
+Dealer Portal,Dealer Dashboard,Dashboard,Build dealer dashboard,Account summary,-,Create dashboard,2,Sprint 11,P1,Account info,
+Dealer Portal,Dealer Dashboard,Dashboard,Build dealer dashboard,Quick actions,-,Create dashboard,2,Sprint 11,P1,Actions work,
+Dealer Portal,Dealer Dashboard,Navigation,Build navigation,Create DealerNavigation.tsx,DealerNavigation.tsx,Build dashboard,2,Sprint 11,P1,Navigation works,
+
+Dealer Portal,Product Catalog,Catalog View,Build catalog,Create ProductCatalog.tsx,ProductCatalog.tsx,Configure database,6,Sprint 12,P1,Browse catalog,KEY: Replace Shopify
+Dealer Portal,Product Catalog,Catalog View,Build catalog,Grid view,-,Create catalog,2,Sprint 12,P1,Grid displays,
+Dealer Portal,Product Catalog,Catalog View,Build catalog,List view,-,Create catalog,2,Sprint 12,P1,List displays,
+Dealer Portal,Product Catalog,Catalog View,Build catalog,Category navigation,-,Create catalog,2,Sprint 12,P1,Categories work,
+Dealer Portal,Product Catalog,Search,Build search,Search by name/SKU,-,Build catalog,3,Sprint 12,P1,Search accurate,
+Dealer Portal,Product Catalog,Search,Build search,Advanced filters,-,Build search,3,Sprint 12,P1,Filters work,Price category availability
+Dealer Portal,Product Catalog,Search,Build search,Sort options,-,Build search,2,Sprint 12,P1,Sort works,
+Dealer Portal,Product Catalog,Product Details,Build detail,Create ProductDetailModal.tsx,ProductDetailModal.tsx,Build catalog,4,Sprint 12,P1,Details display,
+Dealer Portal,Product Catalog,Product Details,Build detail,Specifications,-,Create modal,2,Sprint 12,P1,Specs visible,
+Dealer Portal,Product Catalog,Product Details,Build detail,Pricing display,-,Create modal,2,Sprint 12,P1,Pricing accurate,
+Dealer Portal,Product Catalog,Product Details,Build detail,Availability,-,Create modal,2,Sprint 12,P1,Stock accurate,
+Dealer Portal,Product Catalog,Product Details,Build detail,Product images,-,Create modal,2,Sprint 12,P1,Images display,
+Dealer Portal,Product Catalog,Comparison,Build comparison,Create ProductComparison.tsx,ProductComparison.tsx,Build detail,4,Sprint 12,P2,Side-by-side compare,
+Dealer Portal,Product Catalog,Comparison,Build comparison,Select products,-,Create comparison,2,Sprint 12,P2,Selection works,
+Dealer Portal,Product Catalog,Comparison,Build comparison,Compare table,-,Create comparison,2,Sprint 12,P2,Table displays,
+Dealer Portal,Product Catalog,Favorites,Build favorites,Create ProductFavoritesManager.tsx,ProductFavoritesManager.tsx,Build catalog,3,Sprint 12,P2,Quick access,KEY: Frequent orders
+Dealer Portal,Product Catalog,Favorites,Build favorites,Add to favorites,-,Create manager,1,Sprint 12,P2,Add works,
+Dealer Portal,Product Catalog,Favorites,Build favorites,Favorites list,-,Create manager,2,Sprint 12,P2,List displays,
+Dealer Portal,Product Catalog,Saved Searches,Build saved searches,Create SavedSearchManager.tsx,SavedSearchManager.tsx,Build search,3,Sprint 12,P2,Searches saved,
+Dealer Portal,Product Catalog,Quick Search,Build quick search,Create QuickSearchAccess.tsx,QuickSearchAccess.tsx,Build search,2,Sprint 12,P2,Fast search,
+
+Dealer Portal,Order Management,Shopping Cart,Build cart,Create ShoppingCart.tsx,ShoppingCart.tsx,Build catalog,5,Sprint 13,P1,Add to cart,KEY: Cart checkout
+Dealer Portal,Order Management,Shopping Cart,Build cart,Add to cart button,-,Create cart,2,Sprint 13,P1,Products added,
+Dealer Portal,Order Management,Shopping Cart,Build cart,Quantity update,-,Create cart,1,Sprint 13,P1,Quantities update,
+Dealer Portal,Order Management,Shopping Cart,Build cart,Remove item,-,Create cart,1,Sprint 13,P1,Items removed,
+Dealer Portal,Order Management,Shopping Cart,Build cart,Cart total,-,Create cart,1,Sprint 13,P1,Totals accurate,
+Dealer Portal,Order Management,Shopping Cart,Build cart,Persist cart,-,Create cart,2,Sprint 13,P1,Cart persists,
+Dealer Portal,Order Management,Checkout,Build checkout,Checkout workflow,-,Build cart,4,Sprint 13,P1,Checkout works,
+Dealer Portal,Order Management,Checkout,Build checkout,Shipping address,-,Checkout workflow,2,Sprint 13,P1,Address works,
+Dealer Portal,Order Management,Checkout,Build checkout,Order review,-,Checkout workflow,2,Sprint 13,P1,Review step,
+Dealer Portal,Order Management,Checkout,Build confirmation,Create OrderConfirmation.tsx,OrderConfirmation.tsx,Build checkout,3,Sprint 13,P1,Confirmation displayed,
+Dealer Portal,Order Management,Quick Order,Build quick order,Create QuickOrderManager.tsx,QuickOrderManager.tsx,Build cart,4,Sprint 13,P1,Repeat orders,KEY: One-click reorder
+Dealer Portal,Order Management,Quick Order,Build quick order,Order history list,-,Create manager,2,Sprint 13,P1,History visible,
+Dealer Portal,Order Management,Quick Order,Build quick order,Reorder button,-,Create manager,2,Sprint 13,P1,Reorder works,
+Dealer Portal,Order Management,Order History,Build history,Create OrderHistory.tsx,OrderHistory.tsx,Build checkout,4,Sprint 13,P1,Orders listed,
+Dealer Portal,Order Management,Order History,Build history,Order list with status,-,Create history,2,Sprint 13,P1,List displays,
+Dealer Portal,Order Management,Order History,Build history,Filter by status,-,Create history,2,Sprint 13,P1,Filters work,
+Dealer Portal,Order Management,Order History,Build history,Search orders,-,Create history,2,Sprint 13,P1,Search works,
+Dealer Portal,Order Management,Tracking,Build tracking,Shipment tracking,-,Build history,4,Sprint 13,P1,Track shipments,KEY: Real-time tracking
+Dealer Portal,Order Management,Tracking,Build tracking,Create ShipmentHistoryTracker.tsx,ShipmentHistoryTracker.tsx,Build tracking,3,Sprint 13,P1,History visible,
+Dealer Portal,Order Management,Tracking,Build tracking,Create ShippingCarrierIntegration.tsx,ShippingCarrierIntegration.tsx,Build tracking,4,Sprint 13,P1,Carrier data,
+Dealer Portal,Order Management,Tracking,Build tracking,Tracking links,-,Build integration,2,Sprint 13,P1,Links work,
+
+Dealer Portal,Account Management,Billing,Build billing,Account statements,-,Build profile,3,Sprint 14,P2,Invoices visible,
+Dealer Portal,Account Management,Billing,Build billing,Payment history,-,Build billing,3,Sprint 14,P2,Payments listed,
+Dealer Portal,Account Management,Billing,Build billing,Download statements,-,Build billing,2,Sprint 14,P2,PDFs download,
+Dealer Portal,Account Management,Credit,Build credit,Credit utilization display,-,Build profile,2,Sprint 14,P2,Credit visible,
+Dealer Portal,Account Management,Credit,Build credit,Credit widget,-,Build credit,2,Sprint 14,P2,Widget displays,
+Dealer Portal,Delivery Management,Preferences,Build preferences,Create DeliveryPreferenceManager.tsx,DeliveryPreferenceManager.tsx,Build profile,3,Sprint 14,P2,Preferences saved,
+Dealer Portal,Delivery Management,Preferences,Build preferences,Default address,-,Create manager,2,Sprint 14,P2,Default works,
+Dealer Portal,Delivery Management,Preferences,Build preferences,Delivery notes,-,Create manager,2,Sprint 14,P2,Notes saved,
+Dealer Portal,Delivery Management,Scheduling,Build scheduling,Create DeliveryWindowScheduler.tsx,DeliveryWindowScheduler.tsx,Build preferences,3,Sprint 14,P2,Window requested,
+Dealer Portal,Delivery Management,Scheduling,Build scheduling,Create ShipmentReschedulingManager.tsx,ShipmentReschedulingManager.tsx,Build scheduling,3,Sprint 14,P2,Reschedule works,
+Dealer Portal,Delivery Management,Scheduling,Build scheduling,Create ShipmentScheduleManager.tsx,ShipmentScheduleManager.tsx,Build scheduling,3,Sprint 14,P2,Schedule managed,
+Dealer Portal,Delivery Management,POD,Build POD viewer,Create ProofOfDeliveryViewer.tsx,ProofOfDeliveryViewer.tsx,Build tracking,2,Sprint 14,P2,POD visible,
+Dealer Portal,Delivery Management,POD,Build POD viewer,Signature display,-,Create viewer,2,Sprint 14,P2,Signature displays,
+
+Mobile App,Mobile Foundation,React Native Setup,Initialize project,Create RN project,-,None,3,Sprint 11,P1,App builds,Expo or bare RN
+Mobile App,Mobile Foundation,React Native Setup,Initialize project,Setup navigation,-,Create project,3,Sprint 11,P1,Navigation works,React Navigation
+Mobile App,Mobile Foundation,Authentication,Mobile auth,Secure token storage,-,Setup navigation,4,Sprint 11,P1,Auth works on mobile,
+Mobile App,Mobile Foundation,Authentication,Mobile auth,Biometric login,-,Token storage,3,Sprint 11,P2,Face/Touch ID,
+Mobile App,Mobile Foundation,API Client,Build API client,REST client for API,-,Setup auth,3,Sprint 11,P1,API calls work,
+Mobile App,Mobile Foundation,API Client,Build API client,Offline queue,-,Build client,3,Sprint 12,P1,Works offline,
+Mobile App,Residential Mobile,TM Dashboard,Build mobile dashboard,Key metrics view,-,Build API client,4,Sprint 12,P1,Dashboard renders,
+Mobile App,Residential Mobile,TM Dashboard,Build mobile dashboard,Today's schedule,-,Build dashboard,3,Sprint 12,P1,Schedule visible,
+Mobile App,Residential Mobile,TM Dashboard,Build mobile dashboard,Quick actions,-,Build dashboard,3,Sprint 12,P1,Actions work,
+Mobile App,Residential Mobile,Customer List,Build customer list,Mobile customer list,-,Build dashboard,4,Sprint 12,P1,Customers listed,
+Mobile App,Residential Mobile,Customer List,Build customer list,Search functionality,-,Build list,2,Sprint 12,P1,Search works,
+Mobile App,Residential Mobile,Customer List,Build customer list,Filter functionality,-,Build list,2,Sprint 12,P1,Filters work,
+Mobile App,Residential Mobile,Customer Detail,Build customer detail,Mobile detail view,-,Build list,3,Sprint 12,P1,Details visible,
+Mobile App,Residential Mobile,Activity Logging,Build activity logging,Quick activity add,-,Build detail,4,Sprint 12,P1,Quick logging,KEY: One-tap activity
+Mobile App,Residential Mobile,Activity Logging,Build activity logging,Activity type selection,-,Build logging,2,Sprint 12,P1,Types available,
+Mobile App,Residential Mobile,Activity Logging,Build activity logging,Notes field,-,Build logging,2,Sprint 12,P1,Notes captured,
+Mobile App,Residential Mobile,Training,Build training completion,Mark complete mobile,-,Build logging,4,Sprint 13,P1,Mobile complete,KEY: One-tap complete
+Mobile App,Residential Mobile,Training,Build training completion,Completion notes,-,Build training,2,Sprint 13,P1,Notes captured,
+Mobile App,Residential Mobile,Training,Build training completion,Photo capture,-,Build training,2,Sprint 13,P1,Photos work,
+Mobile App,Residential Mobile,Voice Notes,Build voice notes,Voice recording,-,Build logging,3,Sprint 13,P1,Recording works,
+Mobile App,Residential Mobile,Voice Notes,Build voice notes,Speech-to-text,-,Voice recording,4,Sprint 13,P1,Voice notes,KEY: Replace MMC voice
+Mobile App,Residential Mobile,Voice Notes,Build voice notes,Edit transcription,-,Speech-to-text,2,Sprint 13,P1,Editable,
+Mobile App,Residential Mobile,Voice Notes,Build voice notes,Save to activity,-,Edit transcription,2,Sprint 13,P1,Notes saved,
+
+Mobile App,Map Integration,Map View,Build map view,Customer pins on map,-,Build customer list,6,Sprint 15,P1,Replace MMC,KEY: Map My Customer replacement
+Mobile App,Map Integration,Map View,Build map view,Cluster view,-,Build map,3,Sprint 15,P1,Clusters work,
+Mobile App,Map Integration,Map View,Build map view,Customer details on tap,-,Build map,3,Sprint 15,P1,Details accessible,
+Mobile App,Map Integration,Route Planning,Build route planning,Route optimization,-,Build map,5,Sprint 15,P1,Routes optimized,
+Mobile App,Map Integration,Route Planning,Build route planning,Turn-by-turn nav,-,Route optimization,3,Sprint 15,P1,Nav works,
+Mobile App,Map Integration,Route Planning,Build route planning,Multi-stop routes,-,Route optimization,3,Sprint 15,P1,Multiple stops,
+Mobile App,Map Integration,Check-in,Build check-in,GPS check-in,-,Build map,3,Sprint 15,P1,Check-in works,
+Mobile App,Map Integration,Check-in,Build check-in,Auto-log visit,-,GPS check-in,2,Sprint 15,P1,Visit logged,
+Mobile App,Map Integration,Check-in,Build check-in,Location verification,-,GPS check-in,2,Sprint 15,P1,Location verified,
+
+Admin,System Health,Integration Monitor,Build monitor,Create IntegrationStatusMonitor.tsx,IntegrationStatusMonitor.tsx,Build integrations,4,Sprint 10,P1,Status checks,
+Admin,System Health,Dashboard,Build dashboard,Create SystemHealthMonitor.tsx,SystemHealthMonitor.tsx,Build monitor,4,Sprint 10,P1,All systems view,
+Admin,System Health,Dashboard,Build dashboard,Uptime metrics,-,Create monitor,2,Sprint 10,P1,Uptime visible,
+Admin,System Health,Dashboard,Build dashboard,Error rates,-,Create monitor,2,Sprint 10,P1,Errors tracked,
+Admin,System Health,Alerts,Build alerts,System alert rules,-,Build dashboard,3,Sprint 10,P1,Alerts trigger,
+Admin,System Health,Alerts,Build alerts,Email notifications,-,Alert rules,2,Sprint 10,P1,Alerts emailed,
+Admin,System Health,Config,Build config,Create SystemConfigurationDashboard.tsx,SystemConfigurationDashboard.tsx,Build dashboard,4,Sprint 10,P2,Config manageable,
+Admin,Data Quality,Duplicate Detection,Build detection,Fuzzy matching algorithm,-,Configure database,4,Sprint 11,P2,Duplicates found,
+Admin,Data Quality,Duplicate Detection,Build detection,Duplicate review UI,-,Build detection,4,Sprint 11,P2,Review interface,
+Admin,Data Quality,Data Cleanup,Build cleanup,Create DataQualityDashboard.tsx,DataQualityDashboard.tsx,Build detection,4,Sprint 11,P2,Cleanup tools,
+Admin,Data Quality,Data Cleanup,Build cleanup,Merge duplicates,-,Create dashboard,3,Sprint 11,P2,Merge works,
+Admin,Data Quality,Validation Rules,Build validation,Data validation rules,-,Configure database,3,Sprint 11,P2,Quality enforced,
+Admin,Audit Trail,Activity Logging,Build logging,User activity tracking,-,Configure database,3,Sprint 9,P1,Actions tracked,
+Admin,Audit Trail,Activity Logging,Build logging,Create UserActivityMonitor.tsx,UserActivityMonitor.tsx,Build logging,4,Sprint 9,P1,Activity visible,
+Admin,Audit Trail,Audit Reports,Build reports,Audit report generation,-,Build logging,3,Sprint 9,P1,Reports work,
+Admin,Audit Trail,Change History,Build history,Record change tracking,-,Build logging,3,Sprint 9,P1,Changes logged,
+Admin,Backup,Backup Management,Build backup,Create BackupManagement.tsx,BackupManagement.tsx,Configure database,4,Sprint 10,P2,Backups work,
+
+Digital Assets,Cloud Storage,Storage Setup,Setup S3/Azure,Create S3 bucket or Azure Blob container,-,Configure database,2,Sprint 8,P1,Storage accessible,Replaces Widen - Currie requirement
+Digital Assets,Cloud Storage,Storage Setup,Setup S3/Azure,Configure bucket policies and permissions,-,Create bucket,2,Sprint 8,P1,Secure access,
+Digital Assets,Cloud Storage,Storage Setup,Setup S3/Azure,Setup folder structure,-,Create bucket,1,Sprint 8,P1,Organized storage,By type: images docs videos
+Digital Assets,Cloud Storage,CDN Setup,Setup CDN,Configure CloudFront or Azure CDN,-,Setup storage,3,Sprint 8,P1,Fast global delivery,
+Digital Assets,Cloud Storage,CDN Setup,Setup CDN,Configure cache policies,-,Configure CDN,2,Sprint 8,P1,Cache rules set,
+Digital Assets,Cloud Storage,CDN Setup,Setup CDN,Setup cache invalidation API,-,Configure CDN,2,Sprint 8,P1,Can bust cache on update,KEY: Update propagation
+
+Digital Assets,Asset Model,Data Model,Create asset schema,Define Prisma Asset model,-,Setup storage,3,Sprint 8,P1,Schema migrated,id name type url currentVersion
+Digital Assets,Asset Model,Data Model,Create asset schema,Add version history table,-,Define model,2,Sprint 8,P1,Version history tracked,AssetVersion table
+Digital Assets,Asset Model,Data Model,Create asset schema,Add asset references table,-,Define model,2,Sprint 8,P1,References tracked,Where asset is used
+Digital Assets,Asset Model,Data Model,Create asset schema,Add metadata fields,-,Define model,1,Sprint 8,P1,Metadata stored,tags description category
+Digital Assets,Asset Model,Reference System,Build reference linking,Create AssetReference model,-,Define model,3,Sprint 8,P1,References linked,KEY: Single source of truth
+Digital Assets,Asset Model,Reference System,Build reference linking,Link assets to customers,-,Create reference model,2,Sprint 8,P1,Customer assets linked,
+Digital Assets,Asset Model,Reference System,Build reference linking,Link assets to products,-,Create reference model,2,Sprint 8,P1,Product assets linked,
+Digital Assets,Asset Model,Reference System,Build reference linking,Link assets to training,-,Create reference model,2,Sprint 8,P1,Training assets linked,John's videos
+Digital Assets,Asset Model,Reference System,Build reference linking,Link assets to dealers,-,Create reference model,2,Sprint 8,P1,Dealer assets linked,
+
+Digital Assets,Single Source Sync,Version Control,Build version system,Create version on upload,-,Create reference model,3,Sprint 9,P1,New version created,Currie: update in one place
+Digital Assets,Single Source Sync,Version Control,Build version system,Store previous versions,-,Create version,2,Sprint 9,P1,History preserved,Rollback capability
+Digital Assets,Single Source Sync,Version Control,Build version system,Track who uploaded each version,-,Create version,1,Sprint 9,P1,Audit trail,
+Digital Assets,Single Source Sync,Version Control,Build version system,Version comparison view,-,Store versions,3,Sprint 9,P1,Compare versions,
+Digital Assets,Single Source Sync,Auto Propagation,Build propagation,Invalidate CDN on update,-,Build version system,3,Sprint 9,P1,Cache cleared instantly,KEY: Updates everywhere
+Digital Assets,Single Source Sync,Auto Propagation,Build propagation,Notify referenced locations,-,Invalidate CDN,2,Sprint 9,P1,All uses updated,Currie requirement
+Digital Assets,Single Source Sync,Auto Propagation,Build propagation,Generate new signed URLs,-,Invalidate CDN,2,Sprint 9,P1,URLs stay valid,
+Digital Assets,Single Source Sync,Auto Propagation,Build propagation,Log propagation events,-,Build propagation,1,Sprint 9,P1,Propagation audited,
+Digital Assets,Single Source Sync,Reference Tracking,Track asset usage,Show where asset is used,-,Build reference linking,4,Sprint 9,P1,Usage visible,Before delete warning
+Digital Assets,Single Source Sync,Reference Tracking,Track asset usage,Prevent delete if in use,-,Show usage,2,Sprint 9,P1,Protected assets,Or warn with confirmation
+Digital Assets,Single Source Sync,Reference Tracking,Track asset usage,Impact analysis on update,-,Show usage,2,Sprint 9,P1,See affected items,
+
+Digital Assets,Asset Library,Library View,Build library,Create AssetLibrary.tsx,AssetLibrary.tsx,Create model,5,Sprint 8,P1,Assets browsable,
+Digital Assets,Asset Library,Library View,Build library,Create AssetGrid.tsx,AssetGrid.tsx,Create library,3,Sprint 8,P1,Grid displays,
+Digital Assets,Asset Library,Library View,Build library,Create AssetFilters.tsx,AssetFilters.tsx,Create library,3,Sprint 8,P1,Filters work,By type category tags
+Digital Assets,Asset Library,Asset Preview,Build preview,Create AssetPreviewModal.tsx,AssetPreviewModal.tsx,Build library,3,Sprint 8,P1,Preview works,Images docs videos
+Digital Assets,Asset Library,Asset Metadata,Build metadata,Create AssetMetadataModal.tsx,AssetMetadataModal.tsx,Build library,3,Sprint 8,P1,Metadata editable,
+Digital Assets,Asset Library,Asset Upload,Build upload,Create AssetUploadModal.tsx,AssetUploadModal.tsx,Build library,4,Sprint 8,P1,Uploads work,Direct to S3/Azure
+Digital Assets,Asset Library,Asset Upload,Build upload,Drag-drop upload,-,Create upload modal,2,Sprint 8,P1,Easy upload,
+Digital Assets,Asset Library,Asset Upload,Build upload,Progress indicator,-,Create upload modal,1,Sprint 8,P1,Upload progress shown,
+Digital Assets,Asset Library,Asset Upload,Build upload,Auto-generate thumbnails,-,Create upload modal,3,Sprint 8,P1,Thumbnails created,For images and videos
+Digital Assets,Asset Library,Bulk Operations,Build bulk ops,Create BulkAssetManager.tsx,BulkAssetManager.tsx,Build library,4,Sprint 9,P1,Bulk ops work,
+Digital Assets,Asset Library,Bulk Operations,Build bulk ops,Bulk upload,-,Create bulk manager,2,Sprint 9,P1,Multiple files at once,
+Digital Assets,Asset Library,Bulk Operations,Build bulk ops,Bulk tag/categorize,-,Create bulk manager,2,Sprint 9,P1,Bulk metadata update,
+Digital Assets,Asset Library,Bulk Operations,Build bulk ops,Bulk delete with protection,-,Create bulk manager,2,Sprint 9,P1,Protected if in use,
+
+Digital Assets,Version UI,Version Control UI,Build version UI,Create AssetVersionControl.tsx,AssetVersionControl.tsx,Build version system,4,Sprint 9,P1,Versions visible,
+Digital Assets,Version UI,Version Control UI,Build version UI,Version history list,-,Create version control,2,Sprint 9,P1,All versions shown,
+Digital Assets,Version UI,Version Control UI,Build version UI,Rollback to previous,-,Create version control,3,Sprint 9,P1,Can restore old version,
+Digital Assets,Version UI,Version Control UI,Build version UI,Version diff view,-,Create version control,3,Sprint 9,P2,Compare versions visually,
+Digital Assets,Version UI,Replace Asset,Build replace flow,Replace asset button,-,Create version control,2,Sprint 9,P1,Easy replacement,
+Digital Assets,Version UI,Replace Asset,Build replace flow,Upload new version,-,Replace button,2,Sprint 9,P1,New file uploaded,
+Digital Assets,Version UI,Replace Asset,Build replace flow,Auto-propagate to all uses,-,Upload new version,2,Sprint 9,P1,All references updated,KEY: Widen replacement
+Digital Assets,Version UI,Replace Asset,Build replace flow,Confirmation with impact preview,-,Upload new version,2,Sprint 9,P1,User sees affected items,
+
+Digital Assets,Asset Workflow,Workflow Manager,Build workflow,Create AssetWorkflowManager.tsx,AssetWorkflowManager.tsx,Build versioning,4,Sprint 9,P2,Workflow works,Approval before publish
+Digital Assets,Asset Workflow,Workflow Manager,Build workflow,Draft/Published status,-,Create workflow manager,2,Sprint 9,P2,Status workflow,
+Digital Assets,Asset Workflow,Workflow Manager,Build workflow,Approval workflow,-,Create workflow manager,3,Sprint 9,P2,Approvals work,Optional
+Digital Assets,Asset Analytics,Analytics Dashboard,Build analytics,Create AssetAnalyticsDashboard.tsx,AssetAnalyticsDashboard.tsx,Build library,4,Sprint 9,P2,Usage tracked,
+Digital Assets,Asset Analytics,Analytics Dashboard,Build analytics,View count per asset,-,Create analytics,2,Sprint 9,P2,Views tracked,
+Digital Assets,Asset Analytics,Analytics Dashboard,Build analytics,Download count,-,Create analytics,2,Sprint 9,P2,Downloads tracked,
+Digital Assets,Asset Analytics,Analytics Dashboard,Build analytics,Most used assets,-,Create analytics,2,Sprint 9,P2,Popular assets shown,
+
+Digital Assets,Migration,Migration Tool,Build migration,Create AssetMigrationTool.tsx,AssetMigrationTool.tsx,Build library,5,Sprint 9,P1,Migration works,From Widen/Dropbox
+Digital Assets,Migration,Migration Tool,Build migration,Export from Widen,-,Create migration tool,3,Sprint 9,P1,Widen export complete,
+Digital Assets,Migration,Migration Tool,Build migration,Export from Dropbox,-,Create migration tool,3,Sprint 9,P1,Dropbox export complete,
+Digital Assets,Migration,Migration Tool,Build migration,Import to S3/Azure,-,Export tools,4,Sprint 9,P1,Files migrated,
+Digital Assets,Migration,Migration Tool,Build migration,Preserve metadata,-,Import files,2,Sprint 9,P1,Metadata preserved,
+Digital Assets,Migration,Migration Tool,Build migration,Create asset records in DB,-,Import files,3,Sprint 9,P1,DB records created,
+Digital Assets,Migration,Migration Tool,Build migration,Verify migration integrity,-,Create records,2,Sprint 9,P1,No files missing,
+Digital Assets,Migration,Migration Tool,Build migration,Update existing references,-,Verify migration,3,Sprint 9,P1,Old URLs remapped,
+
+Digital Assets,Asset API,API Integration,Build API,Create AssetAPIIntegration.tsx,AssetAPIIntegration.tsx,Build library,4,Sprint 9,P1,API works,
+Digital Assets,Asset API,API Integration,Build API,GET asset by ID,-,Create API,2,Sprint 9,P1,Retrieve assets,
+Digital Assets,Asset API,API Integration,Build API,GET asset URL (always current),-,Create API,2,Sprint 9,P1,URL returns latest version,KEY: Single source
+Digital Assets,Asset API,API Integration,Build API,POST upload new asset,-,Create API,2,Sprint 9,P1,Upload via API,
+Digital Assets,Asset API,API Integration,Build API,PUT replace asset version,-,Create API,3,Sprint 9,P1,Replace triggers propagation,
+Digital Assets,Asset API,API Integration,Build API,GET asset usage/references,-,Create API,2,Sprint 9,P1,See where used,
+
+Testing,Unit Testing,Backend Tests,Write tests,Backend unit tests,-,Build features,13,Sprint 16-18,P0,80%+ coverage,
+Testing,Unit Testing,Frontend Tests,Write tests,Component tests,-,Build features,13,Sprint 16-18,P0,Component coverage,
+Testing,Integration Testing,API Tests,Write tests,API integration tests,-,Build APIs,8,Sprint 17-18,P0,End-to-end API,
+Testing,Integration Testing,Integration Tests,Write tests,System integration tests,-,Build integrations,8,Sprint 17-18,P0,All integrations tested,
+Testing,E2E Testing,User Flows,Write tests,Critical path E2E tests,-,Build features,13,Sprint 18,P0,User flows work,
+Testing,Performance Testing,Load Testing,Run tests,Load and scale testing,-,Build features,8,Sprint 18,P1,Performance validated,
+
+Documentation,User Documentation,User Guides,Write docs,Role-based user guides,-,Build features,8,Sprint 18,P0,Guides complete,
+Documentation,User Documentation,Training Materials,Create materials,Videos and tutorials,-,Build features,5,Sprint 18,P0,Materials ready,
+Documentation,Technical Documentation,API Documentation,Write docs,API documentation,-,Build APIs,5,Sprint 18,P1,API docs complete,
+Documentation,Technical Documentation,Architecture Docs,Write docs,System architecture docs,-,Build features,3,Sprint 18,P1,Architecture documented,
+
+Deployment,Production Setup,Environment,Setup production,Production environment,-,None,5,Sprint 18,P0,Environment ready,AWS or Azure
+Deployment,Production Setup,Database,Setup database,Production database migration,-,Setup environment,5,Sprint 18,P0,Data migrated,
+Deployment,Production Setup,Security,Harden security,Security hardening,-,Setup environment,3,Sprint 18,P0,Security configured,SSL WAF
+Deployment,Production Setup,Monitoring,Setup monitoring,Production monitoring,-,Setup environment,3,Sprint 18,P0,Monitoring active,APM logging
+
+User Training,TM Training,Training Sessions,Conduct training,Territory Manager training,-,Complete features,5,Sprint 19,P0,TMs trained,2-hour sessions
+User Training,RM Training,Training Sessions,Conduct training,Regional Manager training,-,Complete features,3,Sprint 19,P0,RMs trained,2-hour sessions
+User Training,Admin Training,Training Sessions,Conduct training,Administrator training,-,Complete features,3,Sprint 19,P0,Admins trained,2-hour sessions
+User Training,Dealer Training,Training Sessions,Conduct training,Dealer portal training,-,Complete features,2,Sprint 19,P1,Dealers trained,1-hour session
+
+Support,Support Setup,Help Desk,Setup system,Ticketing system,-,None,3,Sprint 19,P1,Help desk ready,
+Support,Support Setup,Knowledge Base,Build KB,Self-service articles,-,Setup help desk,5,Sprint 19,P1,KB populated,
+Support,Support Setup,Support Team,Train team,L1 L2 support training,-,Complete features,3,Sprint 19,P1,Team ready,
+
