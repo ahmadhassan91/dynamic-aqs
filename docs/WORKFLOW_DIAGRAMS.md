@@ -1,17 +1,5 @@
 # Workflow Diagrams - Dynamic AQS CRM
 
-## Key Requirements Summary (From Discovery Meetings)
-
-### Strategic Decisions
-| Decision | Details | Source |
-|----------|---------|--------|
-| **Unified CRM** | Single platform for both Residential & Commercial (preferred) | Dan, Curry |
-| **Acumatica = Source of Truth** | CRM should *reflect* financial data, not *create* it | Curry |
-| **Replace Shopify** | Custom Dealer Portal for B2B (Shopify is B2C) | Dan |
-| **Map My Customer** | Either integrate OR build custom mobile app with same functionality | Curry |
-| **Widen DAM** | Keep or replicate "update once, sync everywhere" capability | Dan |
-| **Pricing Tool** | Keep separate (uses SolidWorks/Driveworks for specs) | Dan |
-| **Decision Weight** | 70% functionality, 30% cost | Dan |
 
 ### Core Pain Points to Solve
 1. **"How many trainings did we do?"** — Currently requires calling each TM individually
@@ -20,7 +8,6 @@
 4. **No unified calendar** — Can't see where trainers are scheduled
 5. **Outlook not integrated** — Emails/calls not auto-tracked to CRM
 6. **Shopify limitations** — B2C platform forced to work for B2B
-7. **Rep tracking** — No way to rate reps 1-5 or see history
 
 ### Key Integrations Required
 | System | Integration Type | Priority |
@@ -28,7 +15,6 @@
 | **Acumatica ERP** | 2-way sync (financial data, orders, inventory) | Critical |
 | **Outlook 365** | Graph API (emails, calendar, contacts auto-sync) | High |
 | **HubSpot** | Lead sync (incoming leads → CRM) | High |
-| **Pricing Tool** | Spec/quote import | Medium |
 | **Widen/S3** | Asset management with single-source sync | Medium |
 
 ### Mobile App Requirements (Replace Map My Customer)
@@ -53,10 +39,10 @@ mindmap
       Unified Data Source
     Revenue Growth
       Faster Dealer Onboarding
-      Improved Rep Performance
       Better Lead Conversion
+      Improved Sales Visibility
     Cost Reduction
-      Replace $600K Dynamics CRM
+      Replace Legacy Dynamics CRM
       Eliminate Tool Fragmentation
       Reduce Admin Overhead
     Customer Experience
@@ -79,7 +65,7 @@ flowchart LR
     subgraph PAIN ["❌ Current Pain Points"]
         P1["'Call each TM for training count'"]
         P2["Manual data entry everywhere"]
-        P3["$600K+ on Dynamics CRM"]
+        P3["High cost on Dynamics CRM"]
         P4["Shopify = B2C for B2B"]
     end
     
@@ -92,9 +78,9 @@ flowchart LR
     
     subgraph VALUE ["💰 Value Delivered"]
         V1["Hours → Seconds<br/>for Reports"]
-        V2["2+ Hours/Day Saved<br/>per TM"]
+        V2["Time Saved<br/>per TM"]
         V3["No Vendor Lock-in<br/>Lower TCO"]
-        V4["60% of Sales<br/>Better Experience"]
+        V4["Majority of Sales<br/>Better Experience"]
     end
     
     O1 --> P1 --> F1 --> V1
@@ -142,12 +128,12 @@ flowchart TB
 ```mermaid
 flowchart TB
     subgraph BEFORE ["❌ Before: Data Discrepancies"]
-        ACU1[(Acumatica<br/>$1,234,567)]
-        DYN1[(Dynamics CRM<br/>$1,198,432)]
+        ACU1[(Acumatica<br/>Source Data)]
+        DYN1[(Dynamics CRM<br/>Different Data)]
         MANUAL["Manual Entry<br/>= Human Error"]
         ACU1 -.->|Manual Copy| MANUAL
         MANUAL -.->|Delayed| DYN1
-        DIFF["❓ Which is correct?<br/>$36K difference!"]
+        DIFF["❓ Which is correct?<br/>Data mismatch!"]
     end
     
     subgraph AFTER ["✅ After: Automatic Sync"]
@@ -175,7 +161,7 @@ flowchart TB
         Visit2[Customer Visit 11am]
         Visit3[Training 2pm]
         Visit4[Customer Visit 4pm]
-        Evening[Evening: 1-2 hours<br/>typing notes into CRM]
+        Evening[Evening: Hours<br/>typing notes into CRM]
         
         Visit1 --> Evening
         Visit2 --> Evening
@@ -192,7 +178,7 @@ flowchart TB
         
         V1 --> Voice1 --> Auto1
         
-        Save["2+ Hours Saved Daily<br/>Complete, Accurate Data"]
+        Save["Hours Saved Daily<br/>Complete, Accurate Data"]
     end
     
     style BEFORE fill:#ffebee
@@ -201,39 +187,11 @@ flowchart TB
     style Save fill:#c8e6c9
 ```
 
-**Value:** 2+ hours/day saved per TM × 16 TMs = 32+ hours/day recovered for selling.
+**Value:** Significant time saved per TM — more time for selling.
 
 ---
 
-#### 4. Rep Rating System (Commercial)
-```mermaid
-flowchart TB
-    subgraph BEFORE ["❌ Before: No Visibility"]
-        Rep1["Manufacturer Rep<br/>Performance?"]
-        Unknown["🤷 No systematic<br/>tracking"]
-        Random["Random follow-ups<br/>Missed opportunities"]
-    end
-    
-    subgraph AFTER ["✅ After: 1-5 Rating System"]
-        Rep2["Manufacturer Rep"]
-        Rating["Rated 1-5<br/>with History"]
-        Dashboard2["Dashboard shows:<br/>• Avg rating trend<br/>• Reps needing attention<br/>• Top performers"]
-        Action["Targeted Actions:<br/>1-2: Improvement plan<br/>3-4: Nurture<br/>5: Leverage"]
-        
-        Rep2 --> Rating --> Dashboard2 --> Action
-    end
-    
-    style BEFORE fill:#ffebee
-    style AFTER fill:#e8f5e9
-    style Unknown fill:#ffcdd2
-    style Dashboard2 fill:#c8e6c9
-```
-
-**Value:** Core ownership metric now measurable. Move average rating up = more revenue.
-
----
-
-#### 5. Dealer Portal (Replaces Shopify)
+#### 4. Dealer Portal (Replaces Shopify)
 ```mermaid
 flowchart TB
     subgraph BEFORE ["❌ Before: Shopify B2C Limitations"]
@@ -272,11 +230,11 @@ flowchart TB
     style B2B fill:#c8e6c9
 ```
 
-**Value:** 60% of residential sales (≈50% company-wide) get a better experience.
+**Value:** Majority of residential sales get a better experience.
 
 ---
 
-#### 6. Training Calendar & Tracking
+#### 5. Training Calendar & Tracking
 ```mermaid
 flowchart TB
     subgraph BEFORE ["❌ Before: No Visibility"]
@@ -308,11 +266,11 @@ flowchart TB
 ```mermaid
 flowchart TB
     subgraph COSTS ["💸 Current Costs (Eliminated/Reduced)"]
-        C1["Dynamics CRM: $600K+ customization"]
-        C2["Salesforce consideration: $$$ + vendor lock-in"]
-        C3["Manual admin: 19+ hrs/week per manager"]
-        C4["Map My Customer: subscription fees"]
-        C5["Data errors: unmeasurable lost revenue"]
+        C1["Dynamics CRM: High customization costs"]
+        C2["Salesforce consideration: Vendor lock-in"]
+        C3["Manual admin: Hours/week per manager"]
+        C4["Map My Customer: Subscription fees"]
+        C5["Data errors: Unmeasurable impact"]
     end
     
     subgraph GAINS ["📈 Gains from Custom CRM"]
@@ -334,10 +292,10 @@ flowchart TB
 | Category | Before | After | Value |
 |----------|--------|-------|-------|
 | **Reporting Time** | Hours/Days | Seconds | Executive agility |
-| **TM Admin Work** | 2+ hrs/day | Minutes | 32+ hrs/day for selling |
-| **Data Accuracy** | ±$36K variance | Real-time sync | Trust in numbers |
+| **TM Admin Work** | Hours/day | Minutes | More time for selling |
+| **Data Accuracy** | Variance issues | Real-time sync | Trust in numbers |
 | **Tool Ownership** | Renting | Owning | Capitalize asset |
-| **Dealer Experience** | B2C workaround | B2B native | 60% of sales improved |
+| **Dealer Experience** | B2C workaround | B2B native | Better experience |
 | **Training Visibility** | None | Complete | Operational control |
 
 ---
@@ -488,259 +446,6 @@ flowchart TD
     style Shopify fill:#e3f2fd
     style SyncCRM fill:#c8e6c9
     style NotifyShip fill:#fff9c4
-```
-
-## Commercial Job Lead Workflow (Current As-Is)
-
-> **Dan's Key Insight:** *"Job leads don't often come from marketing, websites or RSMs. They almost always come from manufacturer reps. We partner with reps giving them exclusivity by county. It is the rep's job to know all of the projects in their territory and pitch our products. Their job is to bring us leads."*
-
-**Lead Source Hierarchy:**
-| Source | Frequency | Implication |
-|--------|-----------|-------------|
-| **Manufacturer Rep** | ~95% | Expected — this is their job |
-| **Trade Show (domestic)** | Rare | ⚠️ Rep failure — "shame on the rep" |
-| **Trade Show (international)** | Rare | OK — no rep coverage |
-
-```mermaid
-flowchart TD
-    %% Lead Sources
-    subgraph Sources ["Lead Sources"]
-        RepLead([Rep Brings Lead])
-        TradeLead([Trade Show Lead])
-        
-        RepLead -->|Expected Path| Normal[Normal Flow]
-        TradeLead --> Check{Domestic or<br/>International?}
-        Check -->|Domestic| RepFail["⚠️ Rep Failure<br/>'Shame on the rep'"]
-        Check -->|International| NoRep["No Rep Coverage<br/>Handle Internally"]
-    end
-
-    subgraph Rep ["Manufacturer Rep (THE Lead Source)"]
-        RepStart([Knows ALL Projects<br/>in Territory])
-        CreateLead[Create Lead in Pricing Tool]
-        PrelimQuote[Build Preliminary Quote]
-        FinalQuote[Refine Final Quote]
-        RepFollowUp[Follow-up on Quote]
-    end
-
-    subgraph CSM ["Commercial Sales Manager"]
-        Track[Track Pipeline / Funnel]
-        Review[Review High Profile Jobs]
-        EvalRep[Evaluate Rep Performance]
-    end
-
-    subgraph Admin ["Internal Sales / Admin"]
-        Link[Link Accounts & Contacts in CRM]
-        EnterPO[Enter PO into Acumatica]
-        Release[Release for Production]
-        PostShip[Post Shipment Info]
-    end
-
-    subgraph Systems ["Systems & Tools"]
-        PricingTool["Dynamic Pricing Tool"]
-        CRM[CRM System]
-        Acumatica[Acumatica ERP]
-    end
-
-    %% Normal Rep Flow
-    Normal --> RepStart
-    RepStart --> CreateLead
-    CreateLead --> PricingTool
-    PricingTool --> PrelimQuote
-    PrelimQuote --> FinalQuote
-    
-    %% Integration Points
-    PricingTool -.->|Sync Prospect| CRM
-    PricingTool -.->|Sync Quote| CRM
-    
-    %% Admin Actions
-    CRM --> Link
-    Link --> Track
-    
-    %% Won Job Flow
-    FinalQuote --> RepFollowUp
-    RepFollowUp --> PO{PO Received?}
-    PO -->|Yes| EnterPO
-    
-    EnterPO --> Acumatica
-    Acumatica --> Release
-    Release --> PostShip
-    
-    %% Rep Failure Path
-    RepFail --> EvalRep
-    EvalRep --> RepCheck{Frequent<br/>Misses?}
-    RepCheck -->|Yes| WrongRep["Probably Not<br/>Right Rep for Us"]
-    RepCheck -->|No| Counsel[Counsel Rep]
-    
-    %% International handled internally
-    NoRep --> Link
-    
-    %% Styling
-    style RepFail stroke:#ff0000,stroke-width:2px,fill:#ffcdd2
-    style WrongRep stroke:#ff0000,stroke-width:2px,fill:#ffcdd2
-    style RepStart fill:#c8e6c9
-    style Normal fill:#e8f5e9
-```
-
-**Key Points:**
-- **RSMs don't generate leads** — they manage rep relationships and pipeline
-- **Reps have exclusivity by county** — they should know EVERY project
-- **Trade show lead in rep territory = Rep missed it** — performance issue
-- **Frequent misses = Wrong rep** — consider replacement
-
-## Manufacturer Rep Rating Workflow (Target State)
-*Core commercial metric per ownership: Move reps from 1 → 5.*
-
-> **Dan's Insight:** *"Our owner was talking about the metric being rating all of our manufacturer reps as a 1 through 5 and then that being the core metric that our sales people need to focus on — raising the average rating."*
-
-> **On Missed Leads:** *"If we get a trade show lead in their territory, shame on the rep. If it happens often, they are probably not the right rep for us."*
-
-```mermaid
-flowchart TD
-    subgraph Inputs ["Rating Inputs"]
-        Leads[Leads Brought]
-        Missed[Missed Leads<br/>Trade Show in Territory]
-        Quality[Project Quality]
-        Engagement[Engagement Level]
-    end
-    
-    subgraph CSM ["Commercial Sales Manager"]
-        Assess[Assess Rep Performance]
-        Rate[Update Rep Rating]
-        Plan[Create Improvement Plan]
-        Replace[Consider Replacement]
-    end
-    
-    subgraph System ["CRM System"]
-        RatingHistory[(Rating History)]
-        MissedLog[(Missed Lead Log)]
-        Dashboard[Rep Performance Dashboard]
-    end
-    
-    %% Positive inputs
-    Leads --> Assess
-    Quality --> Assess
-    Engagement --> Assess
-    
-    %% Negative input - Missed Leads
-    Missed --> MissedLog
-    MissedLog --> Assess
-    
-    Assess --> Rate
-    Rate --> RatingHistory
-    RatingHistory --> Dashboard
-    
-    Rate --> RateLevel{Rating Level}
-    RateLevel -->|1 - Not Engaged| Plan
-    RateLevel -->|2 - Minimal Activity| Plan
-    RateLevel -->|3 - Active| Monitor[Monitor Progress]
-    RateLevel -->|4 - Strong| Nurture[Nurture Relationship]
-    RateLevel -->|5 - Champion| Leverage[Leverage for Growth]
-    
-    %% Missed lead check
-    MissedLog --> FreqCheck{Frequent<br/>Misses?}
-    FreqCheck -->|Yes| Replace
-    FreqCheck -->|No| Counsel[Counsel Rep]
-    
-    %% Styling
-    style RatingHistory fill:#c8e6c9
-    style Dashboard fill:#e3f2fd
-    style MissedLog fill:#fff3e0
-    style Missed fill:#ffcdd2
-    style Replace fill:#ffcdd2
-```
-
-**Rating Factors:**
-| Factor | Positive Impact | Negative Impact |
-|--------|-----------------|-----------------|
-| **Leads Brought** | High volume, quality → Rating ↑ | Few leads → Rating ↓ |
-| **Missed Leads** | N/A (none = expected) | Trade show lead in territory → Rating ↓ |
-| **Project Knowledge** | Knows all projects → Rating ↑ | Surprised by projects → Rating ↓ |
-| **Engagement** | Proactive communication → Rating ↑ | Hard to reach → Rating ↓ |
-
-**Rating Scale:**
-| Rating | Description | Action |
-|--------|-------------|--------|
-| 1 | Not Engaged | Requires outreach, consider replacement |
-| 2 | Minimal Activity | Needs support, set improvement plan |
-| 3 | Active | Monitor progress, regular check-ins |
-| 4 | Strong Performer | Nurture, deepen relationship |
-| 5 | Champion | Leverage for growth, reference partner |
-
-**⚠️ Replacement Trigger:** Frequent missed leads = "probably not the right rep for us"
-
----
-
-## Engineer/Influencer Relationship Workflow (Target State)
-*Tracking relationships with engineers, architects, building owners who influence purchase decisions.*
-
-```mermaid
-flowchart TD
-    Start([New Engineer Contact]) --> Create[Create Engineer Contact<br/>in CRM]
-    Create --> Initial[Initial Status: Unknown]
-    
-    Initial --> Rate1{Relationship<br/>Status}
-    
-    Rate1 -->|1 - Hostile| Activity1[Relationship Building]
-    Rate1 -->|2 - Unfavorable| Activity2[Positive Engagement]
-    Rate1 -->|3 - Neutral| Activity3[Value Demonstration]
-    Rate1 -->|4 - Favorable| Activity4[Deepen Relationship]
-    Rate1 -->|5 - Champion| Activity5[Maintain & Expand]
-    
-    Activity1 --> Interact[Log Interactions]
-    Activity2 --> Interact
-    Activity3 --> Interact
-    Activity4 --> Interact
-    Activity5 --> Interact
-    
-    Interact --> Types{Interaction<br/>Type}
-    
-    Types -->|Meeting| Meeting[Face-to-Face Meeting]
-    Types -->|Call| Call[Phone Call]
-    Types -->|Email| Email[Email Exchange]
-    Types -->|Event| Event[Lunch & Learn]
-    
-    Meeting --> VoiceNote[Voice-to-Text Notes<br/>Mobile App]
-    Call --> VoiceNote
-    Email --> LogEmail[Auto-Log from Outlook]
-    Event --> VoiceNote
-    
-    VoiceNote --> Details[Log Interaction Details]
-    LogEmail --> Details
-    
-    Details --> Outcome[Record Outcome]
-    Outcome --> Positive{Positive<br/>Outcome?}
-    
-    Positive -->|Yes| Consider[Consider Rating Increase]
-    Positive -->|No| Monitor[Continue Monitoring]
-    
-    Consider --> Criteria{Meets<br/>Criteria?}
-    Criteria -->|Yes| Increase[Increase Rating]
-    Criteria -->|No| Monitor
-    
-    Increase --> UpdateRating[Update Engineer Rating]
-    UpdateRating --> LogChange[Log Rating Change<br/>with Reason]
-    LogChange --> Notify[Notify RSM Team]
-    
-    Notify --> RatingHist[Add to Rating History]
-    RatingHist --> Tasks[Generate Follow-up Tasks]
-    
-    Tasks --> NextLevel{Target<br/>Next Level}
-    NextLevel --> Strategy[Strategy for Advancement]
-    Strategy --> Interact
-    
-    Monitor --> Schedule[Schedule Next Interaction]
-    Schedule --> Interact
-    
-    Activity5 --> Spec{Specifying<br/>Projects?}
-    Spec -->|Yes| Track[Track Specifications]
-    Spec -->|No| Encourage[Encourage Specifications]
-    
-    Track --> OpptyWon[Link to Won Opportunities]
-    Encourage --> Strategy
-    
-    style Create fill:#e3f2fd
-    style UpdateRating fill:#c8e6c9
-    style Activity5 fill:#fff9c4
 ```
 
 ## System Integration Architecture - Current As-Is
@@ -905,3 +610,85 @@ flowchart TD
     style Send fill:#c8e6c9
     style UserDash fill:#fff9c4
 ```
+
+---
+
+## Consignment Tracking Workflow (Target State)
+*Tracking consignment inventory at dealer locations with audit reconciliation.*
+
+> **Current Pain Point:** Consignment tracking is done via shared Dropbox spreadsheet. Multiple users editing causes corruption, no visibility into audit status, and manual tracking of PO submissions for missing items.
+
+```mermaid
+flowchart TD
+    subgraph Setup ["Consignment Setup"]
+        NewLoc([New Consignment<br/>Location Request])
+        NewLoc --> Create[Create Location<br/>in CRM]
+        Create --> AssignTM[Assign Territory<br/>Manager]
+        AssignTM --> SetSchedule[Set Audit<br/>Schedule]
+        SetSchedule --> LinkCustomer[Link to Customer<br/>Account]
+    end
+    
+    subgraph AuditCycle ["Audit Cycle"]
+        Due([Audit Due Date<br/>Approaching])
+        Due --> Alert[Alert TM:<br/>Audit Due]
+        Alert --> Schedule[Schedule Audit<br/>On-Site or Remote]
+        Schedule --> SyncCal[Sync to<br/>Outlook Calendar]
+        
+        SyncCal --> Conduct[Conduct<br/>Inventory Audit]
+        Conduct --> LogResult[Log Audit<br/>Results in CRM]
+    end
+    
+    subgraph Outcome ["Audit Outcome"]
+        LogResult --> Check{Reconciled?}
+        
+        Check -->|Yes| Reconciled[Mark as<br/>Reconciled]
+        Reconciled --> NextCycle[Schedule Next<br/>Audit Cycle]
+        
+        Check -->|No| Discrepancy[Mark as<br/>Discrepancy]
+        Discrepancy --> LogReason[Log Reason:<br/>Items Missing]
+        LogReason --> RequestPO[Request PO<br/>from Location]
+    end
+    
+    subgraph FollowUp ["Follow-up Process"]
+        RequestPO --> WaitPO[Status:<br/>Waiting for PO]
+        WaitPO --> AlertFollowUp[Alert TM:<br/>Follow-up Required]
+        AlertFollowUp --> POReceived{PO<br/>Received?}
+        
+        POReceived -->|Yes| ClosePO[Mark PO<br/>Received]
+        ClosePO --> NextCycle
+        
+        POReceived -->|No| Escalate[Continue<br/>Follow-up]
+        Escalate --> AlertFollowUp
+    end
+    
+    subgraph Dashboard ["Management Dashboard"]
+        NextCycle --> UpdateDash[Update<br/>Dashboard]
+        UpdateDash --> Metrics[Show Metrics:<br/>• Total Locations<br/>• Audits Pending<br/>• Discrepancies<br/>• POs Outstanding]
+    end
+    
+    style NewLoc fill:#e3f2fd
+    style Alert fill:#fff3e0
+    style Reconciled fill:#c8e6c9
+    style Discrepancy fill:#ffcdd2
+    style WaitPO fill:#fff9c4
+    style Metrics fill:#e3f2fd
+```
+
+### Consignment Data Model
+
+| Entity | Key Fields | Description |
+|--------|------------|-------------|
+| **Consignment Location** | Warehouse ID, TM, Customer ID, Inception Date | Physical location with consignment inventory |
+| **Warehouse Manager** | Name, Email, Phone | Contact at the consignment location |
+| **Reconciliation Cycle** | Audit Due, Status, Outcome, Activity | One audit period (quarterly) |
+| **Audit Result** | Reconciled/Discrepancy, Reason, PO Status | Result of a single audit |
+
+### Alert Triggers
+
+| Trigger | Alert Type | Recipient |
+|---------|------------|-----------|
+| Audit due in 14 days | Reminder | TM |
+| Audit due in 7 days | Warning | TM, RD |
+| Audit overdue | Urgent | TM, RD |
+| PO outstanding > 30 days | Follow-up | TM |
+| Discrepancy rate high | Management | RD, VP |
