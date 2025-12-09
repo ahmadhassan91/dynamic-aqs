@@ -37,7 +37,7 @@ const mockUsers: SimpleUser[] = [
     id: '2',
     name: 'Jane Smith',
     email: 'jane.smith@dynamicaqs.com',
-    role: 'Regional Manager',
+    role: 'Regional Director',
     status: 'active',
     lastLogin: '14/01/2024'
   }
@@ -70,7 +70,7 @@ export function SimpleUserManagement() {
             data={[
               { value: 'all', label: 'All Roles' },
               { value: 'territory_manager', label: 'Territory Manager' },
-              { value: 'regional_manager', label: 'Regional Manager' },
+              { value: 'regional_manager', label: 'Regional Director' },
               { value: 'admin', label: 'Admin' }
             ]}
           />

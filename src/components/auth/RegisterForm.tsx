@@ -56,7 +56,7 @@ export function RegisterForm({ onSubmit, loading = false, error }: RegisterFormP
 
   const roleOptions = [
     { value: 'territory_manager', label: 'Territory Manager' },
-    { value: 'regional_manager', label: 'Regional Manager' },
+    { value: 'regional_manager', label: 'Regional Director' },
     { value: 'admin', label: 'Administrator' },
     { value: 'dealer', label: 'Dealer' },
   ];

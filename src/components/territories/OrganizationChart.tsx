@@ -69,7 +69,7 @@ function ManagerNode({
             </Avatar>
             <div>
               <Text fw={600}>{manager.firstName} {manager.lastName}</Text>
-              <Text size="sm" c="dimmed">Regional Manager</Text>
+              <Text size="sm" c="dimmed">Regional Director</Text>
               <Text size="xs" c="dimmed">
                 {territories.find(t => t.regionId === manager.regionId)?.name?.replace(' Region', '') || 'Unknown'} Region
               </Text>
@@ -212,7 +212,7 @@ function ExecutiveNode({
         {/* Executive Stats */}
         <Group gap="xl" justify="center">
           <div style={{ textAlign: 'center' }}>
-            <Text size="xs" c="dimmed">Regional Managers</Text>
+            <Text size="xs" c="dimmed">Regional Directors</Text>
             <Text fw={700} size="xl">{totalManagers}</Text>
           </div>
           <div style={{ textAlign: 'center' }}>
@@ -363,7 +363,7 @@ export function OrganizationChart() {
               </Group>
               <Group gap="md">
                 <div style={{ textAlign: 'center' }}>
-                  <Text size="xs" c="dimmed">Regional Managers</Text>
+                  <Text size="xs" c="dimmed">Regional Directors</Text>
                   <Text fw={500}>{regionalManagers.length}</Text>
                 </div>
                 <div style={{ textAlign: 'center' }}>
@@ -398,7 +398,7 @@ export function OrganizationChart() {
                     </Avatar>
                     <div>
                       <Text fw={500}>{manager.firstName} {manager.lastName}</Text>
-                      <Text size="sm" c="dimmed">Regional Manager</Text>
+                      <Text size="sm" c="dimmed">Regional Director</Text>
                       <Text size="xs" c="dimmed">
                         {territories.find(t => t.regionId === manager.regionId)?.name?.replace(' Region', '') || 'Unknown'} Region
                       </Text>
@@ -509,7 +509,7 @@ export function OrganizationChart() {
                   </div>
 
                   <div>
-                    <Text size="xs" c="dimmed">Regional Manager</Text>
+                    <Text size="xs" c="dimmed">Regional Director</Text>
                     <Group gap="xs">
                       {regionalManager ? (
                         <>
@@ -584,7 +584,7 @@ export function OrganizationChart() {
           </div>
           <div style={{ textAlign: 'center' }}>
             <IconUser size={24} color="teal" style={{ margin: '0 auto 8px' }} />
-            <Text size="xs" c="dimmed">Regional Managers</Text>
+            <Text size="xs" c="dimmed">Regional Directors</Text>
             <Text fw={600} size="lg">{regionalManagers.length}</Text>
           </div>
           <div style={{ textAlign: 'center' }}>

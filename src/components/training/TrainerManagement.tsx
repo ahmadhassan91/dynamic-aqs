@@ -249,7 +249,7 @@ export function TrainerManagement() {
                             color={trainer.role === 'regional_manager' ? 'violet' : 'blue'} 
                             variant="light"
                           >
-                            {trainer.role === 'regional_manager' ? 'Regional Manager' : 'Territory Manager'}
+                            {trainer.role === 'regional_manager' ? 'Regional Director' : 'Territory Manager'}
                           </Badge>
                         </Table.Td>
                         <Table.Td>
@@ -497,7 +497,7 @@ export function TrainerManagement() {
                   variant="light"
                   mt="xs"
                 >
-                  {selectedTrainer.role === 'regional_manager' ? 'Regional Manager' : 'Territory Manager'}
+                  {selectedTrainer.role === 'regional_manager' ? 'Regional Director' : 'Territory Manager'}
                 </Badge>
               </div>
             </Group>

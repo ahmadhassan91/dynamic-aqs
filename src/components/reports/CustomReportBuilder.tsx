@@ -98,7 +98,7 @@ export function CustomReportBuilder() {
       { id: 'territory.name', name: 'Territory Name', type: 'string', category: 'Territory' },
       { id: 'territory.manager', name: 'Territory Manager', type: 'string', category: 'Territory' },
       { id: 'region.name', name: 'Region Name', type: 'string', category: 'Territory' },
-      { id: 'region.manager', name: 'Regional Manager', type: 'string', category: 'Territory' },
+      { id: 'region.manager', name: 'Regional Director', type: 'string', category: 'Territory' },
       
       // Order fields
       { id: 'order.orderNumber', name: 'Order Number', type: 'string', category: 'Orders' },

@@ -146,7 +146,7 @@ export default function TestStylesPage() {
                     <Badge color="yellow" variant="light">Pending</Badge>
                   </Table.Td>
                   <Table.Td>
-                    <Text c="dimmed">Regional Manager</Text>
+                    <Text c="dimmed">Regional Director</Text>
                   </Table.Td>
                 </Table.Tr>
               </Table.Tbody>

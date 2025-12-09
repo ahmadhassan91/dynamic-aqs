@@ -572,7 +572,7 @@ export function UnifiedCommunicationCenter({ userRole = 'admin' }: UnifiedCommun
                         { value: 'sales-team', label: 'Sales Team' },
                         { value: 'engineering-support', label: 'Engineering Support' },
                         { value: 'management', label: 'Management' },
-                        { value: 'regional-managers', label: 'Regional Managers' },
+                        { value: 'regional-managers', label: 'Regional Directors' },
                       ]}
                       defaultValue={['sales-team', 'management']}
                     />

@@ -65,7 +65,7 @@ export default function UserManagementDashboard({ onUserSelect }: UserManagement
           firstName: 'Jane',
           lastName: 'Smith',
           email: 'jane.smith@dynamicaqs.com',
-          role: { id: '2', name: 'Regional Manager', permissions: [] },
+          role: { id: '2', name: 'Regional Director', permissions: [] },
           status: UserStatus.ACTIVE,
           lastLoginAt: new Date().toISOString(),
           createdAt: new Date().toISOString(),
@@ -75,7 +75,7 @@ export default function UserManagementDashboard({ onUserSelect }: UserManagement
 
       const mockRoles: UserRole[] = [
         { id: '1', name: 'Territory Manager', permissions: [] },
-        { id: '2', name: 'Regional Manager', permissions: [] },
+        { id: '2', name: 'Regional Director', permissions: [] },
         { id: '3', name: 'Admin', permissions: [] }
       ];
 

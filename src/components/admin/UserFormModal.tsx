@@ -34,7 +34,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSave }: UserFor
 
   const roles = [
     { value: '1', label: 'Territory Manager' },
-    { value: '2', label: 'Regional Manager' },
+    { value: '2', label: 'Regional Director' },
     { value: '3', label: 'Admin' }
   ];
 
@@ -182,8 +182,8 @@ export default function UserFormModal({ isOpen, onClose, user, onSave }: UserFor
           />
 
           <TextInput
-            label="Regional Manager ID"
-            placeholder="Optional regional manager assignment"
+            label="Regional Director ID"
+            placeholder="Optional regional director assignment"
             value={formData.regionalManagerId}
             onChange={(e) => setFormData({ ...formData, regionalManagerId: e.currentTarget.value })}
           />

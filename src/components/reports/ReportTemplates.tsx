@@ -165,7 +165,7 @@ export function ReportTemplates({ onClose, onSelectTemplate }: ReportTemplatesPr
       {
         id: 'manager-performance',
         name: 'Manager Performance Dashboard',
-        description: 'Comprehensive performance metrics for territory and regional managers',
+        description: 'Comprehensive performance metrics for territory and regional directors',
         fields: ['territory.manager', 'region.name', 'customer.totalRevenue', 'customer.totalOrders', 'training.status'],
         groupBy: ['territory.manager', 'region.name'],
         filters: [],
