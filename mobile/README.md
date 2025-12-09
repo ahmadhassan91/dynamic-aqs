@@ -1,11 +1,14 @@
 # Dynamic AQS CRM Mobile App
 
-A React Native mobile application for Territory Managers to access customer information, manage routes, track trainings, and log field activities.
+A React Native mobile application for Territory Managers to access customer information, manage routes, track trainings, and log field activities. **This app replaces Map My Customer with enhanced CRM integration.**
 
 ## Features
 
 ### Core Functionality
-- **Dashboard**: Territory Manager KPIs and quick actions
+- **Dashboard**: Territory Manager KPIs, alerts, and quick actions
+- **Order Alerts**: Real-time notifications for new orders and order frequency changes ⭐ **NEW**
+- **Today's Calendar**: Visual daily schedule with trainings, visits, and calls ⭐ **NEW**
+- **Quick Training Complete**: One-tap training completion with auto-populated data ⭐ **NEW**
 - **Training Management**: Schedule, track, and complete customer trainings ⭐ **CRITICAL FEATURE**
 - **Activity Logging**: Quick logging with voice-to-text notes ⭐ **CRITICAL FEATURE**
 - **Customer Management**: Search, view, and manage customer information
@@ -16,7 +19,7 @@ A React Native mobile application for Territory Managers to access customer info
 - **Data Synchronization**: Automatic sync when online with conflict resolution
 
 ### Key Screens
-- **Dashboard**: Territory KPIs, upcoming trainings, recent activities, quick actions
+- **Dashboard**: Territory KPIs, order alerts, today's calendar, upcoming trainings, quick actions
 - **Training Management**: View upcoming/completed trainings, mark complete, voice notes
 - **Activities**: Log calls, visits, emails, meetings with voice-to-text capability
 - **Customer List**: Search and browse customers with status indicators

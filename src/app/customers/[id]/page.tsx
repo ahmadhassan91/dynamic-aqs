@@ -47,6 +47,10 @@ import {
   IconShoppingCart,
   IconPackage,
   IconClipboardCheck,
+  IconMicrophone,
+  IconPlayerPlay,
+  IconPlayerPause,
+  IconDeviceMobile,
 } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
@@ -402,6 +406,58 @@ const mockConsignmentLocations = [
   },
 ];
 
+// Mock voice notes synced from mobile app
+const mockVoiceNotes = [
+  {
+    id: 'VN-001',
+    title: 'Post-training follow-up',
+    duration: 45, // seconds
+    recordedAt: '2024-12-09T10:30:00',
+    recordedBy: 'Sarah Johnson',
+    device: 'iPhone - Mobile App',
+    syncedAt: '2024-12-09T10:31:15',
+    transcription: 'Just finished the product training session with John at Comfort Zone HVAC. He mentioned they\'re interested in expanding their heat pump offerings next quarter. Need to follow up with a quote for the new Daikin units. Also, they had questions about the rebate program that I need to clarify with the regional team.',
+    tags: ['training', 'heat-pump', 'quote-needed'],
+    status: 'synced',
+  },
+  {
+    id: 'VN-002',
+    title: 'Site visit notes',
+    duration: 62,
+    recordedAt: '2024-12-05T14:15:00',
+    recordedBy: 'Sarah Johnson',
+    device: 'iPhone - Mobile App',
+    syncedAt: '2024-12-05T14:16:30',
+    transcription: 'Visited the main warehouse location. Inventory looks good, all consignment items accounted for. Tom mentioned they might need additional mini-split units for an upcoming commercial project. Discussed pricing tiers and potential volume discount.',
+    tags: ['site-visit', 'consignment', 'mini-split'],
+    status: 'synced',
+  },
+  {
+    id: 'VN-003',
+    title: 'Customer call recap',
+    duration: 38,
+    recordedAt: '2024-11-28T09:45:00',
+    recordedBy: 'Sarah Johnson',
+    device: 'Android - Mobile App',
+    syncedAt: '2024-11-28T09:46:00',
+    transcription: 'Quick call with John about scheduling the next technical training. They want to get two more techs certified before end of year. Tentatively scheduled for December 15th. Need to confirm with training department.',
+    tags: ['call', 'training', 'scheduling'],
+    status: 'synced',
+  },
+  {
+    id: 'VN-004',
+    title: 'Equipment feedback',
+    duration: 28,
+    recordedAt: '2024-11-20T16:00:00',
+    recordedBy: 'Mike Chen',
+    device: 'iPhone - Mobile App',
+    syncedAt: '2024-11-20T16:01:00',
+    transcription: 'Customer feedback on the new VRF system installation. They\'re very happy with the performance but had minor issues with the thermostat interface. May need a brief follow-up training session on the controls.',
+    tags: ['feedback', 'vrf', 'thermostat'],
+    status: 'synced',
+  },
+];
+
 export default function CustomerDetailPage() {
   const params = useParams();
   const customerId = params.id as string;
@@ -631,6 +687,7 @@ export default function CustomerDetailPage() {
             <Tabs.Tab value="activities">Activities</Tabs.Tab>
             <Tabs.Tab value="orders">Orders</Tabs.Tab>
             <Tabs.Tab value="training">Training</Tabs.Tab>
+            <Tabs.Tab value="voice-notes" leftSection={<IconMicrophone size={14} />}>Voice Notes</Tabs.Tab>
             <Tabs.Tab value="consignment">Consignment</Tabs.Tab>
             <Tabs.Tab value="documents">Documents</Tabs.Tab>
           </Tabs.List>
@@ -885,6 +942,170 @@ export default function CustomerDetailPage() {
                 </Table>
               </div>
             </Paper>
+          </Tabs.Panel>
+
+          {/* Voice Notes Tab Panel */}
+          <Tabs.Panel value="voice-notes" pt="md">
+            <Stack gap="md">
+              {/* Voice Notes Header */}
+              <Paper p="md" withBorder>
+                <Group justify="space-between">
+                  <Group>
+                    <IconDeviceMobile size={24} color="var(--mantine-color-blue-6)" />
+                    <div>
+                      <Text fw={600}>Mobile App Voice Notes</Text>
+                      <Text size="sm" c="dimmed">Voice recordings synced from field representatives</Text>
+                    </div>
+                  </Group>
+                  <Badge color="green" variant="light" leftSection={<IconCheck size={12} />}>
+                    Auto-Synced
+                  </Badge>
+                </Group>
+              </Paper>
+
+              {/* Voice Notes Summary */}
+              <Grid>
+                <Grid.Col span={{ base: 6, md: 3 }}>
+                  <Paper p="md" withBorder>
+                    <Group justify="space-between">
+                      <div>
+                        <Text size="xs" c="dimmed">Total Notes</Text>
+                        <Text size="xl" fw={700}>{mockVoiceNotes.length}</Text>
+                      </div>
+                      <IconMicrophone size={24} color="var(--mantine-color-blue-6)" />
+                    </Group>
+                  </Paper>
+                </Grid.Col>
+                <Grid.Col span={{ base: 6, md: 3 }}>
+                  <Paper p="md" withBorder>
+                    <Group justify="space-between">
+                      <div>
+                        <Text size="xs" c="dimmed">Total Duration</Text>
+                        <Text size="xl" fw={700}>{Math.floor(mockVoiceNotes.reduce((sum, n) => sum + n.duration, 0) / 60)}:{(mockVoiceNotes.reduce((sum, n) => sum + n.duration, 0) % 60).toString().padStart(2, '0')}</Text>
+                      </div>
+                      <IconPlayerPlay size={24} color="var(--mantine-color-green-6)" />
+                    </Group>
+                  </Paper>
+                </Grid.Col>
+                <Grid.Col span={{ base: 6, md: 3 }}>
+                  <Paper p="md" withBorder>
+                    <Group justify="space-between">
+                      <div>
+                        <Text size="xs" c="dimmed">This Month</Text>
+                        <Text size="xl" fw={700}>{mockVoiceNotes.filter(n => new Date(n.recordedAt).getMonth() === new Date().getMonth()).length}</Text>
+                      </div>
+                      <IconCalendar size={24} color="var(--mantine-color-violet-6)" />
+                    </Group>
+                  </Paper>
+                </Grid.Col>
+                <Grid.Col span={{ base: 6, md: 3 }}>
+                  <Paper p="md" withBorder>
+                    <Group justify="space-between">
+                      <div>
+                        <Text size="xs" c="dimmed">With Follow-ups</Text>
+                        <Text size="xl" fw={700} c="orange">{mockVoiceNotes.filter(n => n.tags.includes('quote-needed') || n.tags.includes('scheduling')).length}</Text>
+                      </div>
+                      <IconAlertTriangle size={24} color="var(--mantine-color-orange-6)" />
+                    </Group>
+                  </Paper>
+                </Grid.Col>
+              </Grid>
+
+              {/* Voice Notes List */}
+              <Paper p="md" withBorder>
+                <Group justify="space-between" mb="md">
+                  <Text fw={600}>Voice Note Recordings</Text>
+                  <Group gap="xs">
+                    <Badge variant="light" color="blue">{mockVoiceNotes.length} notes</Badge>
+                  </Group>
+                </Group>
+
+                <Stack gap="md">
+                  {mockVoiceNotes.map((note) => (
+                    <Card key={note.id} withBorder padding="md" radius="md">
+                      <Stack gap="sm">
+                        {/* Note Header */}
+                        <Group justify="space-between">
+                          <Group>
+                            <Avatar size="md" radius="xl" color="blue">
+                              <IconMicrophone size={18} />
+                            </Avatar>
+                            <div>
+                              <Text fw={600}>{note.title}</Text>
+                              <Group gap="xs">
+                                <Text size="xs" c="dimmed">{note.recordedBy}</Text>
+                                <Text size="xs" c="dimmed">•</Text>
+                                <Text size="xs" c="dimmed">{new Date(note.recordedAt).toLocaleDateString()} at {new Date(note.recordedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                              </Group>
+                            </div>
+                          </Group>
+                          <Group gap="xs">
+                            <Badge variant="light" size="sm" color="gray">
+                              {Math.floor(note.duration / 60)}:{(note.duration % 60).toString().padStart(2, '0')}
+                            </Badge>
+                            <Badge variant="light" size="sm" color="green" leftSection={<IconCheck size={10} />}>
+                              {note.status}
+                            </Badge>
+                          </Group>
+                        </Group>
+
+                        {/* Audio Player Simulation */}
+                        <Paper p="sm" bg="gray.0" radius="md">
+                          <Group>
+                            <ActionIcon variant="filled" color="blue" radius="xl" size="lg">
+                              <IconPlayerPlay size={18} />
+                            </ActionIcon>
+                            <div style={{ flex: 1 }}>
+                              <Progress value={0} size="sm" radius="xl" />
+                              <Group justify="space-between" mt={4}>
+                                <Text size="xs" c="dimmed">0:00</Text>
+                                <Text size="xs" c="dimmed">{Math.floor(note.duration / 60)}:{(note.duration % 60).toString().padStart(2, '0')}</Text>
+                              </Group>
+                            </div>
+                          </Group>
+                        </Paper>
+
+                        {/* Transcription */}
+                        <div>
+                          <Text size="sm" fw={500} mb={4}>Transcription</Text>
+                          <Text size="sm" c="dimmed" style={{ lineHeight: 1.6 }}>
+                            {note.transcription}
+                          </Text>
+                        </div>
+
+                        {/* Tags and Meta */}
+                        <Group justify="space-between">
+                          <Group gap="xs">
+                            {note.tags.map((tag) => (
+                              <Badge key={tag} variant="outline" size="sm" color={tag.includes('needed') || tag.includes('scheduling') ? 'orange' : 'gray'}>
+                                {tag}
+                              </Badge>
+                            ))}
+                          </Group>
+                          <Group gap="xs">
+                            <IconDeviceMobile size={14} color="var(--mantine-color-dimmed)" />
+                            <Text size="xs" c="dimmed">{note.device}</Text>
+                          </Group>
+                        </Group>
+
+                        {/* Actions */}
+                        <Group gap="xs" mt="xs">
+                          <Button variant="light" size="xs" leftSection={<IconNotes size={14} />}>
+                            Add to Activity Log
+                          </Button>
+                          <Button variant="light" size="xs" leftSection={<IconCalendar size={14} />}>
+                            Create Follow-up
+                          </Button>
+                          <Button variant="subtle" size="xs" leftSection={<IconDownload size={14} />}>
+                            Download Audio
+                          </Button>
+                        </Group>
+                      </Stack>
+                    </Card>
+                  ))}
+                </Stack>
+              </Paper>
+            </Stack>
           </Tabs.Panel>
 
           <Tabs.Panel value="consignment" pt="md">
