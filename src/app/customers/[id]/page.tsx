@@ -24,6 +24,7 @@ import {
   Textarea,
   Select,
   Container,
+  Anchor,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import {
@@ -44,6 +45,8 @@ import {
   IconSchool,
   IconNotes,
   IconShoppingCart,
+  IconPackage,
+  IconClipboardCheck,
 } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
@@ -72,6 +75,7 @@ const mockCustomer = {
   status: 'Active',
   customerSince: '2020-03-15',
   territoryManager: 'Sarah Johnson',
+  territoryId: '1', // Links to territory for navigation
   regionalManager: 'Mike Chen',
   affinityGroup: 'Midwest HVAC Alliance',
   ownershipGroup: 'Independent',
@@ -349,6 +353,55 @@ const mockDocuments = [
   },
 ];
 
+// Mock consignment data for this customer
+const mockConsignmentLocations = [
+  {
+    id: 'WH-001',
+    warehouseId: 'SE-1234',
+    description: 'Main Warehouse - Springfield',
+    type: 'Dealer',
+    locationType: 'Dealership',
+    inceptionDate: '2022-06-15',
+    warehouseManager: 'Tom Richardson',
+    email: 'tom@comfortzonehvac.com',
+    phone: '(555) 123-4567',
+    lastAuditDate: '2024-11-15',
+    lastAuditStatus: 'Reconciled',
+    nextAuditDue: '2025-02-15',
+    auditCycle: 'Quarterly',
+    totalItems: 24,
+    totalValue: 45000,
+    reconciliationHistory: [
+      { date: '2024-11-15', status: 'Reconciled', outcome: 'All items accounted for', conductedBy: 'Sarah Johnson' },
+      { date: '2024-08-12', status: 'Reconciled', outcome: 'All items accounted for', conductedBy: 'Sarah Johnson' },
+      { date: '2024-05-10', status: 'Discrepancy', outcome: '2 items missing - PO submitted', conductedBy: 'Sarah Johnson' },
+      { date: '2024-02-08', status: 'Reconciled', outcome: 'All items accounted for', conductedBy: 'Mike Chen' },
+    ],
+  },
+  {
+    id: 'WH-002',
+    warehouseId: 'SE-1235',
+    description: 'Secondary Storage - Downtown',
+    type: 'Dealer',
+    locationType: 'Service Van',
+    inceptionDate: '2023-03-20',
+    warehouseManager: 'John Mitchell',
+    email: 'john@comfortzonehvac.com',
+    phone: '(555) 123-4568',
+    lastAuditDate: '2024-10-20',
+    lastAuditStatus: 'Discrepancy',
+    nextAuditDue: '2025-01-20',
+    auditCycle: 'Quarterly',
+    totalItems: 8,
+    totalValue: 12500,
+    activity: 'Waiting for PO',
+    reconciliationHistory: [
+      { date: '2024-10-20', status: 'Discrepancy', outcome: '1 item missing - awaiting PO', conductedBy: 'Sarah Johnson' },
+      { date: '2024-07-18', status: 'Reconciled', outcome: 'All items accounted for', conductedBy: 'Sarah Johnson' },
+    ],
+  },
+];
+
 export default function CustomerDetailPage() {
   const params = useParams();
   const customerId = params.id as string;
@@ -472,7 +525,9 @@ export default function CustomerDetailPage() {
                   <Group className="residential-group-large">
                     <div>
                       <Text size="xs" c="dimmed">Territory Manager</Text>
-                      <Text size="sm" fw={500}>{mockCustomer.territoryManager}</Text>
+                      <Anchor component={Link} href={`/customers/territories?territory=${mockCustomer.territoryId}`} size="sm" fw={500}>
+                        {mockCustomer.territoryManager}
+                      </Anchor>
                     </div>
                     <div>
                       <Text size="xs" c="dimmed">Affinity Group</Text>
@@ -560,6 +615,9 @@ export default function CustomerDetailPage() {
             <Button variant="light" leftSection={<IconFileText size={16} />}>
               Create Quote
             </Button>
+            <Button variant="light" leftSection={<IconPackage size={16} />} onClick={() => setActiveTab('consignment')}>
+              View Consignment
+            </Button>
             <Button variant="light" leftSection={<IconMapPin size={16} />}>
               Plan Route
             </Button>
@@ -573,6 +631,7 @@ export default function CustomerDetailPage() {
             <Tabs.Tab value="activities">Activities</Tabs.Tab>
             <Tabs.Tab value="orders">Orders</Tabs.Tab>
             <Tabs.Tab value="training">Training</Tabs.Tab>
+            <Tabs.Tab value="consignment">Consignment</Tabs.Tab>
             <Tabs.Tab value="documents">Documents</Tabs.Tab>
           </Tabs.List>
 
@@ -776,9 +835,19 @@ export default function CustomerDetailPage() {
             <Paper p="md" withBorder>
               <Group justify="space-between" mb="md">
                 <Text fw={600}>Training Records</Text>
-                <Button leftSection={<IconCalendar size={16} />}>
-                  Schedule Training
-                </Button>
+                <Group gap="sm">
+                  <Button 
+                    component={Link} 
+                    href={`/training?territory=${mockCustomer.territoryId}`} 
+                    variant="subtle" 
+                    size="sm"
+                  >
+                    View Territory Training
+                  </Button>
+                  <Button leftSection={<IconCalendar size={16} />}>
+                    Schedule Training
+                  </Button>
+                </Group>
               </Group>
               <div className="table-horizontal-scroll">
                 <Table>
@@ -816,6 +885,151 @@ export default function CustomerDetailPage() {
                 </Table>
               </div>
             </Paper>
+          </Tabs.Panel>
+
+          <Tabs.Panel value="consignment" pt="md">
+            <Stack gap="md">
+              {/* Consignment Summary */}
+              <Grid>
+                <Grid.Col span={{ base: 6, md: 3 }}>
+                  <Paper p="md" withBorder>
+                    <Group justify="space-between">
+                      <div>
+                        <Text size="xs" c="dimmed">Total Locations</Text>
+                        <Text size="xl" fw={700}>{mockConsignmentLocations.length}</Text>
+                      </div>
+                      <IconPackage size={24} color="var(--mantine-color-blue-6)" />
+                    </Group>
+                  </Paper>
+                </Grid.Col>
+                <Grid.Col span={{ base: 6, md: 3 }}>
+                  <Paper p="md" withBorder>
+                    <Group justify="space-between">
+                      <div>
+                        <Text size="xs" c="dimmed">Total Items</Text>
+                        <Text size="xl" fw={700}>{mockConsignmentLocations.reduce((sum, loc) => sum + loc.totalItems, 0)}</Text>
+                      </div>
+                      <IconClipboardCheck size={24} color="var(--mantine-color-green-6)" />
+                    </Group>
+                  </Paper>
+                </Grid.Col>
+                <Grid.Col span={{ base: 6, md: 3 }}>
+                  <Paper p="md" withBorder>
+                    <Group justify="space-between">
+                      <div>
+                        <Text size="xs" c="dimmed">Total Value</Text>
+                        <Text size="xl" fw={700}>
+                          <NumberFormatter
+                            value={mockConsignmentLocations.reduce((sum, loc) => sum + loc.totalValue, 0)}
+                            prefix="$"
+                            thousandSeparator
+                          />
+                        </Text>
+                      </div>
+                      <IconPackage size={24} color="var(--mantine-color-violet-6)" />
+                    </Group>
+                  </Paper>
+                </Grid.Col>
+                <Grid.Col span={{ base: 6, md: 3 }}>
+                  <Paper p="md" withBorder>
+                    <Group justify="space-between">
+                      <div>
+                        <Text size="xs" c="dimmed">Pending Actions</Text>
+                        <Text size="xl" fw={700} c="orange">{mockConsignmentLocations.filter(loc => loc.activity).length}</Text>
+                      </div>
+                      <IconAlertTriangle size={24} color="var(--mantine-color-orange-6)" />
+                    </Group>
+                  </Paper>
+                </Grid.Col>
+              </Grid>
+
+              {/* Consignment Locations */}
+              <Paper p="md" withBorder>
+                <Group justify="space-between" mb="md">
+                  <Text fw={600}>Consignment Locations</Text>
+                  <Button 
+                    component={Link} 
+                    href="/consignment" 
+                    variant="subtle" 
+                    size="sm"
+                    rightSection={<IconEye size={16} />}
+                  >
+                    View All Consignments
+                  </Button>
+                </Group>
+                <Stack gap="md">
+                  {mockConsignmentLocations.map((location) => (
+                    <Card key={location.id} withBorder padding="md">
+                      <Grid>
+                        <Grid.Col span={{ base: 12, md: 8 }}>
+                          <Group justify="space-between" mb="xs">
+                            <Group gap="sm">
+                              <Text fw={600}>{location.description}</Text>
+                              <Badge 
+                                color={location.lastAuditStatus === 'Reconciled' ? 'green' : 'orange'}
+                                variant="light"
+                              >
+                                {location.lastAuditStatus}
+                              </Badge>
+                              {location.activity && (
+                                <Badge color="yellow" variant="filled">
+                                  {location.activity}
+                                </Badge>
+                              )}
+                            </Group>
+                          </Group>
+                          <Group gap="lg" mb="xs">
+                            <Text size="sm" c="dimmed">
+                              <strong>Warehouse ID:</strong> {location.warehouseId}
+                            </Text>
+                            <Text size="sm" c="dimmed">
+                              <strong>Type:</strong> {location.locationType}
+                            </Text>
+                            <Text size="sm" c="dimmed">
+                              <strong>Manager:</strong> {location.warehouseManager}
+                            </Text>
+                          </Group>
+                          <Group gap="lg">
+                            <Text size="sm">
+                              <strong>Items:</strong> {location.totalItems}
+                            </Text>
+                            <Text size="sm">
+                              <strong>Value:</strong>{' '}
+                              <NumberFormatter value={location.totalValue} prefix="$" thousandSeparator />
+                            </Text>
+                            <Text size="sm">
+                              <strong>Last Audit:</strong> {new Date(location.lastAuditDate).toLocaleDateString()}
+                            </Text>
+                            <Text size="sm">
+                              <strong>Next Due:</strong> {new Date(location.nextAuditDue).toLocaleDateString()}
+                            </Text>
+                          </Group>
+                        </Grid.Col>
+                        <Grid.Col span={{ base: 12, md: 4 }}>
+                          <Stack gap="xs">
+                            <Text size="sm" fw={600}>Recent Audits</Text>
+                            {location.reconciliationHistory.slice(0, 2).map((audit, idx) => (
+                              <Group key={idx} justify="space-between" gap="xs">
+                                <Group gap="xs">
+                                  <Badge 
+                                    size="xs" 
+                                    color={audit.status === 'Reconciled' ? 'green' : 'orange'}
+                                    variant="dot"
+                                  >
+                                    {audit.status}
+                                  </Badge>
+                                  <Text size="xs">{new Date(audit.date).toLocaleDateString()}</Text>
+                                </Group>
+                              </Group>
+                            ))}
+                          </Stack>
+                        </Grid.Col>
+                      </Grid>
+                    </Card>
+                  ))}
+                </Stack>
+              </Paper>
+            </Stack>
           </Tabs.Panel>
 
           <Tabs.Panel value="documents" pt="md">
