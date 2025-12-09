@@ -14,7 +14,6 @@ import {
 import {
   IconUsers,
   IconUserPlus,
-  IconSchool,
   IconDeviceMobile,
   IconShoppingCart,
   IconChartBar,
@@ -23,9 +22,9 @@ import {
   IconChevronRight,
   IconHome,
   IconFiles,
-  IconBuildingStore,
   IconShield,
   IconMail,
+  IconPackage,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -176,14 +175,17 @@ function LinksGroup({ icon: Icon, label, initiallyOpened, links, link, external 
 }
 
 const mockdata = [
-  { label: 'Dashboard', icon: IconHome, link: '/' },
+  { label: 'Home', icon: IconHome, link: '/' },
   {
-    label: 'Customer Management',
+    label: 'Territory Management',
     icon: IconUsers,
     links: [
+      { label: 'Territory Overview', link: '/customers/territories' },
       { label: 'Customer List', link: '/customers' },
       { label: 'Customer Activities', link: '/customers/activities' },
-      { label: 'Territory Management', link: '/customers/territories' },
+      { label: 'Training Dashboard', link: '/training' },
+      { label: 'Schedule Training', link: '/training/schedule' },
+      { label: 'Training Reports', link: '/training/reports' },
     ],
   },
   {
@@ -198,12 +200,12 @@ const mockdata = [
     ],
   },
   {
-    label: 'Training Management',
-    icon: IconSchool,
+    label: 'Consignment',
+    icon: IconPackage,
     links: [
-      { label: 'Training Dashboard', link: '/training' },
-      { label: 'Schedule Training', link: '/training/schedule' },
-      { label: 'Training Reports', link: '/training/reports' },
+      { label: 'Consignment Dashboard', link: '/consignment' },
+      { label: 'Audit Schedule', link: '/consignment?tab=audits' },
+      { label: 'Alerts & Actions', link: '/consignment?tab=alerts' },
     ],
   },
   {
@@ -215,12 +217,6 @@ const mockdata = [
       { label: 'Asset Workflow', link: '/assets/workflow' },
       { label: 'Asset Migration', link: '/assets/migration' },
     ],
-  },
-  {
-    label: 'Commercial CRM',
-    icon: IconBuildingStore,
-    link: '/commercial',
-    external: true,
   },
   { label: 'Mobile App', icon: IconDeviceMobile, link: '/mobile' },
   {
