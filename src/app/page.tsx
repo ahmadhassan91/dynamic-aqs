@@ -21,61 +21,60 @@ import {
   IconBuildingStore,
   IconUsers,
   IconUserPlus,
-  IconSchool,
   IconMail,
   IconChartBar,
   IconShield,
   IconDeviceMobile,
   IconArrowRight,
+  IconPackage,
 } from '@tabler/icons-react';
 
 export default function HomePage() {
   const features = [
     {
-      title: 'Commercial Management',
-      description: 'Commercial contact management (Reps, Engineers, Contractors, Architects, Owners), opportunity tracking, and market analysis',
-      icon: IconBuildingStore,
-      color: 'green',
-      links: [
-        { label: 'Commercial Dashboard', href: '/commercial' },
-        { label: 'Commercial Contacts', href: '/commercial/engineers' },
-        { label: 'Opportunities', href: '/commercial/opportunities' },
-        { label: 'Organizations', href: '/commercial/organizations' }
-      ]
-    },
-    {
-      title: 'Residential Management',
-      description: 'Customer relationship management, lead pipeline, territory assignment, and training coordination',
+      title: 'Territory Management',
+      description: 'Territory assignments, customer management, training coordination, and TM performance tracking',
       icon: IconUsers,
       color: 'violet',
       links: [
+        { label: 'Territory Overview', href: '/customers/territories' },
         { label: 'Customer List', href: '/customers' },
         { label: 'Customer Activities', href: '/customers/activities' },
+        { label: 'Training Dashboard', href: '/training' }
+      ]
+    },
+    {
+      title: 'Lead Pipeline',
+      description: 'New dealer leads, onboarding workflow, discovery calls, and lead conversion tracking',
+      icon: IconUserPlus,
+      color: 'teal',
+      links: [
         { label: 'Lead Pipeline', href: '/leads' },
-        { label: 'Territory Management', href: '/customers/territories' }
+        { label: 'Onboarding', href: '/leads/onboarding' },
+        { label: 'Discovery Calls', href: '/leads/discovery' },
+        { label: 'AI Insights', href: '/leads/ai-insights' }
       ]
     },
     {
       title: 'Reports & Analytics',
-      description: 'Executive dashboards, sales reports, and custom analytics for both divisions',
+      description: 'Executive dashboards, sales reports, and custom analytics',
       icon: IconChartBar,
       color: 'red',
       links: [
         { label: 'Executive Dashboard', href: '/reports/executive' },
         { label: 'Sales Reports', href: '/reports' },
-        { label: 'Custom Report Builder', href: '/reports/custom' },
-        { label: 'Commercial Reports', href: '/commercial/reports' }
+        { label: 'Custom Report Builder', href: '/reports/custom' }
       ]
     },
     {
-      title: 'Training Management',
-      description: 'Training scheduling, progress tracking, and certification management',
-      icon: IconSchool,
+      title: 'Consignment Tracking',
+      description: 'Consignment inventory locations, audit scheduling, and reconciliation tracking',
+      icon: IconPackage,
       color: 'orange',
       links: [
-        { label: 'Training Dashboard', href: '/training' },
-        { label: 'Schedule Training', href: '/training/schedule' },
-        { label: 'Training Reports', href: '/training/reports' }
+        { label: 'Consignment Dashboard', href: '/consignment' },
+        { label: 'Audit Schedule', href: '/consignment?tab=audits' },
+        { label: 'Alerts & Actions', href: '/consignment?tab=alerts' }
       ]
     },
     {
@@ -92,8 +91,8 @@ export default function HomePage() {
     {
       title: 'Dealer Portal',
       description: 'Product catalog, order management, and dealer resources',
-      icon: IconUserPlus,
-      color: 'teal',
+      icon: IconBuildingStore,
+      color: 'green',
       links: [
         { label: 'Product Catalog', href: '/dealer/catalog' },
         { label: 'Order Management', href: '/dealer/orders' },
@@ -120,8 +119,7 @@ export default function HomePage() {
       links: [
         { label: 'Asset Library', href: '/assets' },
         { label: 'Asset Analytics', href: '/assets/analytics' },
-        { label: 'Asset Workflow', href: '/assets/workflow' },
-        { label: 'Asset Migration', href: '/assets/migration' }
+        { label: 'Asset Workflow', href: '/assets/workflow' }
       ]
     }
   ];
