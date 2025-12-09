@@ -15,6 +15,8 @@ import {
   Alert,
   Loader,
   Center,
+  TextInput,
+  Tooltip,
 } from '@mantine/core';
 import {
   IconUpload,
@@ -27,6 +29,9 @@ import {
   IconTrash,
   IconSettings,
   IconAlertCircle,
+  IconSearch,
+  IconShare,
+  IconLink,
 } from '@tabler/icons-react';
 import { DigitalAsset, AssetFilter } from '@/types/assets';
 import { AssetService } from '@/lib/services/assetService';
@@ -50,6 +55,7 @@ export const AssetLibrary: React.FC = () => {
   const [filter, setFilter] = useState<AssetFilter>({});
   const [selectedAssets, setSelectedAssets] = useState<Set<string>>(new Set());
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Modal states
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -165,27 +171,86 @@ export const AssetLibrary: React.FC = () => {
     }
   };
 
+  // Apply search filter
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredAssets(assets);
+    } else {
+      const query = searchQuery.toLowerCase();
+      setFilteredAssets(
+        assets.filter(
+          (asset) =>
+            asset.title.toLowerCase().includes(query) ||
+            asset.fileName?.toLowerCase().includes(query) ||
+            asset.description?.toLowerCase().includes(query) ||
+            asset.tags?.some((tag) => tag.toLowerCase().includes(query)) ||
+            asset.category?.toLowerCase().includes(query)
+        )
+      );
+    }
+  }, [searchQuery, assets]);
+
   return (
     <Container size="xl" py="md">
       <Stack gap="md">
-        {/* Header */}
+        {/* Header with Prominent Search */}
         <Paper shadow="sm" p="md">
-          <Group justify="space-between" align="flex-start">
-            <Stack gap="xs">
-              <Title order={1}>Asset Library</Title>
-              <Text size="sm" c="dimmed">
-                Manage and organize your digital marketing and technical assets
-              </Text>
-            </Stack>
-            <Group gap="sm">
-              <Button
-                leftSection={<IconUpload size={16} />}
-                onClick={() => setShowUploadModal(true)}
-              >
-                Upload Assets
-              </Button>
+          <Stack gap="md">
+            <Group justify="space-between" align="flex-start">
+              <Stack gap="xs">
+                <Title order={1}>Asset Library</Title>
+                <Text size="sm" c="dimmed">
+                  Searchable, shareable digital assets — replacing Dropbox & Widen pain points
+                </Text>
+              </Stack>
+              <Group gap="sm">
+                <Tooltip label="Share selected assets with dealers or team members">
+                  <Button
+                    variant="light"
+                    leftSection={<IconShare size={16} />}
+                    disabled={selectedAssets.size === 0}
+                  >
+                    Share
+                  </Button>
+                </Tooltip>
+                <Tooltip label="Generate shareable link">
+                  <Button
+                    variant="light"
+                    leftSection={<IconLink size={16} />}
+                    disabled={selectedAssets.size === 0}
+                  >
+                    Get Link
+                  </Button>
+                </Tooltip>
+                <Button
+                  leftSection={<IconUpload size={16} />}
+                  onClick={() => setShowUploadModal(true)}
+                >
+                  Upload Assets
+                </Button>
+              </Group>
             </Group>
-          </Group>
+
+            {/* Prominent Search Bar */}
+            <TextInput
+              placeholder="Search assets by name, description, tags, or category..."
+              size="lg"
+              leftSection={<IconSearch size={20} />}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.currentTarget.value)}
+              styles={{
+                input: {
+                  fontSize: '16px',
+                },
+              }}
+            />
+            
+            {searchQuery && (
+              <Text size="sm" c="dimmed">
+                Found {filteredAssets.length} asset{filteredAssets.length !== 1 ? 's' : ''} matching "{searchQuery}"
+              </Text>
+            )}
+          </Stack>
         </Paper>
 
         {/* Action Bar */}
