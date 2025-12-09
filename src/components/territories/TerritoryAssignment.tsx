@@ -28,6 +28,8 @@ import {
   IconMapPin,
   IconInfoCircle,
   IconGripVertical,
+  IconSchool,
+  IconExternalLink,
 } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
@@ -57,6 +59,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useMockData } from '@/lib/mockData/MockDataProvider';
 import type { MockCustomer, MockUser } from '@/lib/mockData/generators';
 import { CustomerFormModal } from '@/components/customers/CustomerFormModal';
+import Link from 'next/link';
 
 interface SortableCustomerProps {
   customer: MockCustomer;
@@ -217,6 +220,32 @@ function DroppableTerritoryCard({
                 ${totalRevenue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
               </Text>
             </div>
+          </Group>
+
+          {/* Quick Links */}
+          <Group gap="xs" mb="sm">
+            <Tooltip label="View all customers in this territory">
+              <Button 
+                component={Link} 
+                href={`/customers?territory=${territory.id}`} 
+                variant="subtle" 
+                size="xs" 
+                leftSection={<IconUsers size={14} />}
+              >
+                Customers
+              </Button>
+            </Tooltip>
+            <Tooltip label="View training for this territory">
+              <Button 
+                component={Link} 
+                href={`/training?territory=${territory.id}`} 
+                variant="subtle" 
+                size="xs" 
+                leftSection={<IconSchool size={14} />}
+              >
+                Training
+              </Button>
+            </Tooltip>
           </Group>
         </div>
 
